@@ -1,0 +1,7 @@
+{
+	"globals" : {
+		"sitename" : "BGI",
+		"title" : "Budgeting Gateway Interface",
+		"description" : "Budgeting software for a static world"
+	}
+}
