@@ -10,3 +10,6 @@
 
 #Ignore downloaded tarballs for libraries
 lib/wolkykim-qdecoder-63888fc
+
+#Ignore configuration files
+headers/config.h
