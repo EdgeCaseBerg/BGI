@@ -5,9 +5,29 @@
 		<meta name="description" content="Budgeting software for a static world" />
 		<meta name="author" content="Ethan Eldridge">
 		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
+		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
 	<body>
 		<h1><strong>BGI</strong></h1>
 
+<p>Welcome to BGI, the Budget GateWay Interface. This simple software is 
+designed to help you keep track of your spending habits, and to provide
+helpful metrics to inform you about how you can curb your bad habits and 
+develop better ones. </p>
+<p>
+	<strong>Absolutely None of your information will ever be handed to a 3rd Party</strong>
+</p>
+
+<p>Please Login and Enjoy the System.</p>	
+
+<form action="/bgi/login" method="POST">
+	<label>Username
+		<input name="username" value="" type="text" size="32" maxlength="32"/>
+	</label>
+	<label>Password
+		<input name="password" value="" type="password" size="32" maxlength="32" />
+	</label>
+	<input type="submit" value="Login" />
+</form>
 	</body>
 </html>

@@ -15,11 +15,9 @@ int main(void)
 #ifdef ENABLE_FASTCGI
     while(FCGI_Accept() >= 0) {
 #endif
-    // Parse queries.
     qentry_t *req = qcgireq_parse(NULL, 0);
+    qcgires_setcontenttype(req, "text/plain");
 
-    // Print out
-    qcgires_setcontenttype(req, "text/html");
     printf("%ld", time(0));
 
     // De-allocate memories
