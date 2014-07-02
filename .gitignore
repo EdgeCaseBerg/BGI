@@ -7,3 +7,6 @@
 
 #Ignore vim swap files
 *.swp
+
+#Ignore downloaded tarballs for libraries
+lib/wolkykim-qdecoder-63888fc
