@@ -8,6 +8,7 @@
 #include "qdecoder.h"
 
 #include <time.h>
+#include "config.h"
 
 int main(void)
 {
