@@ -4,7 +4,7 @@ CFLAGS = -std=gnu99 -pedantic -Wall -Wextra -Werror -g -I./headers
 LINKFLAGS = $(CFLAGS)
 LIBS = lib/wolkykim-qdecoder-63888fc/src/libqdecoder.a
 
-TARGETS = heartbeat.cgi
+TARGETS = heartbeat.cgi login.cgi
 
 #Use Phony to keep clean
 .PHONY: clean 
@@ -18,7 +18,7 @@ valgrind = valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-
 all: ${TARGETS}
 
 $(TARGETS): $(OBJECTS)
-	${CC} ${LINKFLAGS} -o $@ $(OBJECTS) ${LIBS}
+	${CC} ${LINKFLAGS} -o $@ $< ${LIBS}
 
 clean:
 	rm -f obj/*.o ${TARGETS}
