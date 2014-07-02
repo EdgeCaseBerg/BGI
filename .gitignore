@@ -1,0 +1,9 @@
+#Ignore compiled binary
+*.out
+*.cgi
+
+#Ignore object files
+*.o
+
+#Ignore vim swap files
+*.swp
