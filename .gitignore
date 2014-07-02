@@ -8,8 +8,9 @@
 #Ignore vim swap files
 *.swp
 
-#Ignore downloaded tarballs for libraries
-lib/wolkykim-qdecoder-63888fc
+#Only take what is neccesary from libraries.
+lib/wolkykim-qdecoder-63888fc/doc
+lib/wolkykim-qdecoder-63888fc/examples
 
 #Ignore configuration files
 headers/config.h
