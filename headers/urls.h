@@ -5,5 +5,5 @@
 
 	#define HOME BASE_URL "/"
 	#define BAD_LOGIN BASE_URL "/badlogin.html"
-	#define APPLICATION BASE_URL "/accounts.html"
+	#define APPLICATION BASE_URL "/welcome.html"
 #endif
