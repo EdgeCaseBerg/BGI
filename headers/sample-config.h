@@ -7,5 +7,7 @@
 	#define DATABASE_NAME "bgi"
 	#define DATABASE_USER "bgi"
 	#define DATABASE_PASS "bgi"
-
+	
+	#define SESSION_TIME 1800 /* Half Hour */
+	#define BASE_URL "http://www.bgi.test"
 #endif

@@ -19,6 +19,7 @@ all: ${TARGETS}
 
 $(TARGETS): $(OBJECTS)
 	${CC} ${LINKFLAGS} -o $@ $< ${LIBS}
+	echo "$@ $<"
 
 clean:
 	rm -f obj/*.o ${TARGETS}

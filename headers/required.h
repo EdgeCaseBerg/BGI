@@ -11,5 +11,6 @@
 #include "qdecoder.h"
 
 #include "config.h"
+#include "urls.h"
 
 #endif
