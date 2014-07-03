@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+	<head>
+		<title>Budgeting Gateway Interface</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="Budgeting software for a static world" />
+		<meta name="author" content="Ethan Eldridge">
+		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+	</head>
+	<body>
+		<h1><strong>BGI</strong></h1>
+		<p>Please Login and Enjoy the System.</p>	
+
+<em>Your username or password is incorrect</em>
+<form action="/bgi/login.cgi" method="POST">
+	<label>Username
+		<input name="username" value="" type="text" size="32" maxlength="32"/>
+	</label>
+	<label>Password
+		<input name="password" value="" type="password" size="32" maxlength="32" />
+	</label>
+	<input type="submit" value="Login" />
+</form>
+
+<small>If you believe this is an error, contact the administrator</small>
+	</body>
+</html>
