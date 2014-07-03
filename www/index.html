@@ -7,7 +7,7 @@
 		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
-	<body>
+	<body id="index">
 		<h1><strong>BGI</strong></h1>
 		<p>Welcome to BGI, the Budget GateWay Interface. This simple software is 
 designed to help you keep track of your spending habits, and to provide
@@ -20,12 +20,8 @@ develop better ones. </p>
 <p>Please Login and Enjoy the System.</p>	
 
 <form action="/bgi/login.cgi" method="POST">
-	<label>Username
-		<input name="username" value="" type="text" size="32" maxlength="32"/>
-	</label>
-	<label>Password
-		<input name="password" value="" type="password" size="32" maxlength="32" />
-	</label>
+	<input placeholder="Username" name="username" value="" type="text" size="32" maxlength="32"/>
+	<input placeholder="Password" name="password" value="" type="password" size="32" maxlength="32" />
 	<input type="submit" value="Login" />
 </form>
 	</body>

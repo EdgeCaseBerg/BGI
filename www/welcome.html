@@ -7,19 +7,24 @@
 		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
-	<body id="badlogin">
+	<body id="welcome">
 		<h1><strong>BGI</strong></h1>
-		<section>
-	<p>Please Login and Enjoy the System.</p>
+		<h2>Welcome</h2>
+<p>Welcome to your Budgetting Portal</p>
 
-	<em>Your username or password is incorrect</em>
-	<form action="/bgi/login.cgi" method="POST">
-	<input placeholder="Username" name="username" value="" type="text" size="32" maxlength="32"/>
-	<input placeholder="Password" name="password" value="" type="password" size="32" maxlength="32" />
-	<input type="submit" value="Login" />
-</form>
+<noscript>
+	You must have Javascript Enabled to use this application.
+</noscript>
 
-	<small>If you believe this is an error, contact the administrator</small>
+<section name="accounts">
+	<!--
+		Load Accounts Here. They'll come in the form of
+		Name,Balance,Date Updated
+	-->
+	<h3>Your Accounts</h3>
+	<ul>
+	</ul>
 </section>
+
 	</body>
 </html>
