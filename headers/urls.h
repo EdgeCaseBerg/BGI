@@ -4,6 +4,6 @@
 	#include "config.h"
 
 	#define HOME BASE_URL "/"
-	#define BAD_LOGIN BASE_URL "/badlogin"
-	#define APPLICATION BASE_URL "/accounts"
+	#define BAD_LOGIN BASE_URL "/badlogin.html"
+	#define APPLICATION BASE_URL "/accounts.html"
 #endif
