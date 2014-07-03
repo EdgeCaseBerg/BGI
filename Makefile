@@ -18,8 +18,7 @@ valgrind = valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-
 all: ${TARGETS}
 
 $(TARGETS): $(OBJECTS)
-	${CC} ${LINKFLAGS} -o $@ $< ${LIBS}
-	echo "$@ $<"
+	${CC} ${LINKFLAGS} -o $@ $(patsubst bin/%.cgi, obj/%.o, $@ ) ${LIBS}
 
 clean:
 	rm -f obj/*.o ${TARGETS}
