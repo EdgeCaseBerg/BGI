@@ -67,7 +67,7 @@ int _user_exists(const char * username){
 	}
 	/* Read and find the user */
 	char user[64];
-	while(fscanf(fp,"%s|%*s\r\n",user) == 1){
+	while(fscanf(fp,"%s %*"PRIu32"\r\n",user) == 1){
 		if(strncmp(user, username, 64) == 0){
 			fclose(fp);
 			return 1;
@@ -90,7 +90,7 @@ int _password_matches(const char * username, const uint32_t hashpass){
 
 	char user[64];
 	uint32_t pass;
-	while(fscanf(fp,"%s|%"PRIu32"\r\n",user,&pass) == 2){
+	while(fscanf(fp,"%s %"PRIu32"\r\n",user,&pass) == 2){
 		if(strncmp(user, username, 64) == 0){
 			if(hashpass == pass){
 				fclose(fp);
@@ -121,11 +121,11 @@ int create_user(const char * username, const uint32_t hashpass){
 	/* Create the user since they don't exist */
 	FILE *fp = fopen(DATA_DIR USERS_INDEX, "a");
 	if(!fp){
-		fprintf(stderr, "%s\n", FAILED_FILE_OPEN USERS_INDEX);
+		fprintf(stderr, "%s\n", FAILED_FILE_OPEN DATA_DIR USERS_INDEX);
 		return 0;
 	}
 
-	fprintf(fp, "%s|%"PRIu32"\r\n", username, hashpass);
+	fprintf(fp, "%s %"PRIu32"\r\n", username, hashpass);
 	fclose(fp);
 	return 1;
 }
