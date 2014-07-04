@@ -9,21 +9,28 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <errno.h>
+#include <string.h>
 
 #include "config.h"
 #include "errors.h"
 #include "required.h"
+#include <stdint.h>
+#include <inttypes.h> /* Need inttypes for PRIu32 */
 
-/* Returns 1 on Truth, 0 on False, -1 on Error */
+
+/* All returns 1 on Truth, 0 on False, -1 on Error */
 int _directory_exists(const char * directoryToCheck);
+int _user_exists(const char * username);
 
-/* Returns 1 for truth, 0 for false */
+/* All returns 1 for truth, 0 for false */
 int _file_exists(const char * filename);
-
-/* Returns 1 for Success, 0 for failure */
-int create_user(const char * username, const char * hashpass);
+int _password_matches(const char * username, const uint32_t hashpass);
+int create_user(const char * username, const uint32_t hashpass);
 
 /* Creates neccesary structures for data storage and ctl usage */
 int bgi_data_init();
+
+
+
 
 #endif

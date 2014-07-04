@@ -58,9 +58,74 @@ int bgi_data_init(){
 	return success;
 }
 
-int create_user(const char * username, const char * hashpass){
-	//silence compiler for now
-	(void)username;
-	(void)hashpass;
+/*1 = truth, 0 = false, -1 = error */
+int _user_exists(const char * username){
+	FILE *fp = fopen(DATA_DIR USERS_INDEX, "r");
+	if(!fp){
+		fprintf(stderr, "%s\n", FAILED_FILE_OPEN USERS_INDEX);
+		return -1;
+	}
+	/* Read and find the user */
+	char user[64];
+	while(fscanf(fp,"%s|%*s\r\n",user) == 1){
+		if(strncmp(user, username, 64) == 0){
+			fclose(fp);
+			return 1;
+		}
+	}
+	fclose(fp);
 	return 0;
+}
+
+int _password_matches(const char * username, const uint32_t hashpass){
+	if( username == NULL){
+		return 0;
+	}
+
+	FILE *fp = fopen(DATA_DIR USERS_INDEX, "r");
+	if(!fp){
+		fprintf(stderr, "%s\n", FAILED_FILE_OPEN USERS_INDEX);
+		return 0;
+	}
+
+	char user[64];
+	uint32_t pass;
+	while(fscanf(fp,"%s|%"PRIu32"\r\n",user,&pass) == 2){
+		if(strncmp(user, username, 64) == 0){
+			if(hashpass == pass){
+				fclose(fp);
+				return 1;
+			}
+			fclose(fp);
+			return 0;
+		}
+	}
+	return 0;
+}
+
+int create_user(const char * username, const uint32_t hashpass){
+	/* silence compiler for now */
+	if( username == NULL  )
+		return 0;
+
+	/* Make sure user/pass within constraints */
+	if(strlen(username) >= 64){
+		return 0;
+	}
+
+	/* Scan the Users file to determine if this user exists */
+	if( _user_exists(username) != 0 ){ /* returns on err too! */
+		return 0;
+	}
+
+	/* Create the user since they don't exist */
+	FILE *fp = fopen(DATA_DIR USERS_INDEX, "a");
+	if(!fp){
+		fprintf(stderr, "%s\n", FAILED_FILE_OPEN USERS_INDEX);
+		return 0;
+	}
+
+	fprintf(fp, "%s|%"PRIu32"\r\n", username, hashpass);
+	fclose(fp);
+	return 1;
 }

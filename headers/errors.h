@@ -6,4 +6,5 @@
 #define FAILED_DIR_CREATION "Could not create directory: "
 #define FAILED_FILE_EXISTS "File does not exist: "
 #define FAILED_FILE_CREATION "Could not create file: "
+#define FAILED_FILE_OPEN "Could not open file: "
 #endif

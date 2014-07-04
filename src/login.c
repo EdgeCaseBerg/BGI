@@ -15,13 +15,21 @@ int main(void){
 
         qentry_t *req = qcgireq_parse(NULL, 0);
    
-        //char *name  = req->getstr(req, "username", false);
+        char *name  = req->getstr(req, "username", false);
         char *pass  = req->getstr(req, "password", false);;
-        if(pass == NULL){
+        if(pass == NULL || name == NULL){
             goto noparams;
         }
 
-        //uint32_t hashed = SuperFastHash(pass, strlen(pass));
+        if( 1 != _user_exists(name) ){
+            goto noparams;
+        }
+        uint32_t hashed = SuperFastHash(pass, strlen(pass));
+        if(_password_matches(name, hashed) == 0){
+            goto noparams;
+        }
+
+        success = 1;
 
 
         /* Check if the user is already logged in a session: */
