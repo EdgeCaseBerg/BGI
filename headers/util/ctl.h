@@ -12,6 +12,7 @@
 
 #include "config.h"
 #include "errors.h"
+#include "required.h"
 
 /* Returns 1 on Truth, 0 on False, -1 on Error */
 int _directory_exists(const char * directoryToCheck);
@@ -23,6 +24,6 @@ int _file_exists(const char * filename);
 int create_user(const char * username, const char * hashpass);
 
 /* Creates neccesary structures for data storage and ctl usage */
-int init();
+int bgi_data_init();
 
 #endif

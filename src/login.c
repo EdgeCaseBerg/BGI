@@ -1,14 +1,17 @@
 #include "required.h"
 
 #include "util/fasthash.h"
-#include "util/data.h"
+#include "util/ctl.h"
 #include <string.h>
 
 int main(void){
+    /* Before accepting make sure BGI is setup */
+    bgi_data_init();
     #ifdef ENABLE_FASTCGI
         while(FCGI_Accept() >= 0) {
     #endif
         int success = false;
+        qentry_t *sess = NULL;
 
         qentry_t *req = qcgireq_parse(NULL, 0);
    
@@ -22,7 +25,7 @@ int main(void){
 
 
         /* Check if the user is already logged in a session: */
-        qentry_t *sess = qcgisess_init(req, NULL);
+        sess = qcgisess_init(req, NULL);
         qcgisess_settimeout(sess, SESSION_TIME);
 
         //char *sessUserName = sess->getstr(sess, "username", false);

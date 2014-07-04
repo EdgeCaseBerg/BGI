@@ -14,6 +14,10 @@ int _directory_exists(const char * directoryToCheck){
 	return success;
 }
 
+int _directory_create(const char * directoryToCheck){
+	return mkdir(directoryToCheck, DIR_PERM);
+}
+
 int _file_exists(const char * filename){
 	/* Security Concern: If you check for a file's existence and then open the 
 	 * file, between the time of access checking and creation of a file someone
@@ -24,18 +28,39 @@ int _file_exists(const char * filename){
 	return(stat (filename, &buffer) == 0);
 }
 
-int init(){
+int bgi_data_init(){
 	int success = _directory_exists(DATA_DIR);
 	if(success < 0){
-		fprintf(stderr, "%s\n", FAILED_INIT);
+		fprintf(stderr, "%s\n", FAILED_INIT FAILED_DIR_EXISTS DATA_DIR);
 		return 0; /* Unknown Failure. Panic. */
 	}
 	if(success != 1){
 		/* DATA_DIR does not exist. Create it */
+		success = _directory_create(DATA_DIR);
+		if (success == -1){
+			fprintf(stderr,"%s\n", FAILED_INIT FAILED_DIR_CREATION DATA_DIR);
+			return 0;
+		}
 	}
-	
+
+	success = _file_exists( DATA_DIR USERS_INDEX);
+	if(success == 0){
+		/* USERS_INDEX does not exist. create it */
+		FILE *fp = fopen(DATA_DIR USERS_INDEX, "wb");
+		if (!fp) {
+    		success = 0;
+			fprintf(stderr,"%s\n", FAILED_INIT FAILED_FILE_CREATION);
+    	} else {
+    		fclose(fp);
+    		success = 1;
+    	}
+	}
+	return success;
 }
 
 int create_user(const char * username, const char * hashpass){
-
+	//silence compiler for now
+	(void)username;
+	(void)hashpass;
+	return 0;
 }
