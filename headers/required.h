@@ -11,6 +11,7 @@
 #include "qdecoder.h"
 
 #include "config.h"
+#include "errors.h"
 #include "urls.h"
 
 #endif
