@@ -9,5 +9,6 @@
 /*  CGI Layer Constants */
 #define SESSION_TIME 1800 /* Half Hour */
 #define BASE_URL "http://www.bgi.test"
+#define ADMIN_SECRET "admin"
 
 #endif
