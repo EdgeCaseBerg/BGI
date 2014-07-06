@@ -129,3 +129,92 @@ int create_user(const char * username, const uint32_t hashpass){
 	fclose(fp);
 	return 1;
 }
+
+int create_account(const char * username, const char * account){
+	if( username == NULL || account == NULL) return 0;
+	if(_user_exists(username) != 1) return 0;
+
+	/* Be warry of buffer overflow and try to protect against it */
+	char buffer[BUFFER_LENGTH]; 
+	char * accountPath;
+	if(strlen(DATA_DIR) >= BUFFER_LENGTH) return -1;
+	accountPath = strcpy(buffer, DATA_DIR);
+
+	
+	if(strlen(accountPath) + strlen(username) >= BUFFER_LENGTH) return -1;
+	accountPath = strcat(accountPath,username);
+
+	if( _directory_exists(accountPath) != 1 ){
+		/* Account directory does not exist. Make it. */
+		if( _directory_create(accountPath) != 1 ){
+			return 0;
+		}
+	}
+
+	/* Open the account file and check if account already exists */
+	/* +1 for the / we'll use in accessing */
+	if(strlen(accountPath) + strlen(ACCOUNT_INDEX) +1 >= BUFFER_LENGTH) return -1;
+	char * accountsFile;
+	char buffer2[BUFFER_LENGTH];
+	strcpy(buffer2, accountPath);
+	accountsFile = strcat(buffer2, "/");
+	accountsFile = strcat(buffer2, ACCOUNT_INDEX);
+
+	/* Open in a+ so we'll read from beginning and write to end */
+	FILE *fp = fopen(accountsFile, "a+"); 
+	if(!fp){
+		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountsFile );
+		return -1;
+	}
+
+	char accountName[64]; /* Account names are not allowed to be more than this*/
+	int numAccount = 0;
+	double balance = 0.00;
+	int exists = 0;
+	while(fscanf(fp, "%d %s %lf\n", &numAccount, accountName, &balance) == 3){
+		if(strncmp(accountName, account, 64) == 0){
+			/* Account already exists! */
+			exists = 1;
+			break;
+		}
+	}
+
+	strncpy(accountName, account, sizeof(accountName));
+	accountName[sizeof(accountName) -1] = '\0';
+	if(exists == 0){
+		fprintf(fp, "%d %s %.2lf\n", numAccount+1,  accountName, 0.00 );
+	}
+	fclose(fp);
+
+	/* Account has been written to the account index file, 
+	 * now create the storage place for the acount line items */
+	char * accountFile;
+	char buffer3[BUFFER_LENGTH];
+	strcpy(buffer3, accountPath);
+	accountFile = strcat(buffer3, "/");
+	if(strlen(accountFile) + strlen(accountName) >= BUFFER_LENGTH) return -1;
+	accountFile = strcat(buffer3, accountName);
+
+	if(_file_exists(accountFile) == 0){
+		FILE *fp = fopen(accountFile, "w");
+		if(!fp){
+			fprintf(stderr, "%s %s\n", FAILED_FILE_CREATION, accountFile);
+			return 0;
+		}
+		fclose(fp);
+	}
+
+	return 1;
+}
+
+
+/*
+int create_item(const char * username, const char * account, const char * name, long amount, category cat, long latitude, long longitude){
+	if(_user_exists(username != 1))	return 0;
+*/
+	/* Create the path to the line items file for the account */
+/*
+
+	return 0;	
+}
+*/

@@ -34,7 +34,7 @@ int main(void){
 
         badrequest:
         if(success == 0) qcgires_redirect(req, REGISTER);
-        else qcgires_redirect(req, APPLICATION);
+        else qcgires_redirect(req, HOME);
 
         qcgires_setcontenttype(req, "text/html");
 

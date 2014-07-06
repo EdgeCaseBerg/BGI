@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "config.h"
+#include "categories.h"
 #include "errors.h"
 #include "required.h"
 #include <stdint.h>
@@ -29,6 +30,11 @@ int create_user(const char * username, const uint32_t hashpass);
 
 /* Creates neccesary structures for data storage and ctl usage */
 int bgi_data_init();
+
+/* Returns 1 on success, 0 on false, -1 on error */
+int create_account(const char * username, const char * account);
+int create_item(const char * username, const char * account, const char * name, long amount, category cat, long latitude, long longitude);
+
 
 
 
