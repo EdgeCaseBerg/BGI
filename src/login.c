@@ -45,6 +45,7 @@ int main(void){
 
         // De-allocate memories
         if(sess){
+            sess->putstr(sess, "username", name, true);
             qcgisess_save(sess);
             sess->free(sess);            
         } 

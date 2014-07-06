@@ -8,4 +8,5 @@
 	#define APPLICATION BASE_URL "/welcome.html"
 	#define REGISTER BASE_URL "/register.html"
 	#define CREATE_ACCOUNT "/create-account.html"
+	#define BAD_ACCOUNT "/failed-create-account.html"
 #endif
