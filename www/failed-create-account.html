@@ -7,7 +7,7 @@
 		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
-	<body id="welcome">
+	<body id="failed-create-account">
 		<h1><strong>BGI</strong></h1>
 <nav>
 	<ul>
@@ -17,27 +17,14 @@
 		</li>
 	</ul>
 </nav>
-		<h2>Welcome</h2>
-<p>Welcome to your Budgetting Portal</p>
-
-<noscript>
-	You must have Javascript Enabled to use this application.
-</noscript>
-
-<section name="accounts">
-	<!--
-		Load Accounts Here. They'll come in the form of
-		Name,Balance,Date Updated
-	-->
-	<h3>Your Accounts</h3>
-	<ul>
-	</ul>
-</section>
-
-<section name="account-display">
-	<h3>---</h3>
-	<ol reversed name="lineitems"></ol>
-</section>
-
+		<h2>Create a new Account</h2>
+<p>
+	Use the form below to create a new account to track against
+</p>
+<em>There was a problem creating your account</em>
+<form action="/bgi/create-account.cgi" method="POST">
+	<input placeholder="Account Name" name="accountname" value="" type="text" size="32" maxlength="32"/>
+	<input type="submit" value="Create Account" />
+</form>
 	</body>
 </html>

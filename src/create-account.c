@@ -34,7 +34,7 @@ int main(void){
             goto end;
         }
 
-        if( 1 != _user_exists(name) ){
+        if( 1 != _user_exists(username) ){
             qcgires_redirect(req, REGISTER);
             goto end;
         }
