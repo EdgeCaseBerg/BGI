@@ -1,0 +1,11 @@
+{
+	"index" : {
+		"layout" : "_anon"
+	},
+	"badlogin" : {
+		"layout" : "_anon"
+	},
+	"register" : {
+		"layout" : "_anon"
+	}
+}
