@@ -13,5 +13,6 @@
 #include "config.h"
 #include "errors.h"
 #include "urls.h"
+#include "accounts.h"
 
 #endif

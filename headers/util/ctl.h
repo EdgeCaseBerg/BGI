@@ -35,6 +35,11 @@ int bgi_data_init();
 int create_account(const char * username, const char * account);
 int create_item(const char * username, const char * account, const char * name, long amount, category cat, long latitude, long longitude);
 
+/* Will return a linked list of accounts stored in the accountChain,
+ * the calling party is responsible for free-ing the resultant nodes.
+ */
+struct accountChain * read_accounts(const char * username);
+
 
 
 
