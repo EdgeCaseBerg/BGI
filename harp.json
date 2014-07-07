@@ -3,6 +3,6 @@
 		"sitename" : "BGI",
 		"title" : "Budgeting Gateway Interface",
 		"description" : "Budgeting software for a static world",
-		"bgidomain" : "//www.bgi.dev/bgi/"
+		"bgidomain" : "//http://bgi.ethanjoachimeldridge.info/bgi/"
 	}
 }
