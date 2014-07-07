@@ -26,9 +26,12 @@ jQuery( document ).ready(function( $ ) {
 
 			/* Get em. */
 			var lineItemsTable = $('table[name="lineitems"]')
-			var lineItemsURI = window.bgidomain + "lineitems.cgi?account=" + accountName
+			var lineItemsURI = window.bgidomain + "list-lineitems.cgi?accountname=" + accountName
 
-			console.log(lineItemsURI)
+			$.get(lineItemsURI, function(response){
+				var lineitems = response
+				console.log(lineitems)
+			})
 		})
 	}
 })
