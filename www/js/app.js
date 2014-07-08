@@ -1,7 +1,8 @@
 jQuery( document ).ready(function( $ ) {
 	/* Load accounts */
+	var accountsURI =  window.bgidomain + "accounts.cgi"
+
 	if($('body').attr('id') == "welcome"){
-		var accountsURI =  window.bgidomain + "accounts.cgi"
 		$.get(accountsURI, function(response){
 			var accounts = response
 			for (var i = accounts.length - 1; i >= 0; i--) {
@@ -32,6 +33,17 @@ jQuery( document ).ready(function( $ ) {
 				var lineitems = response
 				console.log(lineitems)
 			})
+		})
+
+
+	}
+
+	if($('select[name="accountname"]').length > 0){
+		$.get(accountsURI, function(response){
+			var accounts = response
+			for (var i = accounts.length - 1; i >= 0; i--) {
+				$('select[name="accountname"]').append( '<option value="' + accounts[i].name + '">'+accounts[i].name+'</option>')
+			};
 		})
 	}
 })
