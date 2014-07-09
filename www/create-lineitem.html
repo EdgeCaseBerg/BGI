@@ -22,12 +22,12 @@
 <p>
 	Use the form below to create a new line item for the specified account
 </p>
-<form action="bin/create-lineitem.cgi" method="POST">
+<form action="/bgi/create-lineitem.cgi" method="POST">
 	<select name="accountname"><!-- Populated by JS--></select>
-	<input placeholder="Item Name" maxlength="64" name="name" type="text" />
-	<input placeholder="Amount" name="amount" type="number" pattern="[-]{1}?[0-9]+\.[0-9]{2}?" title="please enter a valid dollar amount" />
-	<input placeholder="Latitude" name="latitude" value="44.4758" type="number" pattern="[-]{1}?[0-9]+\.[0-9]+" title="Please enter a valid latitude">
-	<input placeholder="Longitude" name="longitude" value="-73.2119" type="text" pattern="[-]{1}?[0-9]+\.[0-9]+" title="Please enter a valid longitude">
+	<input placeholder="Item Name" maxlength="64" required="required" name="name" type="text" pattern="[\S]+" title="You must enter an item name" />
+	<input placeholder="Amount" name="amount" required="required" type="text" pattern="[-]?[0-9]+\.[0-9]{2}?" title="please enter a valid dollar amount" />
+	<input placeholder="Latitude" name="latitude" value="44.4758" type="text" pattern="[-]?[0-9]+\.[0-9]+" title="Please enter a valid latitude">
+	<input placeholder="Longitude" name="longitude" value="-73.2119" type="text" pattern="[-]?[0-9]+\.[0-9]+" title="Please enter a valid longitude">
 	<input type="submit" value="Create Item" />
 </form>
 <!-- TODO. Add in Geo Location to make lat/lng easier to knab -->
