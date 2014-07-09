@@ -31,7 +31,18 @@ jQuery( document ).ready(function( $ ) {
 
 			$.get(lineItemsURI, function(response){
 				var lineitems = response
-				console.log(lineitems)
+				for (var i = lineitems.length - 1; i >= 0; i--) {
+					var item = lineitems[i]
+					var row = $('<tr></tr>')	
+					var headers = $('table[name="lineitems"]').find('thead tr th').each(function(idx,elem){
+						var key = $(elem).text().toLowerCase()
+						if( item[key] ){
+							row.append($('<td>'+item[key]+'</td>'))
+						}
+					})
+
+					$('table[name="lineitems"]').find('tbody').append(row)
+				};	
 			})
 		})
 

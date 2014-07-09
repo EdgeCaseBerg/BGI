@@ -7,7 +7,7 @@
 		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
 		<link rel="stylesheet" type="text/css" href="/main.css">
 	</head>
-	<body id="create-lineitem">
+	<body id="failed-create-lineitem">
 		<h1><strong>BGI</strong></h1>
 <nav>
 	<ul>
@@ -22,6 +22,7 @@
 <p>
 	Use the form below to create a new line item for the specified account
 </p>
+<em>There was a problem creating the line item</em>
 <form action="bin/create-lineitem.cgi" method="POST">
 	<select name="accountname"><!-- Populated by JS--></select>
 	<input placeholder="Item Name" maxlength="64" name="name" type="text" />
