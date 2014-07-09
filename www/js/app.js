@@ -46,4 +46,26 @@ jQuery( document ).ready(function( $ ) {
 			};
 		})
 	}
+
+	if($('body').attr('id') == 'create-lineitem'){
+		/* Prepopulate the location for the inputs */
+		if ("geolocation" in navigator) {
+			var success = function(position){
+				var lat = position.coords.latitude
+				var lng = position.coords.longitude
+				$('input[name=latitude]').val(lat)
+				$('input[name=longitude]').val(lng)
+			}
+			var error = function(positionError){
+				if(window.console)
+					window.console.warn('ERROR(' + err.code + '): ' + err.message);
+			}
+			var options = {
+			  enableHighAccuracy: true,
+			  timeout: 5000,
+			  maximumAge: 0
+			};
+			navigator.geolocation.getCurrentPosition(success, error, options)
+		}
+	}
 })
