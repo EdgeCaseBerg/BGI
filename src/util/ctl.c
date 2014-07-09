@@ -167,7 +167,7 @@ static char * _get_user_account_path(const char * accountPath, const char * acco
 	if(strlen(accountFile) + strlen(accountName) >= BUFFER_LENGTH) return NULL;
 	accountFile = strcat(buffer, accountName);
 
-	return accountFile
+	return accountFile;
 }
 
 /* Will return a linked list of accounts stored in the accountChain,
@@ -312,34 +312,43 @@ int create_account(const char * username, const char * account){
 	return 1;
 }
 
+int account_exists(const char * username, const char * account){
+	char * accountPath = _get_user_path(username);
+	if(accountPath == NULL) return 0;
+
+	char * accountFile = _get_user_account_path(accountPath, account);
+	if(accountFile == NULL) return 0;
+
+	return _file_exists(accountFile);
+}
 
 int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude){
-	if(_user_exists(username != 1))	return 0;
+	if(_user_exists(username) != 1)	return 0;
 	/* Create the path to the line items file for the account */
 
 	char * accountPath = _get_user_path(username);
 
 	if(accountPath == NULL) return 0;
 	if( _directory_exists(accountPath) != 1 ){
-		return 0
+		return 0;
 	}
 
-	char * accountFile = _get_user_account_path(accountPath, accountName);
+	char * accountFile = _get_user_account_path(accountPath, account);
 	if(accountFile == NULL) return  0;
 
 	if(_file_exists(accountFile) != 1){
 		return 0;
 	}
 
-	FILE *fp = fopen(accountFile, 'a');
+	FILE *fp = fopen(accountFile, "a");
 	if(!fp){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
 		return 0;
 	}
-	fprintf(fp, "%s %lf %lf %lf\n", name, amount, latitude, longitude);
+	fprintf(fp, "%zu %s %lf %lf %lf\n", time(0), name, amount, latitude, longitude);
 	fclose(fp);
 
 
 
-	return 0;	
+	return 1;	
 }

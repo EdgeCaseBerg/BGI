@@ -9,4 +9,5 @@
 	#define REGISTER BASE_URL "/register.html"
 	#define CREATE_ACCOUNT BASE_URL "/create-account.html"
 	#define BAD_ACCOUNT BASE_URL "/failed-create-account.html"
+	#define BAD_LINEITEM BASE_URL "/failed-create-lineitem.html"
 #endif
