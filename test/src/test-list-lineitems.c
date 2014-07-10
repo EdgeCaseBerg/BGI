@@ -39,6 +39,7 @@ int main(){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
 		return 0;
 	}
+	free(accountFile);
 
 	struct lineItemChain * chain = NULL;
 	struct lineItemChain * head = NULL;
@@ -84,6 +85,7 @@ int main(){
 		}
 
 		backPtr = chain;
+		free(backPtr);
 		chain = chain->next;
 	}
 

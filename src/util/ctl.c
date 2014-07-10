@@ -140,13 +140,11 @@ char * _get_user_path(const char * username){
 	if(strlen(DATA_DIR) >= BUFFER_LENGTH) return NULL;
 	char * accountPath = malloc(sizeof(char) *BUFFER_LENGTH);
 	accountPath = memcpy(accountPath, DATA_DIR, BUFFER_LENGTH);
-
 	if(strlen(accountPath) + strlen(username) >= BUFFER_LENGTH){
 		free(accountPath);
 		return NULL;	
 	} 
 	accountPath = strcat(accountPath,username);
-	fprintf(stderr, "--%s\n", accountPath);
 	return accountPath;
 }
 
@@ -154,23 +152,25 @@ char * _get_users_accounts_path(const char * accountPath){
 	if(accountPath == NULL) return NULL;
 	/* +1 for the / we'll use in accessing */
 	if(strlen(accountPath) + strlen(ACCOUNT_INDEX) +1 >= BUFFER_LENGTH) return NULL;
-	char * accountsFile;
-	char buffer[BUFFER_LENGTH];
-	bzero(buffer, BUFFER_LENGTH);
-	strcpy(buffer, accountPath);
-	accountsFile = strcat(buffer, "/");
-	accountsFile = strcat(buffer, ACCOUNT_INDEX);
+	
+	char * accountsFile = malloc(sizeof(char) *BUFFER_LENGTH);
+	if(accountsFile == NULL) return NULL;
+	accountsFile = memcpy(accountsFile,accountPath,BUFFER_LENGTH);
+	
+	accountsFile = strcat(accountsFile, "/");
+	accountsFile = strcat(accountsFile, ACCOUNT_INDEX);
 	return accountsFile;
 }
 
 char * _get_user_account_path(const char * accountPath, const char * accountName){
-	char * accountFile;
-	char buffer[BUFFER_LENGTH];
-	bzero(buffer, BUFFER_LENGTH);
-	strcpy(buffer, accountPath);
-	accountFile = strcat(buffer, "/");
-	if(strlen(accountFile) + strlen(accountName) >= BUFFER_LENGTH) return NULL;
-	accountFile = strcat(buffer, accountName);
+	if(strlen(accountPath) + strlen(accountName) >= BUFFER_LENGTH) return NULL;
+
+	char * accountFile = malloc(sizeof(char) * BUFFER_LENGTH);
+	if(accountFile == NULL) return NULL;
+
+	accountFile = memcpy(accountFile, accountPath, BUFFER_LENGTH);
+	accountFile = strcat(accountFile, "/");
+	accountFile = strcat(accountFile, accountName);
 
 	return accountFile;
 }
@@ -188,7 +188,6 @@ struct accountChain * read_accounts(const char * username){
 	char * accountsFile = _get_users_accounts_path(accountPath);
 	free(accountPath);
 	if(accountsFile == NULL){
-		
 		return NULL;	
 	} 
 
@@ -196,12 +195,12 @@ struct accountChain * read_accounts(const char * username){
 	FILE *fp = fopen(accountsFile, "r");
 	if(!fp){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountsFile);
+		free(accountsFile);
 		return NULL;
 	}
+	free(accountsFile);
 
 	
-
-
 	struct accountChain * chain = NULL;
 	struct accountChain * backPtr = NULL;
 	struct accountChain * head = NULL;
@@ -287,8 +286,10 @@ int create_account(const char * username, const char * account){
 	if(!fp){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountsFile );
 		free(accountPath);
+		free(accountsFile);
 		return -1;
 	}
+	free(accountsFile);
 
 	char accountName[64]; /* Account names are not allowed to be more than this*/
 	int numAccount = 0;
@@ -314,17 +315,19 @@ int create_account(const char * username, const char * account){
 	char * accountFile = _get_user_account_path(accountPath, accountName);
 	free(accountPath);
 	if(accountFile == NULL){
-	return  -1;	
+		return  -1;	
 	} 
 
 	if(_file_exists(accountFile) == 0){
 		FILE *fp = fopen(accountFile, "w");
 		if(!fp){
 			fprintf(stderr, "%s %s\n", FAILED_FILE_CREATION, accountFile);
+			free(accountFile);
 			return 0;
 		}
 		fclose(fp);
 	}
+	free(accountFile);
 
 	return 1;
 }
@@ -337,7 +340,9 @@ int account_exists(const char * username, const char * account){
 	free(accountPath);
 	if(accountFile == NULL) return 0;
 
-	return _file_exists(accountFile);
+	int exists =  _file_exists(accountFile);
+	free(accountFile);
+	return exists;
 }
 
 int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude){
@@ -355,18 +360,21 @@ int create_item(const char * username, const char * account, const char * name, 
 
 	char * accountFile = _get_user_account_path(accountPath, account);
 	free(accountPath);
-	fprintf(stderr, "%s\n", accountFile);
 	if(accountFile == NULL) return  0;
 
+
 	if(_file_exists(accountFile) != 1){
+		free(accountFile);
 		return 0;
 	}
 
 	FILE *fp = fopen(accountFile, "a");
 	if(!fp){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
+		free(accountFile);
 		return 0;
 	}
+	free(accountFile);
 	fprintf(fp, "%ld %s %.2lf %lf %lf\n", time(0), name, amount, latitude, longitude);
 	fclose(fp);
 	return 1;	
@@ -387,14 +395,17 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	if(accountFile == NULL) return NULL;
 
 	if(_file_exists(accountFile) != 1){
+		free(accountFile);
 		return NULL;
 	}
 
 	FILE *fp = fopen(accountFile, "r");
 	if(!fp){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
+		free(accountFile);
 		return NULL;
 	}
+	free(accountFile);
 
 	struct lineItemChain * chain = NULL;
 	struct lineItemChain * head = NULL;
