@@ -45,7 +45,22 @@ int main(void){
 
         /* Retrieve the line items for the account name */
         printf("[");
-        /* TODO */
+        struct lineItemChain * chain = read_lineitems(username, name);
+        struct lineItemChain * tmp = NULL;
+        int i = 0;
+        while(chain != NULL){
+            if(i != 0){
+                printf(",");
+            }
+            i++;
+            struct lineitem * li = (struct lineitem*)chain->data;
+            printf("{\"date\" : %zu, \"name\" : \"%s\", \"amount\" : %lf, \"latitude\" : %lf, \"longitude\" : %lf}", 
+                li->date, li->name, li->amount, li->latitude, li->longitude
+                );
+            tmp = chain;
+            chain = chain->next;
+            free(tmp);
+        }
         printf("]");
         
         // De-allocate memories

@@ -39,6 +39,7 @@ int create_item(const char * username, const char * account, const char * name, 
  * the calling party is responsible for free-ing the resultant nodes.
  */
 struct accountChain * read_accounts(const char * username);
+struct lineItemChain * read_lineitems(const char * username, const char * account);
 
 
 

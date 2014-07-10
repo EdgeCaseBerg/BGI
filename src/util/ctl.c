@@ -328,12 +328,14 @@ int create_item(const char * username, const char * account, const char * name, 
 
 	char * accountPath = _get_user_path(username);
 
+	fprintf(stderr, "%s\n", accountPath);
 	if(accountPath == NULL) return 0;
 	if( _directory_exists(accountPath) != 1 ){
 		return 0;
 	}
 
 	char * accountFile = _get_user_account_path(accountPath, account);
+	fprintf(stderr, "%s\n", accountFile);
 	if(accountFile == NULL) return  0;
 
 	if(_file_exists(accountFile) != 1){
@@ -345,10 +347,100 @@ int create_item(const char * username, const char * account, const char * name, 
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
 		return 0;
 	}
-	fprintf(fp, "%zu %s %lf %lf %lf\n", time(0), name, amount, latitude, longitude);
+	fprintf(fp, "%zu %s %.2lf %lf %lf\n", time(0), name, amount, latitude, longitude);
 	fclose(fp);
-
-
-
 	return 1;	
 }
+
+struct lineItemChain * read_lineitems(const char * username, const char * account){
+	if(_user_exists(username) != 1) return NULL;
+	
+	char * accountPath = _get_user_path(username);
+
+	fprintf(stderr, "%s\n", accountPath);
+	if(accountPath == NULL) return NULL;
+	if( _directory_exists(accountPath) != 1 ){
+		return NULL;
+	}
+
+	char * accountFile = _get_user_account_path(accountPath, account);
+	fprintf(stderr, "%s\n", accountFile);
+	if(accountFile == NULL) return NULL;
+
+	if(_file_exists(accountFile) != 1){
+		return NULL;
+	}
+
+	FILE *fp = fopen(accountFile, "r");
+	if(!fp){
+		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
+		return NULL;
+	}
+
+	struct lineItemChain * chain = NULL;
+	struct lineItemChain * head = NULL;
+	struct lineItemChain * backPtr = NULL;
+	chain = malloc(sizeof(struct lineItemChain));
+	if(chain == NULL){
+		fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+		return NULL; /* OUT OF MEMORY */	
+	}
+	chain->next = NULL;
+	head = chain;
+	backPtr = head;	
+	
+	char * name = NULL;
+	time_t date;
+	double tmpdate;
+	double amount;
+	double latitude;
+	double longitude;
+	while(fscanf(fp, "%lf %s %lf %lf %lf\n", &tmpdate, name, &amount, &latitude, &longitude) == 5){
+		date = tmpdate;
+		chain->data = malloc(sizeof(struct lineitem));
+		if(chain->data == NULL){
+			fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+			fclose(fp);
+			goto destroy_list;
+		}
+
+		chain->data->date = date;
+		strncpy(chain->data->name, name, BUFFER_LENGTH);
+		chain->data->amount = amount;
+		chain->data->latitude = latitude;
+		chain->data->longitude = longitude;
+
+		chain->next = malloc(sizeof(struct lineitem));
+		if(chain->next == NULL){
+			fprintf(stderr, "%s %s, line %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+			fclose(fp);
+			goto destroy_list;
+		}
+
+		backPtr = chain;
+		chain = chain->next;
+	}
+	fclose(fp);
+
+	/* We end up freeing one more item on the list than neccesary, so free that 
+	 * up and NULL the ->next from the back pointer
+	 */
+	free(backPtr->next);
+	backPtr->next = NULL;
+	fclose(fp);
+
+	return head;
+
+	destroy_list:
+	if(head != NULL){
+		for (chain = head; chain != NULL; ){
+			if(chain->data != NULL) free(chain->data);
+			head = chain->next;
+			free(chain);
+			chain = head;
+		}
+	}
+	return NULL;
+}
+
+	

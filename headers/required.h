@@ -14,5 +14,6 @@
 #include "errors.h"
 #include "urls.h"
 #include "accounts.h"
+#include "lineitems.h"
 
 #endif

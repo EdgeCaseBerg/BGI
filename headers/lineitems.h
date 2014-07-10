@@ -5,8 +5,8 @@
 
 struct lineitem {
 	time_t date;
-	char name[64]; /* Magic number, sue me later */
-	double balance;
+	char name[BUFFER_LENGTH]; /* Magic number, sue me later */
+	double amount;
 	double latitude;
 	double longitude;
 };
