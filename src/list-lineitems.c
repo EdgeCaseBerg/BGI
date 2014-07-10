@@ -53,9 +53,8 @@ int main(void){
                 printf(",");
             }
             i++;
-            struct lineitem * li = (struct lineitem*)chain->data;
             printf("{\"date\" : %zu, \"name\" : \"%s\", \"amount\" : %lf, \"latitude\" : %lf, \"longitude\" : %lf}", 
-                li->date, li->name, li->amount, li->latitude, li->longitude
+                chain->data->date, chain->data->name, chain->data->amount, chain->data->latitude, chain->data->longitude
                 );
             tmp = chain;
             chain = chain->next;

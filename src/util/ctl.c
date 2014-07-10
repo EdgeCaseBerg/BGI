@@ -132,7 +132,7 @@ int create_user(const char * username, const uint32_t hashpass){
 
 /* Returns the user path (DATA_DIR/username) or NULL
 */
-static char * _get_user_path(const char * username){
+char * _get_user_path(const char * username){
 	if( username == NULL ) return NULL;
 
 	/* Be warry of buffer overflow and try to protect against it */
@@ -147,7 +147,7 @@ static char * _get_user_path(const char * username){
 	return accountPath;
 }
 
-static char * _get_users_accounts_path(const char * accountPath){
+char * _get_users_accounts_path(const char * accountPath){
 	if(accountPath == NULL) return NULL;
 	/* +1 for the / we'll use in accessing */
 	if(strlen(accountPath) + strlen(ACCOUNT_INDEX) +1 >= BUFFER_LENGTH) return NULL;
@@ -159,7 +159,7 @@ static char * _get_users_accounts_path(const char * accountPath){
 	return accountsFile;
 }
 
-static char * _get_user_account_path(const char * accountPath, const char * accountName){
+char * _get_user_account_path(const char * accountPath, const char * accountName){
 	char * accountFile;
 	char buffer[BUFFER_LENGTH];
 	strcpy(buffer, accountPath);
@@ -347,7 +347,7 @@ int create_item(const char * username, const char * account, const char * name, 
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountFile);
 		return 0;
 	}
-	fprintf(fp, "%zu %s %.2lf %lf %lf\n", time(0), name, amount, latitude, longitude);
+	fprintf(fp, "%ld %s %.2lf %lf %lf\n", time(0), name, amount, latitude, longitude);
 	fclose(fp);
 	return 1;	
 }
@@ -356,15 +356,12 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	if(_user_exists(username) != 1) return NULL;
 	
 	char * accountPath = _get_user_path(username);
-
-	fprintf(stderr, "%s\n", accountPath);
 	if(accountPath == NULL) return NULL;
 	if( _directory_exists(accountPath) != 1 ){
 		return NULL;
 	}
 
 	char * accountFile = _get_user_account_path(accountPath, account);
-	fprintf(stderr, "%s\n", accountFile);
 	if(accountFile == NULL) return NULL;
 
 	if(_file_exists(accountFile) != 1){
@@ -391,11 +388,11 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	
 	char * name = NULL;
 	time_t date;
-	double tmpdate;
+	long tmpdate;
 	double amount;
 	double latitude;
 	double longitude;
-	while(fscanf(fp, "%lf %s %lf %lf %lf\n", &tmpdate, name, &amount, &latitude, &longitude) == 5){
+	while(fscanf(fp, "%ld %s %lf %lf %lf\n", &tmpdate, name, &amount, &latitude, &longitude) == 5){
 		date = tmpdate;
 		chain->data = malloc(sizeof(struct lineitem));
 		if(chain->data == NULL){
@@ -403,9 +400,12 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 			fclose(fp);
 			goto destroy_list;
 		}
+		
+
+		fprintf(stderr, "%zu %s %lf %lf %lf\n", date, name, amount, latitude, longitude);
 
 		chain->data->date = date;
-		strncpy(chain->data->name, name, BUFFER_LENGTH);
+		chain->data->name = name;
 		chain->data->amount = amount;
 		chain->data->latitude = latitude;
 		chain->data->longitude = longitude;
@@ -420,13 +420,14 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 		backPtr = chain;
 		chain = chain->next;
 	}
-	fclose(fp);
 
 	/* We end up freeing one more item on the list than neccesary, so free that 
 	 * up and NULL the ->next from the back pointer
 	 */
-	free(backPtr->next);
-	backPtr->next = NULL;
+	 if(backPtr != NULL){
+		free(backPtr->next);
+		backPtr->next = NULL;
+	}
 	fclose(fp);
 
 	return head;

@@ -5,7 +5,7 @@
 
 struct lineitem {
 	time_t date;
-	char name[BUFFER_LENGTH]; /* Magic number, sue me later */
+	char  * name;
 	double amount;
 	double latitude;
 	double longitude;

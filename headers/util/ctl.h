@@ -28,6 +28,10 @@ int _password_matches(const char * username, const uint32_t hashpass);
 int create_user(const char * username, const uint32_t hashpass);
 int account_exists(const char * username, const char * account);
 
+char * _get_user_path(const char * username);
+char * _get_users_accounts_path(const char * accountPath);
+char * _get_user_account_path(const char * accountPath, const char * accountName);
+
 /* Creates neccesary structures for data storage and ctl usage */
 int bgi_data_init();
 
