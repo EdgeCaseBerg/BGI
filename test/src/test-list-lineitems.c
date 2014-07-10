@@ -5,18 +5,34 @@ int main(){
 	char * username = "admin";
 	char * account = "checkings";
 
-	char * accountPath = _get_user_path(username);
-	if(accountPath == NULL) return 0;
+	fprintf(stderr, "%s %s\n", username, account );
+
+	char * accountPath = NULL;
+	accountPath = _get_user_path(username);
+	if(accountPath == NULL){
+		fprintf(stderr, "%s\n", "Bad account path");
+		return 0;	
+	} 
 	if( _directory_exists(accountPath) != 1 ){
+		fprintf(stderr, "%s %s\n", "Directory does not exist", accountPath);
+		free(accountPath);
 		return 0;
 	}
 
 	char * accountFile = _get_user_account_path(accountPath, account);
-	if(accountFile == NULL) return 0;
+	if(accountFile == NULL){
+		fprintf(stderr, "%s\n", "account file bad");
+		free(accountPath);
+		return 0;	
+	} 
 
 	if(_file_exists(accountFile) != 1){
+		fprintf(stderr, "%s\n", "account file does not exist");
+		free(accountPath);
 		return 0;
 	}
+
+	free(accountPath);
 
 	FILE *fp = fopen(accountFile, "r");
 	if(!fp){
@@ -83,6 +99,7 @@ int main(){
 	return 1;
 
 	destroy_list:
+	fprintf(stderr, "%s\n", "destroying list");
 	if(head != NULL){
 		for (chain = head; chain != NULL; ){
 			if(chain->data != NULL) free(chain->data);

@@ -24,6 +24,8 @@ clean:
 	rm -f obj/*.o ${TARGETS}
 
 copyobjects:
+	rm -f obj/*.o 
+	cd ../ && make && cd test
 	cp ../obj/*.o obj/
 
 $(OBJECTS): obj/%.o : src/%.c
