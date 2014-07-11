@@ -67,7 +67,7 @@ int _user_exists(const char * username){
 	}
 	/* Read and find the user */
 	char user[64];
-	while(fscanf(fp,"%s %*"PRIu32"\r\n",user) == 1){
+	while(fscanf(fp,"%64s %*"PRIu32"\r\n",user) == 1){
 		if(strncmp(user, username, 64) == 0){
 			fclose(fp);
 			return 1;
@@ -90,7 +90,7 @@ int _password_matches(const char * username, const uint32_t hashpass){
 
 	char user[64];
 	uint32_t pass;
-	while(fscanf(fp,"%s %"PRIu32"\r\n",user,&pass) == 2){
+	while(fscanf(fp,"%64s %"PRIu32"\r\n",user,&pass) == 2){
 		if(strncmp(user, username, 64) == 0){
 			if(hashpass == pass){
 				fclose(fp);
@@ -219,7 +219,7 @@ struct accountChain * read_accounts(const char * username){
 	bzero(accountName, 64);
 	int numAccount = 0;
 	double balance = 0.00;
-	while(fscanf(fp, "%d %s %lf\n", &numAccount, accountName, &balance) == 3){
+	while(fscanf(fp, "%d %64s %lf\n", &numAccount, accountName, &balance) == 3){
 		chain->data = malloc(sizeof(struct account));
 		if(chain->data == NULL){
 			fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
@@ -295,7 +295,7 @@ int create_account(const char * username, const char * account){
 	int numAccount = 0;
 	double balance = 0.00;
 	int exists = 0;
-	while(fscanf(fp, "%d %s %lf\n", &numAccount, accountName, &balance) == 3){
+	while(fscanf(fp, "%d %64s %lf\n", &numAccount, accountName, &balance) == 3){
 		if(strncmp(accountName, account, 64) == 0){
 			/* Account already exists! */
 			exists = 1;
@@ -413,24 +413,31 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	chain = malloc(sizeof(struct lineItemChain));
 	if(chain == NULL){
 		fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+		fclose(fp);
 		return NULL; /* OUT OF MEMORY */	
 	}
 	chain->next = NULL;
 	head = chain;
 	backPtr = head;	
 	
-	char * name = NULL;
+	char * name = malloc(sizeof(char)*BUFFER_LENGTH);
+	if(name == NULL){
+		fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+		fclose(fp);
+		return NULL;
+	}
 	time_t date;
 	long tmpdate;
 	double amount;
 	double latitude;
 	double longitude;
-	while(fscanf(fp, "%ld %s %lf %lf %lf\n", &tmpdate, name, &amount, &latitude, &longitude) == 5){
+	while(fscanf(fp, "%ld %" TOSTR(BUFFER_LENGTH) "[^0-9] %lf %lf %lf\n", &tmpdate, name, &amount, &latitude, &longitude) == 5){
 		date = tmpdate;
 		chain->data = malloc(sizeof(struct lineitem));
 		if(chain->data == NULL){
 			fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
 			fclose(fp);
+			free(name);
 			goto destroy_list;
 		}
 		
@@ -438,7 +445,7 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 		fprintf(stderr, "%zu %s %lf %lf %lf\n", date, name, amount, latitude, longitude);
 
 		chain->data->date = date;
-		chain->data->name = name;
+		memcpy(chain->data->name, name, BUFFER_LENGTH);
 		chain->data->amount = amount;
 		chain->data->latitude = latitude;
 		chain->data->longitude = longitude;
@@ -447,12 +454,14 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 		if(chain->next == NULL){
 			fprintf(stderr, "%s %s, line %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
 			fclose(fp);
+			free(name);
 			goto destroy_list;
 		}
 
 		backPtr = chain;
 		chain = chain->next;
 	}
+	free(name);
 
 	/* We end up freeing one more item on the list than neccesary, so free that 
 	 * up and NULL the ->next from the back pointer
@@ -468,6 +477,7 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	destroy_list:
 	if(head != NULL){
 		for (chain = head; chain != NULL; ){
+			if(chain->data->name != NULL) free(chain->data->name);
 			if(chain->data != NULL) free(chain->data);
 			head = chain->next;
 			free(chain);

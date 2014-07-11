@@ -28,6 +28,7 @@ int _password_matches(const char * username, const uint32_t hashpass);
 int create_user(const char * username, const uint32_t hashpass);
 int account_exists(const char * username, const char * account);
 
+/* Remember to free the resultant pointer */
 char * _get_user_path(const char * username);
 char * _get_users_accounts_path(const char * accountPath);
 char * _get_user_account_path(const char * accountPath, const char * accountName);
@@ -41,6 +42,7 @@ int create_item(const char * username, const char * account, const char * name, 
 
 /* Will return a linked list of accounts stored in the accountChain,
  * the calling party is responsible for free-ing the resultant nodes.
+ * - in the line items remember to free the string for name.
  */
 struct accountChain * read_accounts(const char * username);
 struct lineItemChain * read_lineitems(const char * username, const char * account);

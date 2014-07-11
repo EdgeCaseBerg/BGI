@@ -16,4 +16,8 @@
 #include "accounts.h"
 #include "lineitems.h"
 
+/* Help Macro! CAll TOSTR on it!*/
+#define TOSTR(x) STRINGIFY(x)
+#define STRINGIFY(x) #x
+
 #endif
