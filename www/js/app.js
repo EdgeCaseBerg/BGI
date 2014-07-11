@@ -37,7 +37,12 @@ jQuery( document ).ready(function( $ ) {
 					var headers = $('table[name="lineitems"]').find('thead tr th').each(function(idx,elem){
 						var key = $(elem).text().toLowerCase()
 						if( item[key] ){
-							row.append($('<td>'+item[key]+'</td>'))
+							if(key == "date"){
+								row.append($('<td>'+new Date(parseInt(item[key])).toLocaleDateString()+'</td>'))
+							}else{
+								row.append($('<td>'+item[key]+'</td>'))	
+							}
+							
 						}
 					})
 
