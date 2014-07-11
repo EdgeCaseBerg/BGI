@@ -440,9 +440,16 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 			free(name);
 			goto destroy_list;
 		}
-		
 
 		fprintf(stderr, "%zu %s %lf %lf %lf\n", date, name, amount, latitude, longitude);
+		
+		chain->data->name = malloc(sizeof(char) * BUFFER_LENGTH);
+		if(chain->data->name == NULL){
+			fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+			fclose(fp);
+			free(name);
+			goto destroy_list;	
+		}
 
 		chain->data->date = date;
 		memcpy(chain->data->name, name, BUFFER_LENGTH);
@@ -477,7 +484,7 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	destroy_list:
 	if(head != NULL){
 		for (chain = head; chain != NULL; ){
-			if(chain->data->name != NULL) free(chain->data->name);
+			if(chain->data->name != NULL) free(chain->data->name);	
 			if(chain->data != NULL) free(chain->data);
 			head = chain->next;
 			free(chain);

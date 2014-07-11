@@ -76,8 +76,6 @@ int main(){
 		}
 		
 
-		fprintf(stderr, "%zu %s %lf %lf %lf\n", date, name, amount, latitude, longitude);
-
 		chain->data->date = date;
 		chain->data->name = malloc(sizeof(char)*255);
 		if(chain->data->name == NULL){

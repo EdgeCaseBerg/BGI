@@ -58,9 +58,12 @@ int main(void){
                 );
             tmp = chain;
             chain = chain->next;
+            free(tmp->data->name);
+            free(tmp->data);
             free(tmp);
         }
         printf("]");
+
         
         // De-allocate memories
         end:
