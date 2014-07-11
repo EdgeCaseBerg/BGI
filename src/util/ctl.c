@@ -440,8 +440,6 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 			free(name);
 			goto destroy_list;
 		}
-
-		fprintf(stderr, "%zu %s %lf %lf %lf\n", date, name, amount, latitude, longitude);
 		
 		chain->data->name = malloc(sizeof(char) * BUFFER_LENGTH);
 		if(chain->data->name == NULL){
