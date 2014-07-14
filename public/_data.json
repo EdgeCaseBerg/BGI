@@ -8,7 +8,7 @@
 	"register" : {
 		"layout" : "_anon"
 	},
-	"heatmap" : {
-		"layout" : "_heatmaplayout"
+	"map" : {
+		"layout" : "_maplayout"
 	}
 }
