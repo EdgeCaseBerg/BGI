@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+	<head>
+		<title><%= title %></title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="<%= description %>" />
+		<meta name="author" content="Ethan Eldridge">
+		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	</head>
+	<body id="<%= current.path %>">
+		<%- partial('_shared/logged-in-header') %>
+		<%- yield %>
+	</body>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script type="text/javascript" src="/js/jquery.min.1.9.1.js"></script>
+	<script type="text/javascript">
+		/* Globals for use by the scripts */
+		window.bgidomain = "<%= bgidomain %>"
+	</script>
+	<script type="text/javascript" src="/js/heatmap.js"></script>
+</html>
