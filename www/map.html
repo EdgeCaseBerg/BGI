@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+	<head>
+		<title>Budgeting Gateway Interface</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="Budgeting software for a static world" />
+		<meta name="author" content="Ethan Eldridge">
+		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
+		<link rel="stylesheet" type="text/css" href="/main.css">
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	</head>
+	<body id="map">
+		<h1><strong>BGI</strong></h1>
+<nav>
+	<ul>
+		<li>
+			<a href="/welcome.html">Home</a>
+			<a href="/create-account.html">Create New Account</a>
+			<a href="/create-lineitem.html">Create Line Item</a>
+		</li>
+	</ul>
+</nav>
+		<section>
+	<h2>View where you're spending your money</h2>
+	<p>
+		Below you can find a heatmap displaying where your purchases have been. The
+		hotter the point, the more money you've spent. Click to view the number itself.
+	</p>
+</section>
+<div id="themap">Loading...</div>
+	</body>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script type="text/javascript" src="/js/jquery.min.1.9.1.js"></script>
+	<script type="text/javascript">
+		/* Globals for use by the scripts */
+		window.bgidomain = "//www.bgi.dev/bgi/"
+	</script>
+	<script type="text/javascript" src="/js/map.js"></script>
+</html>
