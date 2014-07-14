@@ -27,11 +27,13 @@ jQuery( document ).ready(function( $ ) {
 	    				fillColor: '#f03',
 	    				fillOpacity: 0.5
 					}).addTo(map);
-					circle.bindPopup(item.name);
+					var name = item.name
+					var amt = item.amount
+					circle.bindPopup("<div>" + name + "<br/>" + amt  + "</div>");
 				};
-				$('#themap').fadeIn()
 			})
 		};
+		$('#themap').fadeIn()
 	})
 
 	
