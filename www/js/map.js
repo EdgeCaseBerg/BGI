@@ -16,7 +16,7 @@ jQuery( document ).ready(function( $ ) {
 		return colors[color % colors.length];
 	}
 
-	$('#themap').css({'opacity' : .5})
+
 
 	if(typeof L == "undefined"){
 		window.console.error("Leaflet Library Could not be loaded")
@@ -62,11 +62,9 @@ jQuery( document ).ready(function( $ ) {
 						}).addTo(map);
 						circle.bindPopup("<div>" + item.amt+ "Spent<br/>" + item.cnt  + " Items<br/>"+(item.amt/item.cnt) +" Avg.</div>");
 					}
-				}
-				$('#themap').fadeIn()
+				}		
 			})
 		};
-		$('#themap').fadeIn()
 	})
 
 	
