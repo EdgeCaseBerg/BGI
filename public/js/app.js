@@ -27,6 +27,7 @@ jQuery( document ).ready(function( $ ) {
 
 			/* Get em. */
 			var lineItemsTable = $('table[name="lineitems"]')
+			lineItemsTable.find('tbody').children().remove()
 			var lineItemsURI = window.bgidomain + "list-lineitems.cgi?accountname=" + accountName
 
 			$.get(lineItemsURI, function(response){
