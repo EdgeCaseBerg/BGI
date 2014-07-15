@@ -5,7 +5,9 @@
 		<meta name="description" content="Budgeting software for a static world" />
 		<meta name="author" content="Ethan Eldridge">
 		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
+		<meta name="viewport" content="width=device-width,  initial scale=1" />
 		<link rel="stylesheet" type="text/css" href="/main.css">
+		<link rel="stylesheet" type="text/css" href="/mobile.css" media="screen" >
 	</head>
 	<body id="failed-create-lineitem">
 		<h1><strong>BGI</strong></h1>
@@ -13,9 +15,17 @@
 	<ul>
 		<li>
 			<a href="/welcome.html">Home</a>
+		</li>
+		<li>
 			<a href="/map.html">Map</a>
+		</li>
+		<li>
 			<a href="/timeline.html">Timeline</a>
+		</li>
+		<li>
 			<a href="/create-account.html">Create New Account</a>
+		</li>
+		<li>
 			<a href="/create-lineitem.html">Create Line Item</a>
 		</li>
 	</ul>
@@ -33,7 +43,6 @@
 	<input placeholder="Longitude" name="longitude" value="-73.2119" type="text" pattern="[-]?[0-9]+\.[0-9]+" title="Please enter a valid longitude">
 	<input type="submit" value="Create Item" />
 </form>
-<!-- TODO. Add in Geo Location to make lat/lng easier to knab -->
 	</body>
 	<script type="text/javascript" src="/js/jquery.min.1.9.1.js"></script>
 	<script type="text/javascript" src="/js/app.js"></script>
