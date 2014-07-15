@@ -38,7 +38,7 @@ jQuery( document ).ready(function( $ ) {
 						var key = $(elem).text().toLowerCase()
 						if( item[key] ){
 							if(key == "date"){
-								row.append($('<td>'+new Date(parseInt(item[key])).toLocaleDateString()+'</td>'))
+								row.append($('<td>'+new Date(parseInt(item[key])*1000).toLocaleDateString()+'</td>'))
 							}else{
 								row.append($('<td>'+item[key]+'</td>'))	
 							}
