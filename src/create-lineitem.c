@@ -3,6 +3,8 @@
 #include "util/fasthash.h"
 #include "util/ctl.h"
 #include <string.h>
+#include <ctype.h>
+
 
 int main(void){
     /* Before accepting make sure BGI is setup */
@@ -38,8 +40,17 @@ int main(void){
             goto end;
         }
 
+        /*Make sure that name matches the pattern [^0-9]*/
+        for (int i = 0; i < (int)strlen(name); ++i){
+            if( isdigit( name[i] ) ){
+                qcgires_redirect(req, BAD_LINEITEM);
+                goto end;       
+            }
+        }
+
         /* All exist, convert to appropriate types */
         double amount, latitude, longitude;
+
         sscanf(tmpamount, "%lf", &amount);
         sscanf(tmplongitude, "%lf", &longitude);
         sscanf(tmplatitude, "%lf", &latitude);
