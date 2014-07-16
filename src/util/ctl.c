@@ -397,7 +397,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 	strncat(tmpFile, tmpName, BUFFER_LENGTH-1);
 
 	/* Open a tmp file for writing our temporary file to. */
-	FILE *tmp = fopen(tmpFile, "w");
+	FILE *tmp = fopen(tmpFile, "w+");
 	if(!tmp){
 		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, tmpFile );
 		free(tmpName);
@@ -456,6 +456,17 @@ int update_account_balance(const char * username, const char * accountName , dou
 		}
 		return 0;	
 	}
+
+	/* Between output and input there must be seeking on the file
+	 * I can hear the code like a cocking of a fun, back and forth
+	 * chick-chick.
+	*/
+	int fseekResult = fseek(tmp, 0L, SEEK_END);
+	if(fseekResult == -1) strerror(fseekResult);
+
+	fseekResult = fseek(tmp,0L,SEEK_SET);
+	if(fseekResult == -1) strerror(fseekResult);
+
 
 	while(fscanf(tmp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
 		fprintf(overwriteFP, "%d %s %lf\n", numAccount, readAccountName, balance);
