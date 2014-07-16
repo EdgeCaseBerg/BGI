@@ -394,7 +394,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 
 	char tmpFile[BUFFER_LENGTH];
 	strncpy(tmpFile, TMP_DIR, BUFFER_LENGTH);
-	strncpy(tmpFile, tmpName, BUFFER_LENGTH);
+	strncat(tmpFile, tmpName, BUFFER_LENGTH);
 
 	/* Open a tmp file for writing our temporary file to. */
 	FILE *tmp = fopen(tmpFile, "w");
@@ -445,10 +445,12 @@ int update_account_balance(const char * username, const char * accountName , dou
 	if(overwriteFP == NULL){
 		/* Well damn. If we fail here after we just closed it that means the permissions are wrong...*/
 		fprintf(stderr, "%s %s (Likely Permissions problem)\n", FAILED_FILE_OPEN, accountsFile );
-		fclose(tmp);
-		unlink(tmpName);
-		free(tmpName);
-		free(accountsFile);
+		if(exists == 1){
+			fclose(tmp);
+			unlink(tmpName);
+			free(tmpName);
+			free(accountsFile);
+		}
 		return 0;
 	}
 
@@ -458,10 +460,13 @@ int update_account_balance(const char * username, const char * accountName , dou
 	}
 
 	fclose(overwriteFP);
+
 	fclose(tmp);
 	unlink(tmpName);
-	free(tmpName);
-	free(accountsFile);
+	if(exists == 1){
+		free(tmpName);
+		free(accountsFile);
+	}
 	return 1;
 }
 
