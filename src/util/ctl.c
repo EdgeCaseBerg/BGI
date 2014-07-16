@@ -384,7 +384,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 	}	
 
 
-	char * tmpName = malloc(sizeof(char) * (BUFFER_LENGTH/8));
+	char * tmpName = malloc(sizeof(char) * (BUFFER_LENGTH/8)+1);
 	if(tmpName == NULL){
 		free(accountsFile);
 		fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
@@ -393,8 +393,8 @@ int update_account_balance(const char * username, const char * accountName , dou
 	gen_random(tmpName, (sizeof(char) * (BUFFER_LENGTH/8)));
 
 	char tmpFile[BUFFER_LENGTH];
-	strncpy(tmpFile, TMP_DIR, BUFFER_LENGTH);
-	strncat(tmpFile, tmpName, BUFFER_LENGTH);
+	strncpy(tmpFile, TMP_DIR, BUFFER_LENGTH-1);
+	strncat(tmpFile, tmpName, BUFFER_LENGTH-1);
 
 	/* Open a tmp file for writing our temporary file to. */
 	FILE *tmp = fopen(tmpFile, "w");
@@ -423,17 +423,20 @@ int update_account_balance(const char * username, const char * accountName , dou
 	while(fscanf(fp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
 		if(strncmp(readAccountName, accountName, 64) == 0){
 			/* found the account */
-			fprintf(tmp, "%d %64s %lf\n", numAccount, readAccountName, balance + additionToAccount);
+			fprintf(tmp, "%d %s %lf\n", numAccount, readAccountName, balance + additionToAccount);
 			exists = 1;
 		}else{
-			fprintf(tmp, "%d %64s %lf\n", numAccount, readAccountName, balance);
+			fprintf(tmp, "%d %s %lf\n", numAccount, readAccountName, balance);
 		}
 	}
+	fflush(NULL);
 	/* We have now written out the new file into the tmp folder, so we should overwrite the old file with it*/
+	fseek(fp,0,SEEK_END);
 	fclose(fp);
 
 	if(exists == 0){
 		/* the account doesn't exist apparently, so don't bother doing anything */
+		fprintf(stderr, "%s\n", "Update Err: Account Does Not Exist");
 		fclose(tmp);
 		unlink(tmpName);
 		free(tmpName);
@@ -451,17 +454,17 @@ int update_account_balance(const char * username, const char * accountName , dou
 			free(tmpName);
 			free(accountsFile);
 		}
-		return 0;
+		return 0;	
 	}
 
-	rewind(tmp);	
 	while(fscanf(tmp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
-		fprintf(overwriteFP, "%d %64s %lf\n", numAccount, readAccountName, balance);
+		fprintf(overwriteFP, "%d %s %lf\n", numAccount, readAccountName, balance);
 	}
 
-	fclose(overwriteFP);
-
+	fflush(NULL);
 	fclose(tmp);
+	fclose(overwriteFP);
+	
 	unlink(tmpName);
 	if(exists == 1){
 		free(tmpName);

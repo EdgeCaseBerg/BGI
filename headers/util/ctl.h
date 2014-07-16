@@ -40,6 +40,7 @@ int bgi_data_init();
 /* Returns 1 on success, 0 on false, -1 on error */
 int create_account(const char * username, const char * account);
 int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude);
+int update_account_balance(const char * username, const char * accountName , double additionToAccount);
 
 /* Will return a linked list of accounts stored in the accountChain,
  * the calling party is responsible for free-ing the resultant nodes.
