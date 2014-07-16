@@ -16,6 +16,7 @@
 #include "required.h"
 #include <stdint.h>
 #include <inttypes.h> /* Need inttypes for PRIu32 */
+ #include <unistd.h>
 
 
 /* All returns 1 on Truth, 0 on False, -1 on Error */

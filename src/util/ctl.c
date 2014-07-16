@@ -278,7 +278,11 @@ int create_account(const char * username, const char * account){
 	}
 
 	/* Open the account file and check if account already exists */
-	if(strlen(accountPath) + strlen(ACCOUNT_INDEX) +1 >= BUFFER_LENGTH) return -1;
+	if(strlen(accountPath) + strlen(ACCOUNT_INDEX) +1 >= BUFFER_LENGTH){
+		free(accountPath);
+		return -1;
+	}
+		
 	char * accountsFile = _get_users_accounts_path(accountPath);
 	
 	/* Open in a+ so we'll read from beginning and write to end */
@@ -345,6 +349,122 @@ int account_exists(const char * username, const char * account){
 	return exists;
 }
 
+/* 	Generate a random string name for our tmp file 
+ *	http://stackoverflow.com/a/440240/1808164
+*/
+static void gen_random(char *s, const int len) {
+    static const char alphanum[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
+
+    for (int i = 0; i < len; ++i) {
+        s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+
+    s[len] = 0;
+}
+
+int update_account_balance(const char * username, const char * accountName , double additionToAccount){
+	if(_user_exists(username) != 1) return 0;
+	if(accountName == NULL) return 0;
+
+	char * accountPath = _get_user_path(username);
+
+	if(accountPath == NULL) return -1;
+	if( _directory_exists(accountPath) != 1 ){
+		free(accountPath);
+		return 0;
+	}
+
+	char * accountsFile = _get_users_accounts_path(accountPath);
+	free(accountPath);
+	if(accountsFile == NULL){
+		return 0;
+	}	
+
+
+	char * tmpName = malloc(sizeof(char) * (BUFFER_LENGTH/8));
+	if(tmpName == NULL){
+		free(accountsFile);
+		fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
+		return 0;
+	}
+	gen_random(tmpName, (sizeof(char) * (BUFFER_LENGTH/8)));
+
+	char tmpFile[BUFFER_LENGTH];
+	strncpy(tmpFile, TMP_DIR, BUFFER_LENGTH);
+	strncpy(tmpFile, tmpName, BUFFER_LENGTH);
+
+	/* Open a tmp file for writing our temporary file to. */
+	FILE *tmp = fopen(tmpFile, "w");
+	if(!tmp){
+		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, tmpFile );
+		free(tmpName);
+		free(accountsFile);
+		return 0;
+	}
+
+	FILE *fp = fopen(accountsFile, "r"); 
+	if(!fp){
+		fprintf(stderr, "%s %s\n", FAILED_FILE_OPEN, accountsFile );
+		free(accountsFile);
+		fclose(tmp);
+		unlink(tmpName);
+		free(tmpName);
+		return -1;
+	}
+
+
+	char readAccountName[64]; /* Account names are not allowed to be more than this*/
+	int numAccount = 0;
+	double balance = 0.00;
+	int exists = 0;
+	while(fscanf(fp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
+		if(strncmp(readAccountName, accountName, 64) == 0){
+			/* found the account */
+			fprintf(tmp, "%d %64s %lf\n", numAccount, readAccountName, balance + additionToAccount);
+			exists = 1;
+		}else{
+			fprintf(tmp, "%d %64s %lf\n", numAccount, readAccountName, balance);
+		}
+	}
+	/* We have now written out the new file into the tmp folder, so we should overwrite the old file with it*/
+	fclose(fp);
+
+	if(exists == 0){
+		/* the account doesn't exist apparently, so don't bother doing anything */
+		fclose(tmp);
+		unlink(tmpName);
+		free(tmpName);
+		free(accountsFile);
+		return 0;
+	}
+
+	FILE *overwriteFP = fopen(accountsFile, "w");
+	if(overwriteFP == NULL){
+		/* Well damn. If we fail here after we just closed it that means the permissions are wrong...*/
+		fprintf(stderr, "%s %s (Likely Permissions problem)\n", FAILED_FILE_OPEN, accountsFile );
+		fclose(tmp);
+		unlink(tmpName);
+		free(tmpName);
+		free(accountsFile);
+		return 0;
+	}
+
+	rewind(tmp);	
+	while(fscanf(tmp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
+		fprintf(overwriteFP, "%d %64s %lf\n", numAccount, readAccountName, balance);
+	}
+
+	fclose(overwriteFP);
+	fclose(tmp);
+	unlink(tmpName);
+	free(tmpName);
+	free(accountsFile);
+	return 1;
+}
+
 int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude){
 	if(_user_exists(username) != 1)	return 0;
 	/* Create the path to the line items file for the account */
@@ -377,6 +497,12 @@ int create_item(const char * username, const char * account, const char * name, 
 	free(accountFile);
 	fprintf(fp, "%ld %s %.2lf %lf %lf\n", time(0), name, amount, latitude, longitude);
 	fclose(fp);
+
+	/* Finally update the balance listed for the account*/
+	if( update_account_balance(username, account, amount) == 0 ){
+		/* Log the Err but consider it non critical */
+		fprintf(stderr, "Could not update account balance %s\n", account);
+	}
 	return 1;	
 }
 

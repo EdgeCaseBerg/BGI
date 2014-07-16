@@ -3,6 +3,7 @@
 
 /*  Data Layer Constants */
 #define DATA_DIR "/home/guest/bgi/data/"
+#define TMP_DIR "/tmp"
 #define DATA_DIR_PERM 0755 
 #define USERS_INDEX ".users"
 #define ACCOUNT_INDEX "accounts"
