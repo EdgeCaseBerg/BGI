@@ -63,6 +63,12 @@ it will be moved to config.h.bak
 **Compile the Scripts**  
 All you need to do is run `make` from the root of the repository.
 
+**Compile the WebSite**  
+What you say? Compile the website? Yes. The HTML is generated via [HarpJs] and
+you'll need to have that installed. Simply update the `harp.json` file with the
+proper domain name and run a `harp compile`. It shouldn't take long and then you'll
+have the front end setup and ready.
+
 **Setup your hosts file (if local)**  
 On most linux systems the hosts file is at /etc/hosts, on windows it is in system32
 I believe (it's been a while since I've been on windozer). Add in the name that you
@@ -76,3 +82,4 @@ have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
 [qdecoder]:http://www.qdecoder.org/wiki/qdecoder
 [listed here]:http://cgi.resourceindex.com/programs_and_scripts/c_and_c++/libraries_and_classes/
 [this S.O. question]:http://serverfault.com/questions/124800/how-to-setup-linux-permissions-for-the-www-folder
+[HarpJs]:http://harpjs.com
