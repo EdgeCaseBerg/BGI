@@ -219,7 +219,7 @@ struct accountChain * read_accounts(const char * username){
 	bzero(accountName, 64);
 	int numAccount = 0;
 	double balance = 0.00;
-	while(fscanf(fp, "%d %64s %lf\n", &numAccount, accountName, &balance) == 3){
+	while(fscanf(fp, "%d %64[^0-9] %lf\n", &numAccount, accountName, &balance) == 3){
 		chain->data = malloc(sizeof(struct account));
 		if(chain->data == NULL){
 			fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
@@ -299,7 +299,7 @@ int create_account(const char * username, const char * account){
 	int numAccount = 0;
 	double balance = 0.00;
 	int exists = 0;
-	while(fscanf(fp, "%d %64s %lf\n", &numAccount, accountName, &balance) == 3){
+	while(fscanf(fp, "%d %64[^0-9] %lf\n", &numAccount, accountName, &balance) == 3){
 		if(strncmp(accountName, account, 64) == 0){
 			/* Account already exists! */
 			exists = 1;
@@ -420,7 +420,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 	int numAccount = 0;
 	double balance = 0.00;
 	int exists = 0;
-	while(fscanf(fp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
+	while(fscanf(fp, "%d %64[^0-9] %lf\n", &numAccount, readAccountName, &balance) == 3){
 		if(strncmp(readAccountName, accountName, 64) == 0){
 			/* found the account */
 			fprintf(tmp, "%d %s %lf\n", numAccount, readAccountName, balance + additionToAccount);
@@ -468,7 +468,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 	if(fseekResult == -1) strerror(fseekResult);
 
 
-	while(fscanf(tmp, "%d %64s %lf\n", &numAccount, readAccountName, &balance) == 3){
+	while(fscanf(tmp, "%d %64[^0-9] %lf\n", &numAccount, readAccountName, &balance) == 3){
 		fprintf(overwriteFP, "%d %s %lf\n", numAccount, readAccountName, balance);
 	}
 

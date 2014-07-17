@@ -29,3 +29,7 @@ clean:
 
 $(OBJECTS): obj/%.o : src/%.c
 	${CC} ${CFLAGS} -c -o $@ $<
+
+config:
+	cp ./headers/sample-config.h ./headers/config.h && vi ./headers/config.h
+
