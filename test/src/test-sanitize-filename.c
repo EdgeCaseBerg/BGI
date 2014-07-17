@@ -35,5 +35,9 @@ int main(){
 	fprintf(stdout, "%s\n", c);
 	free(c);
 
+	/* If you try to pass DATA_DIR directly, you're going to have a segfault*/
+	char dir[] = DATA_DIR;
+	_sanitize_filename(dir);
+
 	return 1;
 }

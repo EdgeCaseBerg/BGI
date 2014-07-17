@@ -52,24 +52,26 @@ int _file_exists(const char * filename){
 }
 
 int bgi_data_init(){
-	int success = _directory_exists(DATA_DIR);
+	char tmp[] = DATA_DIR;
+	int success = _directory_exists(tmp);
 	if(success < 0){
 		fprintf(stderr, "%s\n", FAILED_INIT FAILED_DIR_EXISTS DATA_DIR);
 		return 0; /* Unknown Failure. Panic. */
 	}
 	if(success != 1){
 		/* DATA_DIR does not exist. Create it */
-		success = _directory_create(DATA_DIR);
+		success = _directory_create(tmp);
 		if (success == -1){
 			fprintf(stderr,"%s\n", FAILED_INIT FAILED_DIR_CREATION DATA_DIR);
 			return 0;
 		}
 	}
 
-	success = _file_exists( DATA_DIR USERS_INDEX);
+	char tmp2[]  = DATA_DIR USERS_INDEX;
+	success = _file_exists( tmp2);
 	if(success == 0){
 		/* USERS_INDEX does not exist. create it */
-		FILE *fp = fopen(DATA_DIR USERS_INDEX, "wb");
+		FILE *fp = fopen(tmp2, "wb");
 		if (!fp) {
     		success = 0;
 			fprintf(stderr,"%s\n", FAILED_INIT FAILED_FILE_CREATION);
