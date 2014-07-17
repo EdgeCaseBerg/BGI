@@ -1,14 +1,23 @@
 #include "util/ctl.h"
+#include <ctype.h>
+
+static void rtrim(char *string) { 
+   	int pos;
+	for (pos=strlen(string); pos >= 1 && isspace(string[pos-1]); --pos)
+        ;
+    string[pos] = '\0';
+}
 
 /* Helper function to avoid dealing with empty space in filenames */
 static void _replace_spaces(char * filename){
 	if(filename == NULL) return;
+	rtrim(filename);
+
 	for (unsigned int i = 0; i < strlen(filename); ++i){
 		if(*(filename + i) == ' '){
 			*(filename + i) = '-';
 		}
 	}
-	fprintf(stderr, "%s\n", filename);
 }
 
 int _directory_exists(const char * directoryToCheck){
@@ -235,6 +244,7 @@ struct accountChain * read_accounts(const char * username){
 	int numAccount = 0;
 	double balance = 0.00;
 	while(fscanf(fp, "%d %64[^0-9] %lf\n", &numAccount, accountName, &balance) == 3){
+		rtrim(accountName);
 		chain->data = malloc(sizeof(struct account));
 		if(chain->data == NULL){
 			fprintf(stderr, "%s %s, line: %d\n", OUT_OF_MEMORY, __FILE__, __LINE__);
@@ -315,6 +325,7 @@ int create_account(const char * username, const char * account){
 	double balance = 0.00;
 	int exists = 0;
 	while(fscanf(fp, "%d %64[^0-9] %lf\n", &numAccount, accountName, &balance) == 3){
+		rtrim(accountName);
 		if(strncmp(accountName, account, 64) == 0){
 			/* Account already exists! */
 			exists = 1;
@@ -436,6 +447,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 	double balance = 0.00;
 	int exists = 0;
 	while(fscanf(fp, "%d %64[^0-9] %lf\n", &numAccount, readAccountName, &balance) == 3){
+		rtrim(readAccountName);
 		if(strncmp(readAccountName, accountName, 64) == 0){
 			/* found the account */
 			fprintf(tmp, "%d %s %lf\n", numAccount, readAccountName, balance + additionToAccount);
@@ -484,6 +496,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 
 
 	while(fscanf(tmp, "%d %64[^0-9] %lf\n", &numAccount, readAccountName, &balance) == 3){
+		rtrim(readAccountName);
 		fprintf(overwriteFP, "%d %s %lf\n", numAccount, readAccountName, balance);
 	}
 
@@ -505,7 +518,6 @@ int create_item(const char * username, const char * account, const char * name, 
 
 	char * accountPath = _get_user_path(username);
 
-	fprintf(stderr, "%s\n", accountPath);
 	if(accountPath == NULL) return 0;
 	if( _directory_exists(accountPath) != 1 ){
 		free(accountPath);
