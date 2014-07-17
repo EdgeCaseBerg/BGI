@@ -1,9 +1,21 @@
 #include "util/ctl.h"
 
+/* Helper function to avoid dealing with empty space in filenames */
+static void _replace_spaces(char * filename){
+	if(filename == NULL) return;
+	for (unsigned int i = 0; i < strlen(filename); ++i){
+		if(*(filename + i) == ' '){
+			*(filename + i) = '-';
+		}
+	}
+	fprintf(stderr, "%s\n", filename);
+}
+
 int _directory_exists(const char * directoryToCheck){
 	DIR * dir = NULL;
 	int success;
 
+	_replace_spaces((char*)directoryToCheck);
 	dir = opendir(directoryToCheck);
 	if ( dir ) {
 		closedir(dir);
@@ -15,6 +27,7 @@ int _directory_exists(const char * directoryToCheck){
 }
 
 int _directory_create(const char * directoryToCheck){
+	_replace_spaces((char*)directoryToCheck);
 	return mkdir(directoryToCheck, DIR_PERM);
 }
 
@@ -24,6 +37,7 @@ int _file_exists(const char * filename){
 	 * can create a symlink or something and cause your open to fail or open 
 	 * something that shouldn't be opened. That being said... I'm not concerned.
 	*/
+	 _replace_spaces((char*)filename);
 	struct stat buffer;
 	return(stat (filename, &buffer) == 0);
 }
@@ -159,6 +173,7 @@ char * _get_users_accounts_path(const char * accountPath){
 	
 	accountsFile = strcat(accountsFile, "/");
 	accountsFile = strcat(accountsFile, ACCOUNT_INDEX);
+	_replace_spaces((char*)accountsFile);
 	return accountsFile;
 }
 
@@ -171,7 +186,7 @@ char * _get_user_account_path(const char * accountPath, const char * accountName
 	accountFile = memcpy(accountFile, accountPath, BUFFER_LENGTH);
 	accountFile = strcat(accountFile, "/");
 	accountFile = strcat(accountFile, accountName);
-
+	_replace_spaces((char*)accountFile);
 	return accountFile;
 }
 
