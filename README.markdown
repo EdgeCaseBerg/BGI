@@ -14,14 +14,14 @@ answer is that: __I wanted to see if I could__.
 How do I use it?
 -----------------------------------------------------------------------
 
-**Install qdecoder**
+**Install qdecoder**  
 You need to install [qdecoder] in order to be able to parse and handle
 the CGI requests. qDecoder was chosen after reviewing the various
 libraries [listed here]. To install it, download the tarball and untar
 it `tar -xzvf <tarballname>` then run `./configure` and `make install`,
 you may need to run the `make` command as your super user.
 
-**Setup WebServer**
+**Setup WebServer**  
 Next, setup Apache for CGI. An example configuration might look like this:
 
 	<VirtualHost *:80>
@@ -53,12 +53,23 @@ place specified by the `config.h` file and make sure it is writable by apache.
 One of the best guides for doing so is contained in [this S.O. question]
 
 
-**Setup Your Config file**
+**Setup Your Config file**  
 A sample config file is included in the headers, the best way to setup a config
 file is to copy this file, edit it, and rename it to config.h. If you do not
 want to do this manually, you can run `make config` and it will save you the grunt
-work of typing the commands to do so.
+work of typing the commands to do so. Note that if a config file already exists
+it will be moved to config.h.bak
 
+**Compile the Scripts**  
+All you need to do is run `make` from the root of the repository.
+
+**Setup your hosts file (if local)**  
+On most linux systems the hosts file is at /etc/hosts, on windows it is in system32
+I believe (it's been a while since I've been on windozer). Add in the name that you
+have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
+
+**Use it!**  
+...screenshots coming soon...
 
 
 

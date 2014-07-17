@@ -31,5 +31,6 @@ $(OBJECTS): obj/%.o : src/%.c
 	${CC} ${CFLAGS} -c -o $@ $<
 
 config:
+	@mv ./headers/config.h ./headers/config.h.bak
 	cp ./headers/sample-config.h ./headers/config.h && vi ./headers/config.h
 
