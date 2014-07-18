@@ -16,6 +16,10 @@ jQuery( document ).ready(function( $ ) {
 		return colors[color % colors.length];
 	}
 
+	function roundLoc(latitudeOrLongitude){
+		return latitudeOrLongitude.toFixed(4)//we dont need to be SUPER precise, after all it's an aggregate
+	}
+
 	if(typeof L == "undefined"){
 		window.console.error("Leaflet Library Could not be loaded")
 		return
@@ -34,6 +38,8 @@ jQuery( document ).ready(function( $ ) {
 				var items = {}
 				for (var i = lineitems.length - 1; i >= 0; i--) {
 					var item = lineitems[i]
+					item.latitude = roundLoc(item.latitude)
+					item.longitude = roundLoc(item.longitude)
 					if( items[item.latitude] ){
 						if(items[item.latitude][item.longitude]){
 							items[item.latitude][item.longitude]["amt"] += item.amount
