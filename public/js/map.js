@@ -17,7 +17,7 @@ jQuery( document ).ready(function( $ ) {
 	}
 
 	function roundLoc(latitudeOrLongitude){
-		return latitudeOrLongitude.toFixed(4)//we dont need to be SUPER precise, after all it's an aggregate
+		return latitudeOrLongitude.toFixed(3)//we dont need to be SUPER precise, after all it's an aggregate
 	}
 
 	if(typeof L == "undefined"){
@@ -34,40 +34,48 @@ jQuery( document ).ready(function( $ ) {
 	$.get(accountsURI, function(accounts){
 		for (var i = accounts.length - 1; i >= 0; i--) {
 			var accountName = accounts[i].name
-			$.get(lineItemsURI + accounts[i].name, function(lineitems){
-				var items = {}
-				for (var i = lineitems.length - 1; i >= 0; i--) {
-					var item = lineitems[i]
-					item.latitude = roundLoc(item.latitude)
-					item.longitude = roundLoc(item.longitude)
-					if( items[item.latitude] ){
-						if(items[item.latitude][item.longitude]){
-							items[item.latitude][item.longitude]["amt"] += item.amount
-							items[item.latitude][item.longitude]["cnt"] += 1 
+			console.log(lineItemsURI + accounts[i].name)
+			$.ajax({
+				type: "GET", 
+				beforeSend: function(xhr){
+    			   xhr.withCredentials = true
+    			},
+    			url: lineItemsURI + accounts[i].name, 
+    			success: function(lineitems){
+					var items = {}
+					for (var i = lineitems.length - 1; i >= 0; i--) {
+						var item = lineitems[i]
+						item.latitude = roundLoc(item.latitude)
+						item.longitude = roundLoc(item.longitude)
+						if( items[item.latitude] ){
+							if(items[item.latitude][item.longitude]){
+								items[item.latitude][item.longitude]["amt"] += item.amount
+								items[item.latitude][item.longitude]["cnt"] += 1 
+							}else{
+								items[item.latitude][item.longitude] = {"amt" : item.amount, "cnt" : 1}
+							}
 						}else{
+							items[item.latitude] = {}
 							items[item.latitude][item.longitude] = {"amt" : item.amount, "cnt" : 1}
 						}
-					}else{
-						items[item.latitude] = {}
-						items[item.latitude][item.longitude] = {"amt" : item.amount, "cnt" : 1}
-					}
-				};
+					};
 
-				/* Now we have an object keyed by latitude, who holds objects keyed by longitude, 
-				 * that hold the aggregate sum of their amounts and how many there are.
-				*/
-				for(latitude in items){
-					for(longitude in items[latitude] ){
-						var item = items[latitude][longitude]
-						var circle = L.circle([latitude, longitude], 500, {
-		    				color: n2c(accountName),
-		    				fillColor: '#f03',
-		    				fillOpacity: 0.5
-						}).addTo(map);
-						circle.bindPopup("<div>" + item.amt+ "Spent<br/>" + item.cnt  + " Items<br/>"+(item.amt/item.cnt) +" Avg.</div>");
+					/* Now we have an object keyed by latitude, who holds objects keyed by longitude, 
+					 * that hold the aggregate sum of their amounts and how many there are.
+					*/
+					for(latitude in items){
+						for(longitude in items[latitude] ){
+							var item = items[latitude][longitude]
+							var circle = L.circle([latitude, longitude], 500, {
+			    				color: n2c(accountName),
+			    				fillColor: '#f03',
+			    				fillOpacity: 0.5
+							}).addTo(map);
+							circle.bindPopup("<div>" + item.amt+ "Spent<br/>" + item.cnt  + " Items<br/>"+(item.amt/item.cnt) +" Avg.</div>");
+						}
 					}
+					$('#themap').fadeIn()
 				}
-				$('#themap').fadeIn()
 			})
 		};
 		$('#themap').fadeIn()
