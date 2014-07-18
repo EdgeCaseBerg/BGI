@@ -3,7 +3,6 @@ jQuery( document ).ready(function( $ ) {
 	var accountsURI =  window.bgidomain + "accounts.cgi"
 
 	if($('body').attr('id') == "welcome"){
-		console.log(accountsURI)
 		$.get(accountsURI, function(response,e,x){
 			if(x.getAllResponseHeaders().indexOf("text/html") != -1){
 				alert( "Could not load accounts");

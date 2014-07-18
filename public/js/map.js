@@ -34,7 +34,6 @@ jQuery( document ).ready(function( $ ) {
 	$.get(accountsURI, function(accounts){
 		for (var i = accounts.length - 1; i >= 0; i--) {
 			var accountName = accounts[i].name
-			console.log(lineItemsURI + accounts[i].name)
 			$.ajax({
 				type: "GET", 
 				beforeSend: function(xhr){
