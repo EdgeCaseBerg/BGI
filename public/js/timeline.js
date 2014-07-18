@@ -1,11 +1,5 @@
 jQuery( document ).ready(function( $ ) {
-	/* Load each account into a different colored patch on the heatmap
-     * that way it is easy to discern where and how the money is being
-     * spent.
-	*/
-	
-	var accountsURI =  window.bgidomain + "accounts.cgi"
-	var lineItemsURI = window.bgidomain + "list-lineitems.cgi?accountname=" /* + accountName */
+	var timelineURI = window.bgidomain + "timeline.cgi"
 
 	function n2c(name){
 		var colors = ['red','blue','yellow','green','purple']
@@ -15,34 +9,38 @@ jQuery( document ).ready(function( $ ) {
 		}
 		return colors[color % colors.length];
 	}
-
 	
 	var datasets = []
+	var labels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-	$.get(accountsURI, function(accounts){
-		for (var i = accounts.length - 1; i >= 0; i--) {
-			var accountName = accounts[i].name
-			$.get(lineItemsURI + accounts[i].name, function(lineitems){
-				var data = [0,0,0,0,0,0,0,0,0,0,0,0]
-				var label = accountName
-				var color = n2c(accountName)
+	/* Retrieve and create the timeline for each month */
+	$.get(timelineURI, function(timeline){
+		for (var i = timeline.length - 1; i >= 0; i--) {
+			var accountName = timeline[i].name
+			
+			/* Initialize data counts*/
+			var data = []
+			for (var k= labels.length - 1; k >= 0; k--) {
+				data.push(0)
+			};
+			var label = accountName
+			var color = n2c(accountName)
 
-				for (var i = 0; i < lineitems.length; i++) {
-					data[new Date(parseInt(lineitems[i].date)*1000).getMonth()] += ( lineitems[i].amount )
-				};
+			for (var j = 0; j < timeline[i].items.length; j++) {
+				data[new Date(parseInt(timeline[i].items[j].date)*1000).getMonth()] += ( timeline[i].items[j].amount )
+			};
 
-				datasets.push({
-					label: accountName,
-					fillColor: color,
-					data: data
-				})
+			datasets.push({
+				label: accountName,
+				fillColor: color,
+				data: data
 			})
+		
 		}
 		var data = {
-    		labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    		labels: labels,
 	    	datasets: datasets
     	}
-    	console.log(data)
     	var ctx = document.getElementById("timelinecanvas").getContext("2d");
     	var myLineChart = new Chart(ctx).Line(data, {});
 	})
