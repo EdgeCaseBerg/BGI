@@ -13,6 +13,7 @@ jQuery( document ).ready(function( $ ) {
 	var datasets = []
 	var labels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
+	/* Retrieve and create the timeline for each month */
 	$.get(timelineURI, function(timeline){
 		for (var i = timeline.length - 1; i >= 0; i--) {
 			var accountName = timeline[i].name
@@ -40,7 +41,6 @@ jQuery( document ).ready(function( $ ) {
     		labels: labels,
 	    	datasets: datasets
     	}
-    	console.log(data)
     	var ctx = document.getElementById("timelinecanvas").getContext("2d");
     	var myLineChart = new Chart(ctx).Line(data, {});
 	})
