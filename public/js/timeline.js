@@ -16,6 +16,8 @@ jQuery( document ).ready(function( $ ) {
 	var dayDataSets = []
 	var dayLabels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
+	var pieDataSets = {}
+
 	/* Retrieve and create the timeline for each month */
 	$.get(timelineURI, function(timeline){
 		for (var i = timeline.length - 1; i >= 0; i--) {
@@ -32,6 +34,15 @@ jQuery( document ).ready(function( $ ) {
 			};
 			var label = accountName
 			var color = n2c(accountName)
+
+			if(!(accountName in pieDataSets)){
+				pieDataSets[accountName] ={
+					value: timeline[i].accountBalance,
+					color: color,
+					highlight: n2c(accountName + "a"),
+					label: accountName
+				}
+			}
 
 			for (var j = 0; j < timeline[i].items.length; j++) {
 				monthData[new Date(parseInt(timeline[i].items[j].date)*1000).getMonth()] += ( timeline[i].items[j].amount )
@@ -54,15 +65,36 @@ jQuery( document ).ready(function( $ ) {
     		labels: monthLabels,
 	    	datasets: monthDataSets
     	}
-    	var mctx = document.getElementById("monthcanvas").getContext("2d");
-    	var myLineChart = new Chart(mctx).Bar(monthData, {});
+    	$('canvas').attr('width', $(document).width())
+    	var mctx = document.getElementById("monthcanvas").getContext("2d")
+    	var myLineChart = new Chart(mctx).Bar(monthData, {})
 
     	var dayData = {
     		labels: dayLabels,
     		datasets: dayDataSets
     	}
-		var dctx = document.getElementById("daycanvas").getContext("2d");
-    	var myLineChart = new Chart(dctx).Bar(dayData, {});
+		var dctx = document.getElementById("daycanvas").getContext("2d")
+    	var myLineChart = new Chart(dctx).Bar(dayData, {})
+
+    	/* Convert pieData into an actual data set */
+    	pieDataSet = []
+    	for(datum in pieDataSets){
+    		pieDataSet.push(pieDataSets[datum])
+    	}
+    	var pctx = document.getElementById("accountpie").getContext("2d")
+    	var pchart = new Chart(pctx).Pie(pieDataSet,{})
+
+    	function makeLegendRow(name, color){
+    		return $("<li style='color: "+color+"'>" + name + "</li>")
+    	}
+    	/* Add the legend next to the pie chart: */
+    	$("section[name=charts]").prepend($("<legend><ul></ul></legend>"))
+    	for (var j = pieDataSet.length - 1; j >= 0; j--) {
+    		var n = pieDataSet[j].label
+    		var c =pieDataSet[j].color
+    		$("section[name=charts] ul").parent().append(makeLegendRow(n,c))
+    	};
+    	
 
 	})
 })

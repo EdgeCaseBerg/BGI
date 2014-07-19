@@ -42,7 +42,7 @@ int main(void){
         struct accountChain * chain;
         for(chain = head; chain != NULL; ){
             if(chain->data != NULL){
-                printf("{\"name\" : \"%s\", \"items\" : [",  chain->data->name);
+                printf("{\"name\" : \"%s\", \"accountBalance\" : %lf, \"items\" : [",  chain->data->name, chain->data->balance);
 
                 struct lineItemChain * itemChain = read_lineitems(username, chain->data->name);
                 struct lineItemChain * tmp = NULL;
