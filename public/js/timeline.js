@@ -58,14 +58,14 @@ jQuery( document ).ready(function( $ ) {
     	}
     	$('canvas').attr('width', $(document).width())
     	var mctx = document.getElementById("monthcanvas").getContext("2d")
-    	var myLineChart = new Chart(mctx).Bar(monthData, {})
+    	var monthchart = new Chart(mctx).Bar(monthData, {})
 
     	var dayData = {
     		labels: dayLabels,
     		datasets: dayDataSets
     	}
 		var dctx = document.getElementById("daycanvas").getContext("2d")
-    	var myLineChart = new Chart(dctx).Bar(dayData, {})
+    	var datchart = new Chart(dctx).Bar(dayData, {})
 
     	/* Convert pieData into an actual data set */
     	pieDataSet = []
@@ -85,6 +85,9 @@ jQuery( document ).ready(function( $ ) {
     		var c =pieDataSet[j].color
     		$("section[name=charts] ul").parent().append(makeLegendRow(n,c))
     	};
+
+    	var timelineByDayCtx = document.getElementById("timelinebyday").getContext("2d")
+
     	
 
 	})
