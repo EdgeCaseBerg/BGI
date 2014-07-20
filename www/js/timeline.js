@@ -1,15 +1,6 @@
 jQuery( document ).ready(function( $ ) {
 	var timelineURI = window.bgidomain + "timeline.cgi"
 
-	function n2c(name){
-		var colors = ['red','blue','yellow','green','purple']
-		var color = 1;
-		for(idx in name){
-			color += (name.charCodeAt(idx)*idx) << idx
-		}
-		return colors[color % colors.length];
-	}
-	
 	var monthDataSets = []
 	var monthLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 

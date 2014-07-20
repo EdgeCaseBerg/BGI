@@ -7,15 +7,6 @@ jQuery( document ).ready(function( $ ) {
 	var accountsURI =  window.bgidomain + "accounts.cgi"
 	var lineItemsURI = window.bgidomain + "list-lineitems.cgi?accountname=" /* + accountName */
 
-	function n2c(name){
-		var colors = ['red','blue','yellow','green','purple']
-		var color = 1;
-		for(idx in name){
-			color += name.charCodeAt(idx)*idx << idx
-		}
-		return colors[color % colors.length];
-	}
-
 	function roundLoc(latitudeOrLongitude){
 		return latitudeOrLongitude.toFixed(3)//we dont need to be SUPER precise, after all it's an aggregate
 	}
