@@ -1,0 +1,11 @@
+<script type="text/javascript">
+	/* Define a helper function for javascript to map a string to a color name*/
+	function n2c(name){
+		var colors = ['red','blue','cadetblue','green','purple','grey','black','darkblue','darkred','lightblue', 'ForestGreen', 'lime','maroon','teal']
+		var color = 1;
+		for(idx in name){
+			color += ( (name.charCodeAt(idx) << idx) % colors.length)
+		}
+		return colors[color % colors.length];
+	}
+</script>
