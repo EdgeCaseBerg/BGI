@@ -5,7 +5,7 @@ jQuery( document ).ready(function( $ ) {
 		var colors = ['red','blue','yellow','green','purple']
 		var color = 1;
 		for(idx in name){
-			color += name.charCodeAt(idx)*idx
+			color += (name.charCodeAt(idx)*idx) << idx
 		}
 		return colors[color % colors.length];
 	}
