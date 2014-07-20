@@ -8,9 +8,12 @@ jQuery( document ).ready(function( $ ) {
 	var dayLabels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 	var pieDataSets = {}
+	var timelineDateIndexed = {}
 
 	/* Retrieve and create the timeline for each month */
 	$.get(timelineURI, function(timeline){
+		var minTime = new Date().getTime()
+		var maxTime = new Date().getTime()
 		for (var i = timeline.length - 1; i >= 0; i--) {
 			var accountName = timeline[i].name
 			
@@ -36,8 +39,16 @@ jQuery( document ).ready(function( $ ) {
 			}
 
 			for (var j = 0; j < timeline[i].items.length; j++) {
-				monthData[new Date(parseInt(timeline[i].items[j].date)*1000).getMonth()] += ( timeline[i].items[j].amount )
-				dayData[new Date(parseInt(timeline[i].items[j].date)*1000).getDay()] += ( timeline[i].items[j].amount )
+				var itemDate = parseInt(timeline[i].items[j].date)*1000
+
+				/* Create buckets for each date for the timeline*/
+				if( itemDate < minTime ) minTime = itemDate
+				if(typeof timelineDateIndexed[new Date(itemDate).toDateString()] == "undefined") timelineDateIndexed[new Date(itemDate).toDateString()] = []
+				timelineDateIndexed[new Date(itemDate).toDateString()].push(timeline[i].items[j])
+
+				/* Construct data for graphs for month and day */
+				monthData[new Date(itemDate).getMonth()] += ( timeline[i].items[j].amount )
+				dayData[new Date(itemDate).getDay()] += ( timeline[i].items[j].amount )
 			};
 
 			monthDataSets.push({
@@ -87,6 +98,47 @@ jQuery( document ).ready(function( $ ) {
     	};
 
     	var timelineByDayCtx = document.getElementById("timelinebyday").getContext("2d")
+    	/* So we have an object indexed by date from minDate -> maxDate so now 
+    	 * we need to construct the labels for the graph as well as the data 
+    	*/
+    	var timelineLabels = []
+    	var timelineData = []
+    	if(minTime < maxTime){ /* Always true. But should check it Just in case. (perhaps bears) */
+    		var tmp =  minTime
+    		while(tmp < maxTime){
+    			
+    			timelineLabels.push( new Date(tmp).toDateString() )
+    			/* Create the data for the day */
+    			if(typeof timelineDateIndexed[new Date(tmp).toDateString()] == "undefined" || timelineDateIndexed[new Date(tmp).toDateString()].length == 0) timelineData.push(0)
+    			else{
+    				var total = 0
+    				for(idx in timelineDateIndexed[new Date(tmp).toDateString()]){
+    					total += timelineDateIndexed[new Date(tmp).toDateString()][idx].amount
+    				}
+    				timelineData.push(total)
+    			}
+    			tmp += (86400*1000) /* Not exactly right, but its good enough for now. See http://stackoverflow.com/questions/7552104/is-a-day-always-86-400-epoch-seconds-long */
+    		}
+    		
+    		var timelineChart = new Chart(timelineByDayCtx).Line({
+    			labels: timelineLabels,
+    			datasets: [
+    				{
+    					label: "Spent over time (total)",
+    					fillColor: "rgba(220,220,220,0.2)",
+			            strokeColor: "rgba(220,220,220,1)",
+			            pointColor: "rgba(220,220,220,1)",
+			            pointStrokeColor: "#fff",
+			            pointHighlightFill: "#fff",
+			            pointHighlightStroke: "rgba(220,220,220,1)",
+			            data: timelineData
+    				}
+    			]
+    		},{})
+    	}else{
+    		throw "INVALID MIN / MAX TIME FOR TIMELINE DATA"
+    	}
+
 
     	
 
