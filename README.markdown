@@ -74,6 +74,15 @@ On most linux systems the hosts file is at /etc/hosts, on windows it is in syste
 I believe (it's been a while since I've been on windozer). Add in the name that you
 have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
 
+**Technologies used**  
+ 
+ - [HarpJs]
+ - [Chart.js]
+ - [Leaflet.js]
+ - [qdecoder]
+ - C
+
+
 **Use it!**  
 ...screenshots coming soon...
 
@@ -83,3 +92,5 @@ have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
 [listed here]:http://cgi.resourceindex.com/programs_and_scripts/c_and_c++/libraries_and_classes/
 [this S.O. question]:http://serverfault.com/questions/124800/how-to-setup-linux-permissions-for-the-www-folder
 [HarpJs]:http://harpjs.com
+[Chart.js]:https://github.com/nnnick/Chart.js
+[Leaflet.js]:http://Leafletjs.com

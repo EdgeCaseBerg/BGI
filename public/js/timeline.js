@@ -106,14 +106,14 @@ jQuery( document ).ready(function( $ ) {
     	if(minTime < maxTime){ /* Always true. But should check it Just in case. (perhaps bears) */
     		var tmp =  minTime
     		while(tmp < maxTime){
-    			
-    			timelineLabels.push( new Date(tmp).toDateString() )
+    			var timelineLabelKey = new Date(tmp).toDateString()
+    			timelineLabels.push( timelineLabelKey )
     			/* Create the data for the day */
-    			if(typeof timelineDateIndexed[new Date(tmp).toDateString()] == "undefined" || timelineDateIndexed[new Date(tmp).toDateString()].length == 0) timelineData.push(0)
+    			if(typeof timelineDateIndexed[timelineLabelKey] == "undefined" || timelineDateIndexed[timelineLabelKey].length == 0) timelineData.push(0)
     			else{
     				var total = 0
-    				for(idx in timelineDateIndexed[new Date(tmp).toDateString()]){
-    					total += timelineDateIndexed[new Date(tmp).toDateString()][idx].amount
+    				for(idx in timelineDateIndexed[timelineLabelKey]){
+    					total += timelineDateIndexed[timelineLabelKey][idx].amount
     				}
     				timelineData.push(total)
     			}

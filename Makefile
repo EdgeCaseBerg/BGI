@@ -4,7 +4,6 @@ CFLAGS = -std=gnu99 -pedantic -Wall -Wextra -Werror -g -I./headers
 LINKFLAGS = $(CFLAGS)
 LIBS = lib/wolkykim-qdecoder-63888fc/src/libqdecoder.a
 
-TARGETS = heartbeat.cgi login.cgi
 UTIL = fasthash ctl
 
 #Use Phony to keep clean
