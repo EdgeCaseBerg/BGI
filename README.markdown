@@ -84,7 +84,13 @@ have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
 
 
 **Use it!**  
-...screenshots coming soon...
+<img src="http://static1.ethanjoachimeldridge.info/tech-blog/index.png" style="max-width: 778px" />
+
+<img src="http://static1.ethanjoachimeldridge.info/tech-blog/welcome.png" style="max-width: 778px" />
+
+<img src="http://static1.ethanjoachimeldridge.info/tech-blog/metrics.png" style="max-width: 778px" />
+
+<img src="http://static1.ethanjoachimeldridge.info/tech-blog/map.png" style="max-width: 778px" />
 
 
 
