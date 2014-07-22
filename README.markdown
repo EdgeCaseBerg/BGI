@@ -81,7 +81,7 @@ have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
  - [Leaflet.js]
  - [qdecoder]
  - C
-
+ - [My Brain]
 
 **Use it!**  
 <img src="http://static1.ethanjoachimeldridge.info/tech-blog/index.png" style="max-width: 778px" />
@@ -100,3 +100,4 @@ have placed into your config's `BASE_URL` definition pointing to`127.0.0.1`
 [HarpJs]:http://harpjs.com
 [Chart.js]:https://github.com/nnnick/Chart.js
 [Leaflet.js]:http://Leafletjs.com
+[My Brain]:www.ethanjoachimeldridge.info/tech-blog/bgi.html
