@@ -67,7 +67,7 @@ jQuery( document ).ready(function( $ ) {
     		labels: monthLabels,
 	    	datasets: monthDataSets
     	}
-    	$('canvas').attr('width', $(document).width())
+    	$('canvas').attr('width', $(document).width() - 20)
     	var mctx = document.getElementById("monthcanvas").getContext("2d")
     	var monthchart = new Chart(mctx).Bar(monthData, {})
 
