@@ -47,24 +47,29 @@ int main(void){
                 struct lineItemChain * itemChain = read_lineitems(username, chain->data->name);
                 struct lineItemChain * tmp = NULL;
                 int i = 0;
-                while(itemChain != NULL){
-                    if(i != 0){
-                        printf(",");
+                while(itemChain != NULL ){
+                    if(itemChain->data != NULL){
+                        if(i != 0){
+                            printf(",");
+                        }
+                        i++;
+                        printf("{\"date\" : %zu, \"name\" : \"%s\", \"amount\" : %lf, \"latitude\" : %lf, \"longitude\" : %lf}", 
+                            itemChain->data->date, itemChain->data->name, itemChain->data->amount, itemChain->data->latitude, itemChain->data->longitude
+                            );
                     }
-                    i++;
-                    printf("{\"date\" : %zu, \"name\" : \"%s\", \"amount\" : %lf, \"latitude\" : %lf, \"longitude\" : %lf}", 
-                        itemChain->data->date, itemChain->data->name, itemChain->data->amount, itemChain->data->latitude, itemChain->data->longitude
-                        );
                     tmp = itemChain;
                     itemChain = itemChain->next;
-                    free(tmp->data->name);
-                    free(tmp->data);
+                    if(tmp->data != NULL){
+                        free(tmp->data->name);
+                        free(tmp->data);
+                    }
+                    
                     free(tmp);
                 }
 
                 printf("]}");
                 if(chain->next != NULL) printf(",");
-                free(chain->data);  
+                if(chain->data != NULL) free(chain->data);  
             } 
             head = chain->next;
             free(chain);

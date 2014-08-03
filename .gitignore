@@ -13,3 +13,6 @@ headers/config.h
 
 #ignore the BGI Data directory
 data
+
+#ignore apache
+error.log

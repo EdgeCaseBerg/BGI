@@ -53,13 +53,17 @@ int main(void){
                 printf(",");
             }
             i++;
-            printf("{\"date\" : %zu, \"name\" : \"%s\", \"amount\" : %lf, \"latitude\" : %lf, \"longitude\" : %lf}", 
-                chain->data->date, chain->data->name, chain->data->amount, chain->data->latitude, chain->data->longitude
-                );
+            if(chain->data != NULL){
+                printf("{\"date\" : %zu, \"name\" : \"%s\", \"amount\" : %lf, \"latitude\" : %lf, \"longitude\" : %lf}", 
+                    chain->data->date, chain->data->name, chain->data->amount, chain->data->latitude, chain->data->longitude
+                    );
+            }
             tmp = chain;
             chain = chain->next;
-            free(tmp->data->name);
-            free(tmp->data);
+            if(chain->data != NULL){
+                free(tmp->data->name);
+                free(tmp->data);
+            }
             free(tmp);
         }
         printf("]");

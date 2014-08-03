@@ -591,6 +591,7 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 		return NULL; /* OUT OF MEMORY */	
 	}
 	chain->next = NULL;
+	chain->data = NULL;
 	head = chain;
 	backPtr = head;	
 	
@@ -646,7 +647,7 @@ struct lineItemChain * read_lineitems(const char * username, const char * accoun
 	 * up and NULL the ->next from the back pointer
 	 */
 	 if(backPtr != NULL){
-		free(backPtr->next);
+	 	if(backPtr->next != NULL) free(backPtr->next);
 		backPtr->next = NULL;
 	}
 	fclose(fp);
