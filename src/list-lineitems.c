@@ -60,7 +60,7 @@ int main(void){
             }
             tmp = chain;
             chain = chain->next;
-            if(chain->data != NULL){
+            if(tmp->data != NULL){
                 free(tmp->data->name);
                 free(tmp->data);
             }
