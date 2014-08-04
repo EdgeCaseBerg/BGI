@@ -80,7 +80,7 @@ jQuery( document ).ready(function( $ ) {
 			}
 			var error = function(positionError){
 				if(window.console)
-					window.console.warn('ERROR(' + err.code + '): ' + err.message);
+					window.console.warn('ERROR(' + positionError.code + '): ' + positionError.message);
 			}
 			var options = {
 			  enableHighAccuracy: true,
