@@ -76,3 +76,32 @@ html{
 	width: 100%;
 	height: 400px;
 }
+
+#compare{
+	header{
+		width: 50%;
+		marquee{
+			color: blue;		
+		}
+	}
+	.compareItem{
+		display: inline-block;
+		width: 300px;
+		text-align: center;
+		canvas{
+			width: 280px;
+			height: 150px;
+			margin-right: 10px;
+			margin-left: 10px;
+		}
+		ul{
+			padding: 0;
+			padding-bottom: 10px;
+			list-style-type: none;
+			outline: solid darken(@bgColor, 10%);
+			li:nth-child(even){
+				background-color: darken(@bgColor, 10%);
+			}
+		}
+	}
+}

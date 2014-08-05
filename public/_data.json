@@ -13,5 +13,8 @@
 	},
 	"timeline" : {
 		"layout" : "_timeline"
+	},
+	"compare" : {
+		"layout" : "_compare"
 	}
 }
