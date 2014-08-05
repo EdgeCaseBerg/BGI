@@ -13,7 +13,7 @@ jQuery( document ).ready(function( $ ) {
 	/* Retrieve and create the timeline for each month */
 	$.get(timelineURI, function(timeline){
 		var minTime = new Date().getTime()
-		var maxTime = new Date().getTime()
+		var maxTime = new Date().getTime() + 86400 //add so we get our current results in everytime zone
 		for (var i = timeline.length - 1; i >= 0; i--) {
 			var accountName = timeline[i].name
 			
