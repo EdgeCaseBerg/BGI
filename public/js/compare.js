@@ -8,11 +8,11 @@ var dayLabels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday
 var weekPieDataSets = []
 weekPieDataSets = []
 
-//monthPieData holds data for each dataset, indexed by month
-var monthPieData = {}
+var monthDataItems = []
 var monthPieDataSets = []
 for (var i = 0; i < monthLabels.length; i++) {
 	monthPieDataSets.push([])	
+	monthDataItems.push([])
 };
 
 function clearTemplates(){
@@ -50,6 +50,12 @@ function setupMonthData(){
 		var pieCanvas = tmpl.find('[name=pie]')[0].getContext("2d")
 		var chart = new Chart(pieCanvas).Pie(monthPieDataSets[i], {})
 		//populate item list:
+		list = tmpl.find('[name=items]')
+		var itemsForMonth = monthDataItems[i]
+		for(idx in itemsForMonth){
+			var item = itemsForMonth[idx]
+			list.append("<li><span>"+item.name+"</span><span class=\"amount\">$"+item.amount.toFixed(2)+"</span></li>")
+		}
 		$('section').append(tmpl)
 		tmpl.fadeIn().css('display','')
 	};
@@ -69,11 +75,12 @@ function setup(){
 		//timeline is by account
 		var account = window.timeline[account]
 		var color = n2c(account.name)
-		var accountTotals = [0,0,0,0,0,0,0,0,0,0,0,0]
+		var accountTotals = []
+		monthLabels.forEach(function(){accountTotals.push(0)})
 		for (var i = account.items.length - 1; i >= 0; i--) {
 			var item = account.items[i]
 			var date = new Date(item.date*1000)
-			//monthPieData[date.getMonth()].push(item)
+			monthDataItems[date.getMonth()].push(item)
 			accountTotals[date.getMonth()] += item.amount
 		};
 		for (var i = accountTotals.length - 1; i >= 0; i--) {
@@ -87,6 +94,7 @@ function setup(){
 		};
 	};
 	console.log(monthPieDataSets)
+
 	$('[name=byweek]').click(function(){
 		setupWeekData()
 	})
@@ -97,8 +105,8 @@ function setup(){
 		var items = $(this).parent().find('[name="items"]')
 		items.slideToggle()
 		$(this).text('Toggle Item Display')
-
 	})
+	setupMonthData()
 }
 	
 jQuery( document ).ready(function( $ ) {
