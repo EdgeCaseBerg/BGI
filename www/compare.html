@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+	<head>
+		<title>Timeline</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="Budgeting software for a static world" />
+		<meta name="author" content="Ethan Eldridge">
+		<meta name="keywords" content="Ethan,Eldridge,Joachim,Programming,Budgets,CGI,Interface,BGI"/>
+		<meta name="viewport" content="width=device-width,  initial-scale=1" />
+		<link rel="stylesheet" type="text/css" href="/main.css">
+		<link rel="stylesheet" type="text/css" href="/mobile.css" media="screen" >
+	</head>
+	<body id="compare">
+		<h1><strong>BGI</strong></h1>
+<nav>
+	<ul>
+		<li>
+			<a href="/welcome.html">Home</a>
+		</li>
+		<li>
+			<a href="/map.html">Map</a>
+		</li>
+		<li>
+			<a href="/timeline.html">Timeline</a>
+		</li>
+		<li>
+			<a href="/create-account.html">Create New Account</a>
+		</li>
+		<li>
+			<a href="/create-lineitem.html">Create Line Item</a>
+		</li>
+	</ul>
+</nav>
+		<h2>Compare your Spending Trends</h2>
+<p>
+	After you've used BGI for a few weeks to tract your spending, this page will
+	be able to show you an aggregate of information by week so that you can see
+	how you're spending your money and what you can do about it.
+</p>
+<sub>Note that by week is not yet implemented</sub>
+<header>
+	<button name="byweek">By Week</button>
+	<button name="bymonth">By Month</button>
+	<marquee direction="right">Loading</marquee
+></header>
+
+<section>
+	<div class="compareItem" id="template" style="display: none;">
+		<h3 name="title">Title</h3>
+		<canvas width="280px" height="150px" name="pie"></canvas>
+		<div name="itemcontainer">
+			<button>Show Items</button>
+			<ul name="items" style="display: none">
+			</ul>
+		</div>
+	</div>
+	<div class="compareItem compareWeek" id="templateWeek" style="display: none">
+		<h3 name="title">Title</h3>
+		<canvas name="pie"></canvas>
+		<div name="itemcontainer">
+			<button>Show Items</button>
+			<ul name="items" style="display: none">
+			</ul>
+		</div>
+	</div>
+</section>
+	</body>
+	<script type="text/javascript">
+	/* Define a helper function for javascript to map a string to a color name*/
+	function n2c(name){
+		var colors = ['red','blue','cadetblue','green','purple','grey','black','darkblue','darkred','lightblue', 'ForestGreen', 'lime','maroon','teal']
+		var color = 1;
+		for(idx in name){
+			color += ( (name.charCodeAt(idx) << idx) % colors.length)
+		}
+		return colors[color % colors.length];
+	}
+</script>
+	<script type="text/javascript" src="/js/jquery.min.1.9.1.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+	<script type="text/javascript" src="/js/compare.js"></script>
+	<script type="text/javascript">
+		/* Globals for use by the scripts */
+		window.bgidomain = "//bgi.ethanjoachimeldridge.info/bgi/"
+	</script>
+</html>
