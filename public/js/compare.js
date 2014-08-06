@@ -2,14 +2,20 @@ var templateNum = 0
 var timelineURI = window.bgidomain + "timeline.cgi"
 window.timeline = []
 
-var monthDataSets = []
 var monthLabels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-var dayDataSets = []
 var dayLabels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-var pieDataSets = {}
-var timelineDateIndexed = {}
+var weekPieDataSets = {}
+var monthPieDataSets = {}
+
+function clearTemplates(){
+	$('.compareItem:not(#template):not(#templateWeek)').remove()
+}
+
+function showTemplates(){
+	$('.compareItem:not(#template):not(#templateWeek').fadeIn()
+}
 
 
 function makeNewTemplate(){
@@ -19,25 +25,39 @@ function makeNewTemplate(){
 	return cpy;
 }
 
+function makeNewWeekTemplate(){
+	templateNum++
+	cpy = $('#templateWeek').clone()
+	cpy.attr('id', 'cpy' + templateNum)
+	return cpy;
+}
+
+
 function setupMonthData(){
 	templateNum = 0;
-	$('compareItem:not(#template)').remove()
+	clearTemplates()
 	for (var i = 0; i < monthLabels.length; i++) {
 		var lbl = monthLabels[i]
 		tmpl = makeNewTemplate()
 		tmpl.find('[name=title]').text(lbl)
 		//Use dataset to populate pie and items list
-		tmpl.fadeIn().css('display','')
-
 		$('section').append(tmpl)
+		tmpl.fadeIn().css('display','')
 	};
-	$('compareItem:not(#template)').fadeIn()
+	showTemplates()
+	
+}
+
+function setupWeekData(){
+	templateNum = 0;
+	clearTemplates()
+	//compute week by week for each item
+	showTemplates()
 }
 
 function setup(){
 	$('name[byweek]').click(function(){
-		
-		console.log(window.timeline)
+		setupWeekData()
 	})
 	$('name[bymonth]').click(function(){
 		setupMonthData()	
@@ -52,13 +72,11 @@ function setup(){
 	
 jQuery( document ).ready(function( $ ) {
 	//use the timeline data since it's in the closest form we want to work with
-	
-setup()
 	$.get(timelineURI, function(timeline){
 		window.timeline = timeline
 		setup()
 	}).error(function(evt){
 		console.error(evt)
-		//throw "Could not load data for comparisons!"
+		alert("Could not load your data! Try logging in again")
 	})
 })
