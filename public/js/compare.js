@@ -78,15 +78,47 @@ function setupWeekData(){
 	templateNum = 0;
 	clearTemplates()
 	//compute week by week for each item
-	weekPieDataSets// array of arrays containing items per week
-	weekPieLables // array of "Week of <>""
+	//weekPieDataSets// array of arrays containing items per week
+	//weekPieLables // array of "Week of <>""
 
-	for (var i = weekPieLables.length - 1; i >= 0; i--) {
-		var title = weekPieLables[i]
-		var data = weekPieDataSets[i]
+	for (var k = weekPieLables.length - 1; k >= 0; k--) {
+		var title = weekPieLables[k]
+		var data = weekPieDataSets[k]
+		if(data.length <= 0)
+			continue
+
 		var tmpl = makeNewWeekTemplate()
 		tmpl.find("[name=title]").text(title)
-		//do pie chart in a bit.
+
+		/* Create data for pie chart: */
+		weekByAccountDataSet = []
+		var labels = []
+		var dataForLabel = {}
+
+		for (var i = data.length - 1; i >= 0; i--) {
+			var item = data[i]
+			if(item.account in dataForLabel){
+				dataForLabel[item.account] += item.amount
+			}else{
+				labels.push(item.account)
+				dataForLabel[item.account] = item.amount
+			}
+		};
+
+		for (var i = labels.length - 1; i >= 0; i--) {
+			var label = labels[i]
+			weekByAccountDataSet.push({
+				value: dataForLabel[label],
+				color: n2c(label),
+				highlight: n2c(label + "a"),
+				label: label
+			})
+		};
+		
+		
+		var pieCanvas = tmpl.find('[name=pie]')[0].getContext("2d")
+		var chart = new Chart(pieCanvas).Pie(weekByAccountDataSet, {})
+
 		list = tmpl.find('[name=items]')
 		var total = 0;
 		for(idx in data){
@@ -95,12 +127,8 @@ function setupWeekData(){
 			list.append("<li><span>"+item.name+"</span><span class=\"amount\">$"+item.amount.toFixed(2)+"</span></li>")
 		}
 		tmpl.find('[name=total]').text("Total: $" + total.toFixed(2))
-		if(total != 0){//hack
-			/* the above is a hack because right now I'm gettinga single duplicate
-			 * template but with no items.. so.. wat?
-			*/
-			$('section').append(tmpl)
-		}
+		$('section').append(tmpl)
+		
 		tmpl.fadeIn().css('display','')
 	};
 
@@ -120,6 +148,7 @@ function setup(){
 			var date = new Date(item.date*1000)
 			monthDataItems[date.getMonth()].push(item)
 			accountTotals[date.getMonth()] += item.amount
+			item.account = account.name
 			items.push(item)
 		};
 		for (var i = accountTotals.length - 1; i >= 0; i--) {
@@ -134,14 +163,14 @@ function setup(){
 	};
 	//Now deal with weeks:
 	items = items.sort(function(l,r){ return l.date == r.date ? 0 : l.date > r.date ? -1 : 1 })
-	console.log(items)
+	
 	var curWeek = items[0] ? new Date(items[0].date*1000).getWeekNumber() : 0
 	var curDateSet = []
 	var curLabel = items[0] ? "Week of " + new Date(items[0].date*1000).toLocaleDateString() : ("Week #" + weekKey)
 	for (var i = items.length - 1; i >= 0; i--) {
 		var item = items[i]
 		var weekKey = new Date(item.date*1000).getWeekNumber()
-		console.log(weekKey)
+		
 		if(curWeek != weekKey || i == 0){
 			if(i==0){
 				curDateSet.push(item)
