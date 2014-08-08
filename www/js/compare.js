@@ -52,10 +52,13 @@ function setupMonthData(){
 		//populate item list:
 		list = tmpl.find('[name=items]')
 		var itemsForMonth = monthDataItems[i]
+		var total = 0;
 		for(idx in itemsForMonth){
 			var item = itemsForMonth[idx]
+			total += item.amount
 			list.append("<li><span>"+item.name+"</span><span class=\"amount\">$"+item.amount.toFixed(2)+"</span></li>")
 		}
+		tmpl.find('[name=total]').text("Total: $" + total.toFixed(2))
 		$('section').append(tmpl)
 		tmpl.fadeIn().css('display','')
 	};
