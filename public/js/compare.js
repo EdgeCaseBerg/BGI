@@ -195,7 +195,7 @@ function setup(){
 		items.slideToggle()
 		$(this).text('Toggle Item Display')
 	})
-	setupMonthData()
+	setupWeekData()
 }
 	
 jQuery( document ).ready(function( $ ) {
