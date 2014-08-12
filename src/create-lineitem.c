@@ -75,7 +75,7 @@ int main(void){
         memset(&timetm, 0, sizeof(struct tm));
         char * res2 = strptime(lineitemtime, "%R", &timetm);
 
-        if(res2 != '\0'){
+        if(*res2 != '\0'){
             //we were sent HH:MM:SS possibly. 
             res2 = strptime(lineitemtime, "%T", &timetm);
         }
