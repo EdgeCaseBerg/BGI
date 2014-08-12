@@ -1,9 +1,11 @@
+#define _XOPEN_SOURCE 
 #include "required.h"
 
 #include "util/fasthash.h"
 #include "util/ctl.h"
 #include <string.h>
 #include <ctype.h>
+#include <features.h>
 #include <time.h>
 
 
