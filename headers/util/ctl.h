@@ -16,7 +16,8 @@
 #include "required.h"
 #include <stdint.h>
 #include <inttypes.h> /* Need inttypes for PRIu32 */
- #include <unistd.h>
+#include <time.h>
+#include <unistd.h>
 
 
 /* All returns 1 on Truth, 0 on False, -1 on Error */
@@ -39,7 +40,7 @@ int bgi_data_init();
 
 /* Returns 1 on success, 0 on false, -1 on error */
 int create_account(const char * username, const char * account);
-int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude);
+int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude, struct tm * itemTime);
 int update_account_balance(const char * username, const char * accountName , double additionToAccount);
 
 /* Will return a linked list of accounts stored in the accountChain,

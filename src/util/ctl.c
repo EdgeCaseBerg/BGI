@@ -514,7 +514,7 @@ int update_account_balance(const char * username, const char * accountName , dou
 	return 1;
 }
 
-int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude){
+int create_item(const char * username, const char * account, const char * name, double amount, double latitude, double longitude, struct tm * itemTime){
 	if(_user_exists(username) != 1)	return 0;
 	/* Create the path to the line items file for the account */
 
@@ -543,7 +543,9 @@ int create_item(const char * username, const char * account, const char * name, 
 		return 0;
 	}
 	free(accountFile);
-	fprintf(fp, "%ld %s %.2lf %lf %lf\n", time(0), name, amount, latitude, longitude);
+	time_t it = 0; 
+	it = mktime(itemTime);
+	fprintf(fp, "%ld %s %.2lf %lf %lf\n", it, name, amount, latitude, longitude);
 	fclose(fp);
 
 	/* Finally update the balance listed for the account*/

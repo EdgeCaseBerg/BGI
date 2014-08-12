@@ -4,6 +4,7 @@
 #include "util/ctl.h"
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 
 
 int main(void){
@@ -29,13 +30,22 @@ int main(void){
             qcgires_redirect(req, HOME);
             goto end;
         }
-   
+
+        char *lineitemdate = req->getstr(req, "lineitemdate", false);
+        char *lineitemtime = req->getstr(req, "lineitemtime", false);   
+
         char *accountname  = req->getstr(req, "accountname", false);
         char *name = req->getstr(req, "name", false);
         char *tmpamount = req->getstr(req, "amount", false);
         char *tmplatitude = req->getstr(req, "latitude", false);
         char *tmplongitude = req->getstr(req, "longitude", false);
-        if(accountname == NULL ||  name == NULL || tmpamount == NULL || tmplatitude == NULL || tmplongitude == NULL){
+        if( accountname  == NULL ||
+            name         == NULL || 
+            tmpamount    == NULL || 
+            tmplatitude  == NULL || 
+            tmplongitude == NULL ||
+            lineitemdate == NULL ||
+            lineitemtime == NULL ){
             qcgires_redirect(req, BAD_LINEITEM);
             goto end;
         }
@@ -55,6 +65,24 @@ int main(void){
         sscanf(tmplongitude, "%lf", &longitude);
         sscanf(tmplatitude, "%lf", &latitude);
 
+        struct tm datetm;
+        memset(&datetm, 0, sizeof(struct tm));
+        char * res1 = strptime(lineitemdate, "%Y-%m-%d", &datetm);
+
+        struct tm timetm;
+        memset(&timetm, 0, sizeof(struct tm));
+        char * res2 = strptime(lineitemtime, "%R", &timetm);
+
+        //If we did not consume all the characters 
+        if(*res1 != '\0' || *res2 != '\0'){
+            qcgires_redirect(req, BAD_LINEITEM);
+            goto end;
+        }
+
+        datetm.tm_sec = timetm.tm_sec;
+        datetm.tm_min = timetm.tm_min;
+        datetm.tm_hour = timetm.tm_hour;
+
 
         if( 1 != _user_exists(username) ){
             qcgires_redirect(req, REGISTER);
@@ -70,7 +98,7 @@ int main(void){
         	goto end;
         }
 
-        int success = create_item(username, accountname,name, amount, latitude, longitude);
+        int success = create_item(username, accountname,name, amount, latitude, longitude, &datetm);
 		
 		if(success == 0) qcgires_redirect(req, BAD_LINEITEM);
 		else qcgires_redirect(req, APPLICATION);
