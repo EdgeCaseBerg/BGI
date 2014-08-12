@@ -75,6 +75,11 @@ int main(void){
         memset(&timetm, 0, sizeof(struct tm));
         char * res2 = strptime(lineitemtime, "%R", &timetm);
 
+        if(res2 != '\0'){
+            //we were sent HH:MM:SS possibly. 
+            res2 = strptime(lineitemtime, "%T", &timetm);
+        }
+
         //If we did not consume all the characters 
         if(*res1 != '\0' || *res2 != '\0'){
             qcgires_redirect(req, BAD_LINEITEM);
