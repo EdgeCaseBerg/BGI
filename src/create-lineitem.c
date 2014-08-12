@@ -77,7 +77,7 @@ int main(void){
 
         if(*res2 != '\0'){
             //we were sent HH:MM:SS possibly. 
-            res2 = strptime(lineitemtime, "%T", &timetm);
+            res2 = strptime(lineitemtime, "%H:%M:%S", &timetm);
         }
 
         //If we did not consume all the characters 
