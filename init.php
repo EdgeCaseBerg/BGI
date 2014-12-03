@@ -25,4 +25,6 @@ foreach ($axiomClasses as $axiom) {
 }
 include $dirname . '/bootstrap/database.php';
 
-?>
+/* Attempt to Connect to the database to ensure we can */
+Database::instance();
+

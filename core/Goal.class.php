@@ -10,5 +10,3 @@ class Goal extends Entity {
 	public $user_id = NULL;
 	
 }
-
-?>

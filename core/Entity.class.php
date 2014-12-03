@@ -9,5 +9,3 @@ class Entity extends StdClass {
 		$this->id = $id;
 	}
 }
-
-?>

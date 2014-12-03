@@ -55,5 +55,3 @@ define('GOAL_TYPE_MONTHLY', $configuration->goals->monthlyId);
 /* Destroy sensitive variables, only defines should be used from here out */
 unset($confFileContents);
 unset($configuration);
-
-?>

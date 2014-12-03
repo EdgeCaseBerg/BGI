@@ -61,5 +61,3 @@ if (!defined('GOAL_TYPE_MONTHLY')) define('GOAL_TYPE_MONTHLY', $configuration->g
 /* Destroy sensitive variables, only defines should be used from here out */
 unset($confFileContents);
 unset($configuration);
-
-?>

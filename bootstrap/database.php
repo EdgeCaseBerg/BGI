@@ -194,5 +194,3 @@ class Database extends StdClass {
 	}
 
 }
-
-?>
