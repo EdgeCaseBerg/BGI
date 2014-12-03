@@ -1,7 +1,6 @@
 <?php
 /* It is expected that conf is called before this, if it is not, expect
  * the unexpected (as well as the spanish inquisition) 
- * TODO: create entity class for basic CRUD
 */
 
 class Database extends StdClass {
@@ -30,6 +29,56 @@ class Database extends StdClass {
 		if (is_null(self::$instance)) {
 			self::$instance = new Database();
 		}
+		return self::$instance;
+	}
+
+	final private function keyMaker($key) {
+		return ':'.$key;
+	}
+
+	final private function determinePDOType($value) {
+		switch (gettype($value)) {
+			case 'boolean':
+				return PDO::PARAM_BOOL;
+			case 'NULL':
+				return PDO::PARAM_NULL;
+			case 'integer':
+				return PDO::PARAM_INT;
+			case 'string':
+			default:
+				/* No such thing as doubles, so pass as str */
+				return PDO::PARAM_STR;
+		}
+	}
+
+	public function insert(Entity $genericObj ){
+		$tableName = strtolower(get_class($genericObj)) . 's'; //plurals aren't trying to appease the pedantic
+		$objInfo   = get_object_vars($genericObj);
+		
+		unset($objInfo['id']); //remove id so we don't try to assign the autogen
+
+		$keys = array_keys($objInfo);
+		$sql = 	'INSERT INTO ' . $tableName . ' ( ' . implode(',', $keys) . ' ) ' .
+				'VALUES (' . implode(',', array_map(array($this,'keyMaker'), $keys)) . ' ) ';
+		$statement = $this->pdo->prepare($sql );
+
+		foreach ($objInfo as $key => $value) {
+			$statement->bindValue(':'.$key, $value, $this->determinePDOType($value) );
+		}
+
+		if ($statement->execute() == FALSE ) {
+			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return false;
+		} 
+
+		$newId = $this->pdo->lastInsertId();
+		$genericObj->setId($newId);
+
+		logMessage("Created new database row ", LOG_LVL_VERBOSE);
+		logMessage($genericObj, LOG_LVL_DEBUG);
+		
+		return $genericObj;
 	}
 }
 

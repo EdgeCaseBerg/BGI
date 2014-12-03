@@ -21,7 +21,7 @@ function internal_error(){
 }
 
 function logMessage ($message, $level) {
-	if(CURRENT_LOG_LEVEL <= $level ) {
+	if(CURRENT_LOG_LEVEL >= $level ) {
 		if(is_array($message) || is_object($message)) $message = print_r($message, 1);
 		error_log($message);
 	}
