@@ -51,8 +51,12 @@ class Database extends StdClass {
 		}
 	}
 
-	public function insert(Entity $genericObj ){
-		$tableName = strtolower(get_class($genericObj)) . 's'; //plurals aren't trying to appease the pedantic
+	private function getEntityTableName(Entity $genericObj) {
+		return strtolower(get_class($genericObj)) . 's'; //plurals aren't trying to appease the pedantic
+	}
+
+	public function insert(Entity $genericObj) {
+		$tableName = $this->getEntityTableName($genericObj);
 		$objInfo   = get_object_vars($genericObj);
 		
 		unset($objInfo['id']); //remove id so we don't try to assign the autogen
@@ -79,6 +83,43 @@ class Database extends StdClass {
 		logMessage($genericObj, LOG_LVL_DEBUG);
 		
 		return $genericObj;
+	}
+
+	/* update based on entity's id */
+	public function update(Entity $genericObj) {
+		$tableName = $this->getEntityTableName($genericObj);
+		$objInfo   = get_object_vars($genericObj);
+
+		unset($objInfo['id']); //remove id for other field purposes
+		
+		$sql = 'UPDATE ' . $tableName . ' SET '; 
+		$first = true;
+		foreach ($objInfo as $key => $value) {
+			if(!$first) $sql .= ',';
+			$sql .= $key . ' = :' . $key;	
+			$first = false;
+		};
+
+		$sql .= ' WHERE id = :id';
+
+		$statement = $this->pdo->prepare($sql);
+
+		$objInfo['id'] = $genericObj->getId();
+
+		foreach ($objInfo as $key => $value) {
+			$statement->bindValue(':'.$key, $value, $this->determinePDOType($value));
+		}
+
+		if ($statement->execute() == FALSE ) {
+			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return false;
+		} 
+		logMessage("Updated database row", LOG_LVL_VERBOSE);
+		logMessage($genericObj, LOG_LVL_DEBUG);
+
+		return $genericObj;
+
 	}
 }
 
