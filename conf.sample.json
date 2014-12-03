@@ -1,0 +1,13 @@
+{
+	"database" : {
+		"host" : "localhost",
+		"name" : "budget",
+		"user" : "buser",
+		"pass" : "money"
+	},
+	"goals" : {
+		"timedId" : 1,
+		"weeklyId" : 2,
+		"monthlyId" : 3
+	}
+}
