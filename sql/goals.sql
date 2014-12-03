@@ -1,12 +1,12 @@
-CREATE TABLE goal_types (
+CREATE TABLE goaltypes (
 	id INT(20) NOT NULL auto_increment PRIMARY KEY,
 	name VARCHAR(16) NOT NULL
 ) ENGINE InnoDB;
 
 -- Goal types are important, should be defined in code as well
-INSERT INTO goal_types (name) VALUES ("timed");
-INSERT INTO goal_types (name) VALUES ("weekly");
-INSERT INTO goal_types (name) VALUES ("monthly");
+INSERT INTO goaltypes (name) VALUES ("timed");
+INSERT INTO goaltypes (name) VALUES ("weekly");
+INSERT INTO goaltypes (name) VALUES ("monthly");
 
 CREATE TABLE goals (
 	id INT(20) NOT NULL auto_increment PRIMARY KEY, -- association id for foreign relationships to other tables
@@ -19,7 +19,7 @@ CREATE TABLE goals (
 	INDEX (`goal_type`),
 	INDEX (`user_id`),
 	CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT FOREIGN KEY (`goal_type`) REFERENCES `goal_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT FOREIGN KEY (`goal_type`) REFERENCES `goaltypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 CREATE TABLE account_goals (
