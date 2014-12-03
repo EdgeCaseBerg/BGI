@@ -79,7 +79,7 @@ class Database extends StdClass {
 		$newId = $this->pdo->lastInsertId();
 		$genericObj->setId($newId);
 
-		logMessage("Created new database row ", LOG_LVL_VERBOSE);
+		logMessage("Created new database row. "  . $tableName .'[id:' . $genericObj->getId() .']', LOG_LVL_VERBOSE);
 		logMessage($genericObj, LOG_LVL_DEBUG);
 		
 		return $genericObj;
@@ -115,11 +115,41 @@ class Database extends StdClass {
 			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
 			return false;
 		} 
-		logMessage("Updated database row", LOG_LVL_VERBOSE);
+
+		if ($statement->rowCount() != 1 ){
+			logMessage("Failed to update database row", LOG_LVL_WARN);
+			return false;
+		}
+
+		logMessage("Updated database row. "  . $tableName .'[id:' . $genericObj->getId() .']', LOG_LVL_VERBOSE);
 		logMessage($genericObj, LOG_LVL_DEBUG);
 
 		return $genericObj;
 
+	}
+
+	public function delete(Entity $genericObj) {
+		$tableName = $this->getEntityTableName($genericObj);
+
+		$sql = 'DELETE FROM ' . $tableName . ' WHERE id = :id';
+		$statement = $this->pdo->prepare($sql);
+		$statement->bindValue(':id', $genericObj->getId());
+
+		if ($statement->execute() == FALSE ) {
+			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return false;
+		} 
+
+		if ($statement->rowCount() != 1 ){
+			logMessage("Failed to delete database row", LOG_LVL_WARN);
+			return false;
+		}
+
+		logMessage("Deleted database row. " . $tableName .'[id:' . $genericObj->getId() .']', LOG_LVL_VERBOSE);
+		logMessage($genericObj, LOG_LVL_DEBUG);
+
+		return true;
 	}
 }
 
