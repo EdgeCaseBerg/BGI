@@ -16,7 +16,7 @@ $dirname = dirname(__FILE__);
 /* Configuration for easily loading neccesary files that do not require
  * any dependencys besides Entity etc. (aka, core classes)
 */
-$axiomClasses = array('Entity', 'Goal');
+$axiomClasses = array('Entity', 'Goal', 'User', 'GoalType', 'LineItem', 'Account');
 
 @include $dirname . '/overrides.php';
 include $dirname . '/bootstrap/conf.php';

@@ -9,3 +9,4 @@ error.log
 
 #ignore private config details
 conf.json
+overrides.php
