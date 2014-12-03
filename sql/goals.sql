@@ -15,7 +15,10 @@ CREATE TABLE goals (
 	end_time TIMESTAMP NULL, -- when goal type is timed this is valid
 	start_time TIMESTAMP NULL, -- when goal type is timed this is valid
 	goal_type INT (20) NOT NULL,
+	user_id INT(20) NOT NULL,
 	INDEX (`goal_type`),
+	INDEX (`user_id`),
+	CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT FOREIGN KEY (`goal_type`) REFERENCES `goal_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;
 

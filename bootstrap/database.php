@@ -72,7 +72,7 @@ class Database extends StdClass {
 		}
 
 		if ($statement->execute() == FALSE ) {
-			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
 			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
 			return false;
 		} 
@@ -112,17 +112,17 @@ class Database extends StdClass {
 		}
 
 		if ($statement->execute() == FALSE ) {
-			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
 			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
 			return false;
 		} 
 
 		if ($statement->rowCount() != 1 ){
-			logMessage("Failed to update database row", LOG_LVL_WARN);
+			logMessage('Failed to update database row', LOG_LVL_WARN);
 			return false;
 		}
 
-		logMessage("Updated database row. "  . $tableName .'[id:' . $genericObj->getId() .']', LOG_LVL_VERBOSE);
+		logMessage('Updated database row. '  . $tableName .'[id:' . $genericObj->getId() .']', LOG_LVL_VERBOSE);
 		logMessage($genericObj, LOG_LVL_DEBUG);
 
 		return $genericObj;
@@ -137,13 +137,13 @@ class Database extends StdClass {
 		$statement->bindValue(':id', $genericObj->getId());
 
 		if ($statement->execute() == FALSE ) {
-			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
 			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
 			return false;
 		} 
 
 		if ($statement->rowCount() != 1 ){
-			logMessage("Failed to delete database row", LOG_LVL_WARN);
+			logMessage('Failed to delete database row', LOG_LVL_WARN);
 			return false;
 		}
 
@@ -161,22 +161,37 @@ class Database extends StdClass {
 		$statement->bindValue(':id', $genericObj->getId());
 
 		if ($statement->execute() == FALSE ) {
-			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
 			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
 			return false;
 		} 
 
 		if ($statement->rowCount() != 1 ){
 			//no logging since it's just a 404
-			logMessage("No entity found for query " . $tableName .'[id:'.$genericObj->getId().']', LOG_LVL_DEBUG);
+			logMessage('No entity found for query ' . $tableName .'[id:'.$genericObj->getId().']', LOG_LVL_DEBUG);
 			return false;
 		}		
-		logMessage("Retrieved entity from database. " . $tableName .'[id:'.$genericObj->getId().']', LOG_LVL_VERBOSE);
+		logMessage('Retrieved entity from database. ' . $tableName .'[id:'.$genericObj->getId().']', LOG_LVL_VERBOSE);
 		$genericObj = $statement->fetchObject(get_class($genericObj));
 		logMessage($genericObj, LOG_LVL_DEBUG);
 		return $genericObj;
 	}
 
+	public function all(Entity $genericObj) { 
+		$tableName = $this->getEntityTableName($genericObj);
+		$sql = 'SELECT * FROM ' . $tableName;
+		$statement = $this->pdo->prepare($sql);
+
+		if ($statement->execute() == FALSE ) {
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return array();
+		} 
+
+		$entities = $statement->fetchAll(PDO::FETCH_CLASS, get_class($genericObj));
+		logMessage('Retrieved ' . count($entities) . ' rows from database ' . $tableName, LOG_LVL_VERBOSE);
+		return $entities;
+	}
 
 }
 

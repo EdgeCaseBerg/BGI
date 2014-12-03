@@ -13,12 +13,16 @@
 */
 $dirname = dirname(__FILE__);
 
+/* Configuration for easily loading neccesary files that do not require
+ * any dependencys besides Entity etc. (aka, core classes)
+*/
+$axiomClasses = array('Entity', 'Goal');
+
 @include $dirname . '/overrides.php';
 include $dirname . '/bootstrap/conf.php';
-//TODO: include entity model here that all models will use.
+foreach ($axiomClasses as $axiom) {
+	include $dirname . '/core/'.$axiom.'.class.php';	
+}
 include $dirname . '/bootstrap/database.php';
-
-$db = Database::instance();
-
 
 ?>
