@@ -3,6 +3,7 @@
  * the unexpected (as well as the spanish inquisition) 
 */
 
+// In debug mode this class will throw exceptions, non debug it will simply log them
 class Database extends StdClass {
 	private $pdo = NULL;
 	static $instance = NULL;
@@ -151,6 +152,32 @@ class Database extends StdClass {
 
 		return true;
 	}
+
+	/* Pass a blank entity with the id you want of the class you want */
+	public function get(Entity $genericObj) {
+		$tableName = $this->getEntityTableName($genericObj);
+		$sql = 'SELECT * FROM ' . $tableName . ' WHERE id = :id';
+		$statement = $this->pdo->prepare($sql);
+		$statement->bindValue(':id', $genericObj->getId());
+
+		if ($statement->execute() == FALSE ) {
+			logMessage("Failed to execute database query ", LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return false;
+		} 
+
+		if ($statement->rowCount() != 1 ){
+			//no logging since it's just a 404
+			logMessage("No entity found for query " . $tableName .'[id:'.$genericObj->getId().']', LOG_LVL_DEBUG);
+			return false;
+		}		
+		logMessage("Retrieved entity from database. " . $tableName .'[id:'.$genericObj->getId().']', LOG_LVL_VERBOSE);
+		$genericObj = $statement->fetchObject(get_class($genericObj));
+		logMessage($genericObj, LOG_LVL_DEBUG);
+		return $genericObj;
+	}
+
+
 }
 
 ?>
