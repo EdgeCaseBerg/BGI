@@ -193,4 +193,23 @@ class Database extends StdClass {
 		return $entities;
 	}
 
+	public function where(Entity $genericObj, $fieldName, $fieldValue) {
+		$tableName = $this->getEntityTableName($genericObj);
+		$sql = 'SELECT * FROM ' . $tableName . ' WHERE ' . $fieldName . ' = :' . $fieldName;
+
+		$statement = $this->pdo->prepare($sql);
+		$statement->bindValue(':'.$fieldName, $fieldValue, $this->determinePDOType($fieldValue));
+
+		if ($statement->execute() == FALSE ) {
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return false;
+		} 
+
+		$entities = $statement->fetchAll(PDO::FETCH_CLASS, get_class($genericObj));
+		logMessage('Retrieved ' . count($entities) . ' rows from database ' . $tableName, LOG_LVL_VERBOSE);
+		return $entities;
+
+	}
+
 }

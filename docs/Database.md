@@ -80,3 +80,45 @@ Parameters: `Entity` with `id` field set
 Returns: True if deletion is successful, false otherwise
 
 ------------------------------------------------------------------------
+
+**where**
+
+Parameters: `Entity`, `fieldName`, `fieldValue`  
+Returns: Array of Entities matching where Entity table has fieldName = fieldValue
+
+------------------------------------------------------------------------
+
+
+### More examples:
+
+Creating a user, account, and 2 line items then cleaning up everything:
+
+	$db = Database::instance();
+	$u = new User();
+	$u->ident = 'Test';
+
+	$db->insert($u);
+
+	$a = new Account();
+	$a->user_id = $u->id;
+	$a->balance = 0;
+	$a->name = 'Test';
+
+	$db->insert($a);
+
+	$l = new LineItem();
+	$l->account_id = $a->id;
+	$l->name = 'Test Item 1';
+	$l->amount = 100;
+	$l->created_time = date('c');
+
+	$db->insert($l);
+
+	$l->name = 'Test Item 2';
+	$l->amount = 200;
+
+	$db->insert($l);
+
+	$items = $db->where(new LineItem(), 'account_id', $a->id);
+
+	$db->delete($u); //remove all
