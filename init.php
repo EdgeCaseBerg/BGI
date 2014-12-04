@@ -18,6 +18,11 @@ $dirname = dirname(__FILE__);
 */
 $axiomClasses = array('Entity', 'Goal', 'User', 'GoalType', 'LineItem', 'Account');
 
+/* Configure Services to load as well. Note this is before overrides so 
+ * we can shut off services or replace them with different ones if desired
+*/
+$servicesToLoad = array('Authentication', 'User', 'Account');
+
 @include $dirname . '/overrides.php';
 include $dirname . '/bootstrap/conf.php';
 foreach ($axiomClasses as $axiom) {
@@ -29,7 +34,7 @@ include $dirname . '/lib/password_compat/password.php';
 /* Set password cryptography options for auth and user services (global var) */
 $cryptOptions = array("cost" => 11);
 
-$servicesToLoad = array('Authentication', 'User');
+
 foreach ($servicesToLoad as $service) {
 	include $dirname . '/service/'.$service.'Service.php';
 }
