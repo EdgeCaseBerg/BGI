@@ -26,7 +26,10 @@ foreach ($axiomClasses as $axiom) {
 include $dirname . '/bootstrap/database.php';
 include $dirname . '/lib/password_compat/password.php';
 
-$servicesToLoad = array('Authentication');
+/* Set password cryptography options for auth and user services (global var) */
+$cryptOptions = array("cost" => 11);
+
+$servicesToLoad = array('Authentication', 'User');
 foreach ($servicesToLoad as $service) {
 	include $dirname . '/service/'.$service.'Service.php';
 }

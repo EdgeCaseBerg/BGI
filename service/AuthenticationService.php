@@ -1,7 +1,6 @@
 <?php
 class AuthenticationService { 
 	private static $instance =NULL;
-	private static $cryptOptions = array("cost" => 11);
 
 	private $db;
 
@@ -21,8 +20,9 @@ class AuthenticationService {
 	}
 
 	private function rehashIfNeccesary(User $user) {
-		if (password_needs_rehash($user->hash, PASSWORD_BCRYPT, self::$cryptOptions)) {
-			$user->hash = password_hash($password, PASSWORD_BCRYPT, self::$cryptOptions);
+		global $cryptOptions;
+		if (password_needs_rehash($user->hash, PASSWORD_BCRYPT, $cryptOptions)) {
+			$user->hash = password_hash($password, PASSWORD_BCRYPT, $cryptOptions);
 			if( ! $this->db->update($user) ) {
 				logMessage('Could not rehash user\'s password [id:' . $user->id . ']');
 				return false;
@@ -57,12 +57,14 @@ class AuthenticationService {
 		}
 
 		$user = $storedUser;
-
 		return true;
 	}
 
 	public function login(User $user) {
 		if($this->canLogin($user)) {
+			$user->last_seen = date('c');
+			@$this->db->update($user); //not critical
+
 			session_start();
 			$_SESSION['loggedIn'] = true;
 			$_SESSION['userId'] = $user->id;
