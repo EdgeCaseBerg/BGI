@@ -1,5 +1,5 @@
 Database
-------------------------------------------------------------------------
+========================================================================
 
 Example Usage:
 
@@ -30,6 +30,15 @@ Example Usage:
 
 	//Get all goals
 	$goals = $db->all($g);
+
+	//Select goal types using custom query
+	$s = $db->custom("SELECT * FROM goaltypes");
+
+	//Select custom query using parameters, returns array of objects
+	$s = $db->custom("SELECT * FROM accounts where id = :id", array(':id' => 1));
+
+	//Insert,update,delete using custom, returns true or false
+	$db->custom("INSERT INTO goaltypes (id, name) VALUES (:id,:name)", array(':id' => -1, ':name' => 'test'));
 
 
 The database class within the bootstrap folder is a simple PDO wrapper 
@@ -87,6 +96,11 @@ Parameters: `Entity`, `fieldName`, `fieldValue`
 Returns: Array of Entities matching where Entity table has fieldName = fieldValue
 
 ------------------------------------------------------------------------
+
+**custom** 
+
+Parameters: query with `:key`-ed parameters, array with key => values 
+Returns: array of objects if query is a select statement, true or false otherwise.
 
 
 ### More examples:

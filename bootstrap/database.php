@@ -212,4 +212,26 @@ class Database extends StdClass {
 
 	}
 
+	public function custom($queryToPrepare, Array $params = array()) {
+		$statement = $this->pdo->prepare($queryToPrepare);
+		foreach ($params as $key => $value) {
+			$statement->bindValue($key, $value);
+		}
+
+		if ($statement->execute() == FALSE ) {
+			logMessage('Failed to execute database query ', LOG_LVL_WARN);
+			logMessage($statement->errorInfo(), LOG_LVL_DEBUG);
+			return false;
+		} 
+
+		$uppercase = strtoupper($queryToPrepare);
+		if (strpos($uppercase, 'SELECT') === false ) {
+			return true;
+		}
+
+		$objects = $statement->fetchAll(PDO::FETCH_OBJ);
+		logMessage('Retrieved ' . count($objects) . ' rows from database for custom query', LOG_LVL_VERBOSE);
+		return $objects;		
+	}
+
 }
