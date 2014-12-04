@@ -38,3 +38,5 @@ foreach ($servicesToLoad as $service) {
 Database::instance();
 
 
+/* Clear out the session and get ready */
+$_SESSION = array();

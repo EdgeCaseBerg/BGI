@@ -15,7 +15,7 @@ class AuthenticationService {
 		$this->db = Database::instance();
 	}
 
-	public function checkPassword(User $user, $password) {
+	private function checkPassword(User $user, $password) {
 		return password_verify($password, $user->hash);
 	}
 
@@ -37,7 +37,7 @@ class AuthenticationService {
 	 * after calling this function, $user will be replaced with database 
 	 * if it was successful
 	*/
-	public function canLogin(User &$user) {
+	private function canLogin(User &$user) {
 		$matchingUsers = $this->db->where($user, 'nickname', $user->nickname);
 		if ($matchingUsers === false || count($matchingUsers) != 1) {
 			return false;
@@ -60,18 +60,21 @@ class AuthenticationService {
 		return true;
 	}
 
-	public function login(User $user) {
+	public function login(User &$user) {
 		if($this->canLogin($user)) {
 			$user->last_seen = date('c');
 			@$this->db->update($user); //not critical
 
+			session_regenerate_id();
 			session_start();
 			$_SESSION['loggedIn'] = true;
 			$_SESSION['userId'] = $user->id;
+			return true;
 		}
+		return false;
 	}
 
-	public function logout(User $user) { 	
+	public function logout() { 	
 		$_SESSION = array();
 		if (ini_get("session.use_cookies")) {
 			$params = session_get_cookie_params();
