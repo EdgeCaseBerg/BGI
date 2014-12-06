@@ -1,10 +1,3 @@
-<?php 
-/*
-	All View content goes into the render_view function
-*/
-require_once dirname(__FILE__) . '/../init.php';
-function render_view(){ ?>
-
 <div class="grid-1 gutter-40">
 	<div class="span-1">
 		<h1>Welcome to your Budgeting and Spending Tracker</h1>
@@ -40,6 +33,3 @@ function render_view(){ ?>
 		</dl>
 	</div>
 </div>
-
-<?php }
-$controller->render();
