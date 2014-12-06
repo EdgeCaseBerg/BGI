@@ -49,6 +49,9 @@ foreach ($servicesToLoad as $service) {
 	include $dirname . '/service/'.$service.'Service.php';
 }
 
+include $dirname . '/view/ViewController.class.php';
+$controller = new ViewController();
+
 /* Attempt to Connect to the database to ensure we can */
 Database::instance();
 
