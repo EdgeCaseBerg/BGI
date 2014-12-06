@@ -8,8 +8,18 @@
  *    If a user creates an overrides file they can redefine the 
  *    configuration and `defines` as neccesary.
  * 
- * 2. bootstrap/conf.php
+ * 2. bootstrap/conf.php1
+ *    sets up configuration settings and connects to database
  *    
+ * 3. load all core classes
+ *    loads core entitys representing the data in the program
+ *
+ * 4. load security classes
+ *	  load up password compatability classes and etc
+ *
+ * 5. load all services 
+ *    load up services that operate on the data that can be called from controllers
+ 
 */
 $dirname = dirname(__FILE__);
 
