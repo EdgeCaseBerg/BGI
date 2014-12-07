@@ -25,8 +25,9 @@ class UserService {
 			$user->last_seen = date('c');
 			$user->ident = '';
 
-			$this->db->insert($user);
-			return true;
+			if ( $this->db->insert($user) !== false) {
+				return true;
+			}
 		}
 		return false;
 	}

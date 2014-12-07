@@ -27,8 +27,9 @@ $user = new User();
 $user->ident = $password;
 $user->nickname = $nickname;
 
-print_r($user);
-
-/* Check that it doesn't already exist */
-
-//header('Location: /register?e=1');
+$result = $userService->createUser($user);
+if ($result) {
+	header('Location: /register?s=1');
+} else {
+	header('Location: /register?e=1');
+}
