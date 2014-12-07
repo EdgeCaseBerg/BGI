@@ -4,5 +4,6 @@
 		<p>
 			Use the form below to use <b>BGI</b> and register.
 		</p>
+		<?php include dirname(__FILE__) . '/shared/forms/register.form.php'; ?>
 	</div>
 </div>

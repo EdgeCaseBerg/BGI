@@ -8,6 +8,14 @@ logMessage('Attempting to load View: ' . $viewName, LOG_LVL_DEBUG);
 
 $one = 1;
 $viewName = str_replace('/', '', $viewName,$one); // remove first / in the url
+if (strpos($viewName, '?') !== false) {
+	$viewName = explode('?', $viewName);
+	$viewName = $viewName[0];
+}
+
+if (strpos($viewName, '.php') !== false) {
+	$viewName = str_replace('.php', '', $viewName);
+}
 
 if(empty($viewName)) $viewName = 'index';
 
