@@ -55,6 +55,4 @@ $controller = new ViewController();
 /* Attempt to Connect to the database to ensure we can */
 Database::instance();
 
-
-/* Clear out the session and get ready */
-$_SESSION = array();
+session_start();

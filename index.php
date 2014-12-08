@@ -21,11 +21,11 @@ if(empty($viewName)) $viewName = 'index';
 
 $allowedViewScripts = array(
 	'index',
-	'register'
+	'register',
+	'login'
 );
 if (!in_array($viewName, $allowedViewScripts)) {
 	$viewName = '404';
 }
 
 $controller->render($viewName);
-
