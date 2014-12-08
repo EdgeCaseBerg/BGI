@@ -40,7 +40,7 @@ register_js('/resources/manage-categories.js');
 		            </div>
 		            <div data-field-span="1">
 		                <label>Starting Balance</label>
-		                <input name="balance" type="text">
+		                <input name="balance" type="text" pattern="[-]?[0-9]+\.[0-9]{2}?" title="Please enter a valid dollar amount">
 		            </div>
 				</div>
 			</fieldset>
