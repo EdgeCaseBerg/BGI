@@ -1,10 +1,4 @@
-<?php 
-if (!AuthenticationService::isUserLoggedIn()) {
-	echo '<div class="message warning">Session Timed Out</div>';
-	echo '<script type="text/javascript">window.alert("Session Timed Out!");</script>';
-	echo '<META http-equiv="refresh" content="0;URL=/login" />';
-}
-?>
+<?php ensureUserLoggedin(); ?>
 <div class="grid-1 gutter-40">
 	<div class="span-1">
 		<h1>Welcome to your Budgeting and Spending Tracker</h1>
@@ -18,7 +12,7 @@ if (!AuthenticationService::isUserLoggedIn()) {
 		</p>
 		<ul>
 			<li>
-				<a href="#manage-category">Manage Categories</a>
+				<a href="/manage-categories">Manage Categories</a>
 			</li>
 			<li>
 				<a href="#manage-lineitem">Manage Expenditures</a>

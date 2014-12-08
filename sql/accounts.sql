@@ -3,6 +3,7 @@ CREATE TABLE accounts (
 	user_id INT(20) NOT NULL,
 	name VARCHAR(64), 
 	balance INT(20), -- amount stored in cents
+	last_updated TIMESTAMP, 
 	INDEX (`user_id`),
 	CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;

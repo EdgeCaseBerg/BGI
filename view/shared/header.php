@@ -31,7 +31,7 @@
 				<li class="title">Navigation</li>
 				<?php if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']): ?>
 					<li><a href="/home">Home</a></li>
-					<li><a href="#">Tracking</a></li>
+					<li><a href="/manage-categories">Tracking</a></li>
 					<li><a href="#">Metrics</a></li>
 					<li><a href="#">Goals</a></li>
 					<li><a href="/api/logout">Logout</a></li>

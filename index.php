@@ -28,7 +28,8 @@ $allowedViewScripts = array(
 	'register',
 	'login',
 	'logout',
-	'home'
+	'home',
+	'manage-categories'
 );
 if (!in_array($viewName, $allowedViewScripts)) {
 	$viewName = '404';

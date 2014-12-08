@@ -56,3 +56,11 @@ $controller = new ViewController();
 Database::instance();
 
 session_start();
+
+function ensureUserLoggedin() {
+	if (!AuthenticationService::isUserLoggedIn()) {
+		echo '<div class="message warning">Session Timed Out</div>';
+		echo '<script type="text/javascript">window.alert("Session Timed Out!");</script>';
+		echo '<META http-equiv="refresh" content="0;URL=/login" />';
+	}
+}
