@@ -51,3 +51,7 @@ Returns: true or false
 Parameters: User Entity
 Returns: false or an array of user accounts
 
+
+**updateAccount**  
+Parameters: Account Entity  
+Returns: False or the entity with updated fields

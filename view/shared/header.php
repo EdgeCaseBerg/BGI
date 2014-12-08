@@ -14,6 +14,7 @@
 	<meta charset="UTF-8" />
 
 	<link rel="stylesheet" type="text/css" href="<?php echo flake_path('css/all.css'); ?>">
+	<link rel="stylesheet" type="text/css" href="/resources/bgi.css">
 </head>
 
 <body>

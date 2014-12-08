@@ -28,7 +28,7 @@ class AccountService {
 		return $this->db->where(new Account(), 'user_id', $user->id);
 	}
 
-	public function setUpdatedTime(Account $account) {
+	public function updateAccount(Account $account) {
 		$account->last_updated = date('c');
 		return $this->db->update($account);	
 	}

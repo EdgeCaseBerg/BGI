@@ -66,3 +66,19 @@ define('STATIC_PATH', '/lib/flakes/');
 function flake_path($referencedPath) {
 	return STATIC_PATH . $referencedPath;
 }
+
+function register_js($jsPath){
+	if (!isset($_SESSION['js'])) {
+		$_SESSION['js'] = array();
+	}
+	$_SESSION['js'][] = $jsPath;
+}
+
+function render_page_js() {
+	if (isset($_SESSION['js'])) {
+		foreach ($_SESSION['js'] as $jsPath) {
+			echo '<script src="' . $jsPath . '"></script>';
+		}
+		unset($_SESSION['js']);
+	}
+}

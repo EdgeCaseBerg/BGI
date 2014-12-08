@@ -6,6 +6,8 @@ $user->id = $_SESSION['userId'];
 
 $accountService = AccountService::instance();
 $userAccounts = $accountService->getUserAccounts($user);
+
+register_js('/resources/manage-categories.js');
 ?>
 <div class="grid-1 gutter-40">
 	<div class="span-1">
@@ -18,13 +20,38 @@ $userAccounts = $accountService->getUserAccounts($user);
 	</div>
 </div>
 <div class="grid-1 gutter-40">
+	<?php
+		if (isset($_GET['e']) && intval($_GET['e']) == 1 ) {
+			echo '<div class="message warning">There was a problem performing the requested action</div>';
+		}
+	?>
 	<div class="span-1">
 		<div class="flakes-actions-bar">
-			<a href="#delete" class="action button-gray smaller">Delete</a>
-			<a href="#delete" class="action button-gray smaller">New</a>
-			
-		</div> 
+			<a href="#delete" class="action button-red smaller">Delete</a>
+			<a href="#new" class="action button-green smaller">New</a>
+		</div> 	
+		<form id="new-account-form" class="grid-form hidden" action="/api/create-account.php" method="POST">
+			<fieldset>
+				<legend>Create New Account</legend>
+				<div data-row-span="4">
+					<div data-field-span="3">
+		                <label>Name</label>
+		                <input name="accountName" type="text">
+		            </div>
+		            <div data-field-span="1">
+		                <label>Starting Balance</label>
+		                <input name="balance" type="text">
+		            </div>
+				</div>
+			</fieldset>
+			<br/>
+			<input type="submit" value="Create Account" class="button-green bigger right" />
+		</form>
+	</div>
+</div>
 
+<div class="grid-1 gutter-40">
+	<div class="span-1">
 		<table class="flakes-table">
 			<thead>
 				<tr>
@@ -49,4 +76,3 @@ $userAccounts = $accountService->getUserAccounts($user);
 		</table>
 	</div>
 </div>
-

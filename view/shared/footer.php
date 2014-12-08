@@ -12,5 +12,7 @@
 
 	<script src="<?php echo flake_path('js/base.js'); ?>"></script>
 	<script src="<?php echo flake_path('js/utils.js'); ?>"></script>
+
+	<?php render_page_js(); ?>
 </body>
 </html>

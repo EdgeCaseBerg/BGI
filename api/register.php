@@ -3,7 +3,7 @@
 /* Check that we've got the data sent to us */
 if ($_SERVER['REQUEST_METHOD'] != 'POST') { 	
 	logMessage("Invalid method");
-	header('Location: /register?e=1');
+	header('Location: /register?e=1', LOG_LVL_DEBUG);
     exit();
 }
 
