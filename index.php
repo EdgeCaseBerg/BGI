@@ -19,10 +19,15 @@ if (strpos($viewName, '.php') !== false) {
 
 if(empty($viewName)) $viewName = 'index';
 
+/* You might ask yourself, oh god why is there this list its so annoying 
+ * to update, wah, and yeah, yes it is. because like hell you want someone
+ * including a file you didn't mean for them to do so.
+*/
 $allowedViewScripts = array(
 	'index',
 	'register',
-	'login'
+	'login',
+	'home'
 );
 if (!in_array($viewName, $allowedViewScripts)) {
 	$viewName = '404';

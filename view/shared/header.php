@@ -30,10 +30,11 @@
 			<ul>
 				<li class="title">Navigation</li>
 				<?php if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']): ?>
-					<li><a href="#logout">Logout</a></li>
-					<li><a href="#">Accounts</a></li>
-					<li><a href="#">Spending</a></li>
-					<li><a href="#"></a></li>
+					<li><a href="/home">Home</a></li>
+					<li><a href="#">Tracking</a></li>
+					<li><a href="#">Metrics</a></li>
+					<li><a href="#">Goals</a></li>
+					<li><a href="/logout">Logout</a></li>
 				<?php else: ?>
 					<li><a href="/register">Register</a></li>
 					<li><a href="/login">Login</a></li>
