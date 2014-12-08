@@ -65,7 +65,7 @@ register_js('/resources/manage-categories.js');
 				<?php foreach ($userAccounts as $account): ?>
 					<tr>
 						<td>
-							<input type="checkbox" rel="<?php echo $account->id; ?>" />
+							<input type="checkbox" name="<?php echo htmlspecialchars($account->name); ?>" rel="<?php echo $account->id; ?>" />
 						</td>
 						<td><?php echo htmlspecialchars($account->name); ?></td>
 						<td><?php echo money_format('%.2n',(intval($account->balance)/100)); ?></td>
