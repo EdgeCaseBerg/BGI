@@ -86,4 +86,8 @@ class AuthenticationService {
 		session_destroy();
 	}
 
+	public static function isUserLoggedIn() {
+		return (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']);
+	}
+
 }

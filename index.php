@@ -27,6 +27,7 @@ $allowedViewScripts = array(
 	'index',
 	'register',
 	'login',
+	'logout',
 	'home'
 );
 if (!in_array($viewName, $allowedViewScripts)) {

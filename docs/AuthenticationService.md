@@ -31,3 +31,7 @@ data populated from the database if succesful.
 Parameters: None  
 Returns: nothing. Destroys current session and unsets all session fields
 
+
+(static) **isUserLoggedIn**  
+Parameters: None  
+Returns: true or false if the user is logged in or not

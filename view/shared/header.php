@@ -34,7 +34,7 @@
 					<li><a href="#">Tracking</a></li>
 					<li><a href="#">Metrics</a></li>
 					<li><a href="#">Goals</a></li>
-					<li><a href="/logout">Logout</a></li>
+					<li><a href="/api/logout">Logout</a></li>
 				<?php else: ?>
 					<li><a href="/register">Register</a></li>
 					<li><a href="/login">Login</a></li>
