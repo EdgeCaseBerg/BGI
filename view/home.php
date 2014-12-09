@@ -15,7 +15,7 @@
 				<a href="/manage-categories">Manage Categories</a>
 			</li>
 			<li>
-				<a href="#manage-lineitem">Manage Expenditures</a>
+				<a href="/manage-lineitems">Manage Expenditures</a>
 			</li>
 			<li>
 				<a href="#add-lineitem">Add Expenditure</a>

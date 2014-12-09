@@ -36,10 +36,12 @@ class LineItemService {
 	}
 
 	public function addLineItem(LineItem $lineItem) {
+		//todo: update account balance based on lineitem
 		return $this->db->insert($lineItem);
 	}
 
 	public function deleteLineItem(LineItem $lineItem) {
+		//todo: update account balance based on lineitem
 		return $this->db->delete($lineItem);
 	}
 }
