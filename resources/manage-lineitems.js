@@ -9,9 +9,11 @@ $(document).ready(function($) {
 
 	function createRow(row_data) {
 		var tr = $(document.createElement('tr'))
-		tr.append( $(tdWrap('<input type="checkbox" name="'+row_data.name+'" rel="'+row_data.id+'" />')))
+		tr.append( $(tdWrap('<input type="checkbox" name="'+row_data.name+'" rel="'+row_data.id+'" data-account="'+row_data.account_id+'" />')))
+
+		var dollarView = (row_data.amount/100).toFixed(2)
 		tr.append( tdWrap(row_data.name))
-		tr.append( tdWrap(row_data.amount))
+		tr.append( tdWrap(dollarView))
 		var dateInfo = new Date(row_data.created_time)
 		tr.append( tdWrap(dateInfo.toLocaleDateString()))
 		acctTbody.append(tr)
@@ -73,6 +75,7 @@ $(document).ready(function($) {
 			for (var i = checkboxes.length - 1; i >= 0; i--) {
 				var box = $(checkboxes[i])
 				var lineItemId = box.attr('rel')
+				var account_id = box.attr('data-account')
 				console.info('Deleting LineItem with id: ' + lineItemId)
 				if (window.confirm('Are you sure you want to delete ' + box.attr('name') + '?')) {
 					$.ajax({
@@ -80,7 +83,8 @@ $(document).ready(function($) {
 						context: box,
 						method: "POST",
 						data: {
-							lineItemId : lineItemId
+							lineItemId : lineItemId,
+							account_id: account_id
 						},
 						dataType: 'json',
 						error: function() {
