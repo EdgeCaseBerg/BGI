@@ -15,7 +15,9 @@ register_js('/resources/manage-lineitems.js');
 	<div class="span-1">
 		<h1>LineItem Management</h1>
 		<p>
-			
+			Click the View button below to pull up a categorie's items. You can 
+			delete the items by selecting the checkbox next to their name. Clicking
+			new line item will bring you aware from this page.
 		</p>
 	</div>
 </div>

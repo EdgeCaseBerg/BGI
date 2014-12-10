@@ -18,7 +18,7 @@
 				<a href="/manage-lineitems">Manage Expenditures</a>
 			</li>
 			<li>
-				<a href="#add-lineitem">Add Expenditure</a>
+				<a href="/add-lineitem">Add Expenditure</a>
 			</li>
 		</ul>
 	</div>

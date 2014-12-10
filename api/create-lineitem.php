@@ -37,8 +37,30 @@ if( $lineItemService->addLineItem($lineItem) === false ) {
     exit();	
 }
 
+/* update the account as well */
+$accountService = AccountService::instance();
+$account = new Account();
+$account->id = $lineItem->account_id;
+$account = $accountService->getAccount($account);
+if ($account === false) {
+	$lineItemService->deleteLineItem($lineItem);
+	if ($isAjax) goto ajax_response;
+	else header('Location: /add-lineitem?e=1');
+    exit();	
+}
+
+$account->balance += $lineItem->amount;
+$updateSuccess = $accountService->updateAccount($account);
+
+if (!$updateSuccess) {
+	$lineItemService->deleteLineItem($lineItem);
+	if ($isAjax) goto ajax_response;
+	else header('Location: /add-lineitem?e=1');
+    exit();	
+}
+
 if ($isAjax) goto ajax_response;
-else header('Location: /add-lineitem');
+else header('Location: /add-lineitem?s=1');
 exit();
 
 
