@@ -9,6 +9,7 @@ $userAccounts = $accountService->getUserAccounts($user);
 if (empty($userAccounts)) {
 	echo '<h1 class="message warning">You need to create categories before you create line items</div>';
 }
+register_js('/resources/manage-lineitems.js');
 ?>
 <div class="grid-1 gutter-40">
 	<div class="span-1">
@@ -52,6 +53,11 @@ if (empty($userAccounts)) {
 			<a href="#delete" class="action button-red smaller">Delete</a>
 			<a href="/add-lineitem" class="action button-green smaller">New LineItem</a>
 		</div> 	
+		<div id="loading-area" class="grid-1 gutter-40 hidden">
+			<div class="span-1" style="text-align: center">
+				<img src="/resources/images/loading-bar.gif" />
+			</div>
+		</div>
 		<table class="flakes-table">
 			<thead>
 				<tr>
@@ -61,7 +67,7 @@ if (empty($userAccounts)) {
 					<th>Created Time</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="account-body">
 				<!-- Populate with JS -->
 			</tbody>
 		</table>
