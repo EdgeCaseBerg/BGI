@@ -7,7 +7,7 @@ $user->id = $_SESSION['userId'];
 $accountService = AccountService::instance();
 $userAccounts = $accountService->getUserAccounts($user);
 if (empty($userAccounts)) {
-	echo '<h1 class="message warning">You need to create categories before you create line items</div>';
+	echo '<h1 class="message warning">You need to <a href="/manage-categories">create some categories</a> before you create line items</div>';
 }
 register_js('/resources/manage-lineitems.js');
 ?>
@@ -19,6 +19,7 @@ register_js('/resources/manage-lineitems.js');
 			delete the items by selecting the checkbox next to their name. Clicking
 			new line item will bring you aware from this page.
 		</p>
+		<small>Note that account balances will not update unless you refresh the page</small>
 	</div>
 </div>
 <div class="grid-1 gutter-40">

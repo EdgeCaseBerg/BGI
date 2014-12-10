@@ -32,9 +32,11 @@ $user->id = $_SESSION['userId'];
 
 /* Make sure item belongs to the user  */
 $userAccounts = $accountService->getUserAccounts($user);
+$accountToUpdate = null;
 foreach ($userAccounts as $account) {
 	if ($itemToDelete->account_id == $account->id) {
 		$accountExists = true;
+		$accountToUpdate = $account;
 	}
 }
 
@@ -52,6 +54,19 @@ $lineItems = $lineItemService->getAccountLineItems($accountToQuery);
 
 if ($lineItems === false) {
 	$response->code = 404;
+	$response->message = 'Line items not found';
+	goto sendResponse;
+}
+
+$lineItemAmount = null;
+foreach ($lineItems as $lineItem) {
+	if ($lineItem->id == $itemToDelete->id) {
+		$lineItemAmount = $lineItem->amount;
+	}
+}
+
+if (is_null($lineItemAmount)) {
+	$response->code = 404;
 	$response->message = 'Line item not found';
 	goto sendResponse;
 }
@@ -62,7 +77,15 @@ if( !$lineItemService->deleteLineItem($itemToDelete) ) {
 	goto sendResponse;
 }
 
-logMessage('Deleted Account Successfully [id:'.$itemToDelete->id.']',LOG_LVL_DEBUG);
+
+$accountToUpdate->balance = $accountToUpdate->balance - $lineItemAmount;
+$result =  $accountService->updateAccount($accountToUpdate);
+
+if( $result === false ) {
+	logMessage('Failed to update account [id: ' . $account_id . '] and remove ' . $lineItemAmount . ' from balance');
+}
+
+logMessage('Deleted LineItem Successfully [id:'.$itemToDelete->id.']',LOG_LVL_DEBUG);
 $response->code = 200;
 $response->message = 'Successful Deletion';
 
