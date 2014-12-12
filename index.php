@@ -31,7 +31,8 @@ $allowedViewScripts = array(
 	'home',
 	'manage-categories',
 	'manage-lineitems',
-	'add-lineitem'
+	'add-lineitem',
+	'create-goals'
 );
 if (!in_array($viewName, $allowedViewScripts)) {
 	$viewName = '404';

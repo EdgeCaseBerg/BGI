@@ -32,7 +32,7 @@
 				<a href="#view-monthly">View Monthly Metrics</a>
 			</li>
 			<li>
-				<a href="#view-weekly">View Weekly Metrics</a>
+				<a href="/weekly-metrics">View Weekly Metrics</a>
 			</li>
 			<li>
 				<a href="#view-history">See your spending history</a>
@@ -49,7 +49,7 @@
 				<a href="#manage-goals">Manage your goals</a>
 			</li>
 			<li>
-				<a href="#create-a-goal">Create Goal</a>
+				<a href="/create-goals">Create Goals</a>
 			</li>
 		</ul>
 	</div>
