@@ -37,11 +37,14 @@ if (empty($userAccounts)) {
 	<hr>
 	<div class="span-1">
 		<h2>Weekly</h2>
+		<p>Set a goal for a single or multiple accounts in aggregate to meet each week</p>
 	</div>
 	<div class="span-1">
 		<h2>Monthly</h2>
+		<p>Set a goal for single or multiple accounts in aggregate to meet each month</p>
 	</div>
 	<div class="span-1">
 		<h2>Timed</h2>
+		<p>If you want to set a goal for a specific time period across accounts, use the form below</p>
 	</div>
 </div>
