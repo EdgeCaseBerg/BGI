@@ -33,7 +33,8 @@ $allowedViewScripts = array(
 	'manage-lineitems',
 	'add-lineitem',
 	'create-goals',
-	'manage-goals'
+	'manage-goals',
+	'weekly-metrics'
 );
 if (!in_array($viewName, $allowedViewScripts)) {
 	$viewName = '404';

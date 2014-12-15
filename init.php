@@ -31,7 +31,7 @@ $axiomClasses = array('Entity', 'Goal', 'User', 'GoalType', 'LineItem', 'Account
 /* Configure Services to load as well. Note this is before overrides so 
  * we can shut off services or replace them with different ones if desired
 */
-$servicesToLoad = array('Authentication', 'User', 'Account', 'LineItem', 'Goal');
+$servicesToLoad = array('Authentication', 'User', 'Account', 'LineItem', 'Goal', 'Metrics');
 
 @include $dirname . '/overrides.php';
 include $dirname . '/bootstrap/conf.php';

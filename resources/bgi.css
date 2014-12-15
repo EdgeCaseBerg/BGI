@@ -4,3 +4,11 @@
 .dotless{
 	list-style-type: none;
 }
+.chart-area-200{
+	min-height: 200px;
+	height: 200px;
+}
+.chart-area-300{
+	min-height: 300px;
+	height: 300px;
+}
