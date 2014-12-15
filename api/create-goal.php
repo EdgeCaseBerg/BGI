@@ -37,12 +37,15 @@ switch ($goalType) {
 			goto err;
 		}
 
-		$goal->start_time = strtotime($_POST['start_time']);
-		$goal->end_time = strtotime($_POST['end_time'] .' 23:59');
+		$goal->start_time =  strtotime($_POST['start_time']);
+		$goal->end_time =  strtotime($_POST['end_time'] .' 23:59');
 
-		if (empty($_POST['start_time']) || empty($_POST['end_time']) || $goal->start_time > $goal->end_time) {
+		if (empty($goal->start_time) || empty($goal->end_time) || $goal->start_time > $goal->end_time) {
 			goto err;
 		}
+
+		$goal->start_time = date('c', $goal->start_time);
+		$goal->end_time = date('c', $goal->end_time);
 
 		$created = $goalService->createTimedGoal($goal);
 		if ($created === false) { 
