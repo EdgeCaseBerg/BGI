@@ -74,3 +74,8 @@ Returns: true or false
 
 Parameters: Account, Goal  
 Returns: true or false
+
+**getUserGoalAccounts**  
+
+Parameters: User  
+Returns: array of account id's indexed by `id:<goal_id>`

@@ -82,3 +82,16 @@ function render_page_js() {
 		unset($_SESSION['js']);
 	}
 }
+
+function goal_type_text($goalType) {
+	switch ($goalType) {
+		case GOAL_TYPE_MONTHLY:
+			return 'Monthly';
+		case GOAL_TYPE_WEEKLY:
+			return 'Weekly';
+		case GOAL_TYPE_TIMED:
+			return 'Timed';
+		default:
+			return 'Invalid';
+	}
+}

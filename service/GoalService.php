@@ -47,6 +47,24 @@ class GoalService {
 		return $userGoals === false ? array() : $userGoals;
 	}
 
+	/* Returns an array indexed by the text: "id:<goal_id>", the text is there to make sure
+	 * php doesn't do anything funny with the numeric indexes being copied around
+	*/
+	public function getUserGoalAccounts(User $user) {
+		$goalLinks = $this->db->custom('SELECT * FROM account_goals JOIN goals g ON goal_id = g.id WHERE g.user_id = :user_id ORDER BY goal_id', array(':user_id' => $user->id));
+		if ($goalLinks === false) return array();
+
+		$links = array();
+		foreach ($goalLinks as $row) {
+			$gid = 'id:' . $row->goal_id;
+			$aid = $row->account_id;
+			if (isset($links[$gid])) $links[$gid][] = $aid;
+			else $links[$gid] = array($aid);
+		}
+
+		return $links;
+	}
+
 	public function deleteGoal(Goal $goal) {
 		return $this->db->delete($goal);
 	}
