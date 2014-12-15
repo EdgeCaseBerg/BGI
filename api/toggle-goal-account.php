@@ -4,7 +4,6 @@ $response->code = 400;
 $response->message = 'There was an error processing your request';
 
 header('Content-Type: application/json');
-error_log($_SERVER['REQUEST_METHOD']);
 if ($_SERVER['REQUEST_METHOD'] != 'POST') { 	
 	$response->message = 'Invalid Method';
 	goto sendResponse;
@@ -58,15 +57,20 @@ if ($user->id != $goal->user_id) {
 	goto sendResponse;
 }
 
+
 if ($_POST['state'] == 'T') {
+	logMessage('Attempting to link goal [id:'.$goal->id.'] to account [id:'.$account->id.']',LOG_LVL_VERBOSE)
 	$linked = $goalService->linkAccountToGoal($account, $goal);
 } else {
+	logMessage('Attempting to remove link between goal [id:'.$goal->id.'] and account [id:'.$account->id.']',LOG_LVL_VERBOSE)
 	$linked = $goalService->removeAccountFromGoal($account, $goal);
 }
 
 if ($linked === false) {
+	logMessage('Linkage attempt failed', LOG_LVL_VERBOSE);
 	$response->message = 'Could not complete action';
 } else {
+	logMessage('Linkage attempt success', LOG_LVL_VERBOSE);
 	$response->code = 200;
 	$response->message = 'Successful Action';	
 }

@@ -2,7 +2,6 @@
 		</div><!-- content -->
 	</div><!-- frame -->
 
-	<link rel="stylesheet" type="text/css" href="<?php echo flake_path('bower_components/prism/themes/prism.css'); ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo flake_path('bower_components/gridforms/gridforms/gridforms.css'); ?>">
 
 	<script src="<?php echo flake_path('bower_components/jquery/dist/jquery.js'); ?>"></script>

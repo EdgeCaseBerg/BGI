@@ -23,7 +23,10 @@ function internal_error(){
 function logMessage ($message, $level) {
 	if(CURRENT_LOG_LEVEL >= $level ) {
 		if(is_array($message) || is_object($message)) $message = print_r($message, 1);
-		error_log($message);
+		/* If logged in, show ID in log */
+		$user = 'Anon';
+		if(isset($_SESSION['userId'])) $user = intval($_SESSION['userId']);
+		error_log($user .'::'. $message);
 	}
 }
 
