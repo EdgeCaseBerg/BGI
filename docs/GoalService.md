@@ -79,3 +79,8 @@ Returns: true or false
 
 Parameters: User  
 Returns: array of account id's indexed by `id:<goal_id>`
+
+**getGoal**  
+
+Parameters: Goal (with id filled in)
+Returns: A goal object populated with database information

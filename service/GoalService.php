@@ -41,6 +41,13 @@ class GoalService {
 		return $this->db->insert($goal);	
 	}
 
+	public function getGoal(Goal $goal) {
+		if (is_null($goal->id)) {
+			return false;
+		}
+		return $this->db->get($goal);
+	}
+
 	public function getUserGoals(User $user) {
 		/* i.o. first */
 		$userGoals = $this->db->custom('SELECT * FROM goals WHERE user_id = :user_id ORDER BY goal_type', array(':user_id' => $user->id));
