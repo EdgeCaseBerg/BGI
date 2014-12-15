@@ -24,7 +24,7 @@ register_js('/lib/d3.min.js');
 		</p>
 	</div>
 </div>
-<h2>Highlights (ISO Week: <?php echo date('W') ?>)</h2>
+<h2>Highlights (Week of: <?php echo date('m/d', strtotime('this week')) ?>)</h2>
 <div class="grid-2 gutter-40">
 	<div class="span-1">
 		You've spent <mark><?php echo money_format('$%.2n',(intval($spentThisWeek->amount)/100));
