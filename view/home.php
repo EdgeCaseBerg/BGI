@@ -46,7 +46,7 @@
 		</p>
 		<ul>
 			<li>
-				<a href="#manage-goals">Manage your goals</a>
+				<a href="/manage-goals">Manage your goals</a>
 			</li>
 			<li>
 				<a href="/create-goals">Create Goals</a>

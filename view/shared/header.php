@@ -35,7 +35,7 @@
 					<li><a href="/manage-categories">Categories</a></li>
 					<li><a href="/manage-lineitems">Expenditures</a></li>
 					<li><a href="#">Metrics</a></li>
-					<li><a href="#">Goals</a></li>
+					<li><a href="/manage-goals">Goals</a></li>
 					<li><a href="/api/logout">Logout</a></li>
 				<?php else: ?>
 					<li><a href="/register">Register</a></li>
