@@ -4,7 +4,6 @@ $response->code = 400;
 $response->message = 'There was an error processing your request';
 
 header('Content-Type: application/json');
-error_log($_SERVER['REQUEST_METHOD']);
 if ($_SERVER['REQUEST_METHOD'] != 'POST') { 	
 	$response->message = 'Invalid Method';
 	goto sendResponse;
