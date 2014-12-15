@@ -28,10 +28,10 @@ if (empty($userAccounts)) {
 <div class="grid-3 gutter-40">
 	<?php
 		if (isset($_GET['e']) && intval($_GET['e']) == 1 ) {
-			echo '<div class="message warning">There was a problem performing the requested action</div>';
+			echo '<div class="flakes-message warning">There was a problem performing the requested action</div>';
 		}
 		if (isset($_GET['s']) && intval($_GET['s']) == 1 ) {
-			echo '<div class="message information">Successfully created item</div>';
+			echo '<div class="flakes-message information">Successfully created item</div>';
 		}
 	?>
 	<hr>

@@ -7,7 +7,7 @@ $user->id = $_SESSION['userId'];
 $accountService = AccountService::instance();
 $userAccounts = $accountService->getUserAccounts($user);
 if (empty($userAccounts)) {
-	echo '<h1 class="message warning">You need to <a href="/manage-categories">create some categories</a> before you create line items</div>';
+	echo '<h1 class="flakes-message warning">You need to <a href="/manage-categories">create some categories</a> before you create line items</div>';
 }
 register_js('/resources/manage-lineitems.js');
 ?>

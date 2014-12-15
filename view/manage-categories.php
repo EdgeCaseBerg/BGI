@@ -22,7 +22,7 @@ register_js('/resources/manage-categories.js');
 <div class="grid-1 gutter-40">
 	<?php
 		if (isset($_GET['e']) && intval($_GET['e']) == 1 ) {
-			echo '<div class="message warning">There was a problem performing the requested action</div>';
+			echo '<div class="flakes-message warning">There was a problem performing the requested action</div>';
 		}
 	?>
 	<div class="span-1">

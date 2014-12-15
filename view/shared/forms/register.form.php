@@ -4,10 +4,10 @@
 			<ul>
 				<?php 
 					if (isset($_GET['e']) && intval($_GET['e']) == 1) {
-						echo '<div class="message warning">There was a problem creating the account. Perhaps try a different username</div>';
+						echo '<div class="flakes-message warning">There was a problem creating the account. Perhaps try a different username</div>';
 					}
 					if (isset($_GET['s']) && intval($_GET['s']) == 1) {
-						echo '<div class="message information">Sucessful Signup, redirecting you in 5 seconds</div>';
+						echo '<div class="flakes-message information">Sucessful Signup, redirecting you in 5 seconds</div>';
 						echo '<META http-equiv="refresh" content="5;URL=/" />';
 					}
 				?>
