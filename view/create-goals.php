@@ -41,9 +41,9 @@ if (empty($userAccounts)) {
 		<form class="grid-form" action="/api/create-goal.php" method="POST">
 			<fieldset>
 				<legend>Create Weekly Goal</legend>
-				<div data-row-span="2">
+				<div data-row-span="3">
 					<input type="hidden" name="goal_type" value="<?php echo GOAL_TYPE_WEEKLY ?>" />
-					<div data-field-span="1">
+					<div data-field-span="2">
 		                <label>Name</label>
 		                <input name="name" type="text">
 		            </div>
@@ -55,7 +55,7 @@ if (empty($userAccounts)) {
 				<div data-row-span="1">
 					<div data-field-span="1">
 		            	<label>Accounts (select multiple)</label>
-						<select name="accounts" multiple >
+						<select name="accounts[]" multiple >
 							<?php foreach ($userAccounts as $account) {
 								echo '<option value="' . $account->id . '">' . $account->name . '</option>';
 							} ?>
@@ -73,9 +73,9 @@ if (empty($userAccounts)) {
 		<form class="grid-form" action="/api/create-goal.php" method="POST">
 			<fieldset>
 				<legend>Create Monthly Goal</legend>
-				<div data-row-span="2">
+				<div data-row-span="3">
 					<input type="hidden" name="goal_type" value="<?php echo GOAL_TYPE_MONTHLY ?>" />
-					<div data-field-span="1">
+					<div data-field-span="2">
 		                <label>Name</label>
 		                <input name="name" type="text">
 		            </div>
@@ -87,7 +87,7 @@ if (empty($userAccounts)) {
 				<div data-row-span="1">
 					<div data-field-span="1">
 		            	<label>Accounts (select multiple)</label>
-						<select name="accounts" multiple >
+						<select name="accounts[]" multiple >
 							<?php foreach ($userAccounts as $account) {
 								echo '<option value="' . $account->id . '">' . $account->name . '</option>';
 							} ?>
@@ -105,9 +105,9 @@ if (empty($userAccounts)) {
 		<form class="grid-form" action="/api/create-goal.php" method="POST">
 			<fieldset>
 				<legend>Create Timed Goal</legend>
-				<div data-row-span="2">
+				<div data-row-span="3">
 					<input type="hidden" name="goal_type" value="<?php echo GOAL_TYPE_TIMED ?>" />
-					<div data-field-span="1">
+					<div data-field-span="2">
 		                <label>Name</label>
 		                <input name="name" type="text">
 		            </div>
@@ -131,7 +131,7 @@ if (empty($userAccounts)) {
 				<div data-row-span="1">
 					<div data-field-span="1">
 		            	<label>Accounts (select multiple)</label>
-						<select name="accounts" multiple >
+						<select name="accounts[]" multiple >
 							<?php foreach ($userAccounts as $account) {
 								echo '<option value="' . $account->id . '">' . $account->name . '</option>';
 							} ?>

@@ -1,5 +1,6 @@
 <?php 
-
+include '../init.php';
+ensureUserLoggedin(); 
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') { 	
 	logMessage("Invalid method", LOG_LVL_DEBUG);
@@ -12,8 +13,7 @@ if( !isset($_POST['accountName']) || empty($_POST['accountName'])) {
     exit();
 }
 
-include '../init.php';
-ensureUserLoggedin(); 
+
 
 $accountService = AccountService::instance();
 $account = new Account();
