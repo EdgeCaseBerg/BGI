@@ -71,8 +71,9 @@ register_js('/resources/manage-goals.js');
 								<?php 
 								$checked = isset($goalAccounts['id:'.$goal->id]) && in_array($account->id, $goalAccounts['id:'.$goal->id]);
 								?>
-								<label><?php echo $account->name ?></label>
-								<input type="checkbox" <?php echo $checked ? 'checked' : ''; ?> class="category" rel="<?php echo $account->id ?>" />
+								<label><?php echo $account->name ?>
+									<input type="checkbox" <?php echo $checked ? 'checked' : ''; ?> class="category" rel="<?php echo $account->id ?>" />
+								</label>
 							</li>
 						<?php endforeach; ?>
 						</ul>

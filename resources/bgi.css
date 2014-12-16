@@ -12,3 +12,6 @@
 	min-height: 300px;
 	height: 300px;
 }
+input[type=checkbox]:hover,label:hover{
+	cursor: pointer;
+}
