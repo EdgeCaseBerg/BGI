@@ -59,10 +59,10 @@ if ($user->id != $goal->user_id) {
 
 
 if ($_POST['state'] == 'T') {
-	logMessage('Attempting to link goal [id:'.$goal->id.'] to account [id:'.$account->id.']',LOG_LVL_VERBOSE)
+	logMessage('Attempting to link goal [id:'.$goal->id.'] to account [id:'.$account->id.']',LOG_LVL_VERBOSE);
 	$linked = $goalService->linkAccountToGoal($account, $goal);
 } else {
-	logMessage('Attempting to remove link between goal [id:'.$goal->id.'] and account [id:'.$account->id.']',LOG_LVL_VERBOSE)
+	logMessage('Attempting to remove link between goal [id:'.$goal->id.'] and account [id:'.$account->id.']',LOG_LVL_VERBOSE);
 	$linked = $goalService->removeAccountFromGoal($account, $goal);
 }
 
