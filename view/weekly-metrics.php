@@ -32,6 +32,7 @@ register_js('/lib/d3.min.js');
 	</div>
 	<div class="span-1 chart-area-200">
 		<!-- Pie Chart of amount spent per category -->
+		<!-- https://gist.github.com/enjalot/1203641 -->
 	</div>
 </div>
 <div class="grid-1 gutter-40">
