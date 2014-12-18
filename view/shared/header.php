@@ -34,7 +34,7 @@
 					<li><a href="/home">Home</a></li>
 					<li><a href="/manage-categories">Categories</a></li>
 					<li><a href="/manage-lineitems">Expenditures</a></li>
-					<li><a href="#">Metrics</a></li>
+					<li><a href="/weekly-metrics">Metrics</a></li>
 					<li><a href="/manage-goals">Goals</a></li>
 					<li><a href="/api/logout">Logout</a></li>
 				<?php else: ?>
