@@ -13,7 +13,10 @@ $userGoals = $goalService->getUserGoals($user);
 $metricsService = MetricsService::instance();
 $spentThisWeek = $metricsService->spentThisWeek($user);
 
+$weeklyCategoryPieData = $metricsService->amountSpentPerCategoryThisWeek($user);
+
 register_js('/lib/d3.min.js');
+register_js('/resources/weekly-charts.js');
 ?>
 <div class="grid-1 gutter-40">
 	<div class="span-1">
@@ -30,13 +33,13 @@ register_js('/lib/d3.min.js');
 		You've spent <mark><?php echo money_format('$%.2n',(intval($spentThisWeek->amount)/100));
 		?></mark> so far this week on <mark><?php echo $spentThisWeek->count; ?></mark> categories. 
 	</div>
-	<div class="span-1 chart-area-200">
+	<div id="chart-area-200" class="span-1">
 		<!-- Pie Chart of amount spent per category -->
 		<!-- https://gist.github.com/enjalot/1203641 -->
 	</div>
 </div>
 <div class="grid-1 gutter-40">
-	<div class="span-1 chart-area-300">
+	<div id="chart-area-300" class="span-1">
 		<!-- Show current goals and whatnot, bar graph and lines of goal points -->
 	</div>
 </div>
@@ -45,3 +48,6 @@ register_js('/lib/d3.min.js');
 	<a href="#old" class="button-blue bigger">Show Previous Weeks</a>
 	<!-- Populated by d3 with data older than current week -->
 </div>
+<script type="text/javascript">
+	window.weekly200 = <?php echo json_encode($weeklyCategoryPieData); ?>;
+</script>

@@ -17,8 +17,8 @@ class MetricsService {
 	}
 
 	public function spentThisWeek(User $user) {
-		$s = strtotime('this monday');
-		$e = strtotime('next monday');
+		$s = strtotime('monday this week');
+		$e = strtotime('monday next week');
 		return $this->spentBetweenTime($s,$e,$user->id);
 	}
 
@@ -50,6 +50,24 @@ class MetricsService {
 			}
 		}
 		return (object) $spent;
+	}
+
+	public function amountSpentPerCategoryThisWeek(User $user) {
+		$s = strtotime('monday this week');
+		$e = strtotime('monday next week');
+		$results = $this->db->custom(
+			'SELECT SUM(amount) as amount, account_id, a.name FROM lineitems '.
+			'JOIN accounts a ON a.id = account_id '.
+			'WHERE user_id = :user_id AND created_time BETWEEN :start_time AND :end_time ' .
+			'GROUP BY account_id',
+			array(
+				':user_id' => $user->id,
+				':start_time' => date('c',$s),
+				':end_time' => date('c',$e)
+			)
+		);
+	
+		return $results === false ? array() : $results;
 	}
 
 
