@@ -4,7 +4,7 @@ $(document).ready(function(){
 	var c200Radius = 100
 	color = d3.scale.category20c()
 
-	
+	/* Pie Chart */
 	var chart200 = d3.select("#chart-area-200")
 		.append("svg:svg")
 		.data([window.weekly200])
@@ -39,4 +39,21 @@ $(document).ready(function(){
     		.text(function(d,i) { return window.weekly200[i].name })
 
 
+    /* Goal horizontal bar charts 
+    c300Data = window.weekly300.goals
+    c300Width = 400
+    c300Height = 20
+    var chart300 = d3.select("#chart-area-300")
+        .append("div")
+            .attr("class","horizontal")
+            .data(c300Data)
+            .enter()
+                .append("svg:svg")
+                .attr("width", c300Width)
+                .attr("height", c300Height)
+
+
+                
+    console.log(chart300)
+    */
 })

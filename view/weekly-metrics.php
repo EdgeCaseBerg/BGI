@@ -14,6 +14,7 @@ $metricsService = MetricsService::instance();
 $spentThisWeek = $metricsService->spentThisWeek($user);
 
 $weeklyCategoryPieData = $metricsService->amountSpentPerCategoryThisWeek($user);
+$spentOnGoalsThisWeek = $metricsService->goalSpendingForThisWeek($user);
 
 register_js('/lib/d3.min.js');
 register_js('/resources/weekly-charts.js');
@@ -35,7 +36,6 @@ register_js('/resources/weekly-charts.js');
 	</div>
 	<div id="chart-area-200" class="span-1">
 		<!-- Pie Chart of amount spent per category -->
-		<!-- https://gist.github.com/enjalot/1203641 -->
 	</div>
 </div>
 <div class="grid-1 gutter-40">
@@ -50,4 +50,7 @@ register_js('/resources/weekly-charts.js');
 </div>
 <script type="text/javascript">
 	window.weekly200 = <?php echo json_encode($weeklyCategoryPieData); ?>;
+	window.weekly300 = { 
+		goals : <?php echo json_encode($spentOnGoalsThisWeek); ?>
+	}
 </script>

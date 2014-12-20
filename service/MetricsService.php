@@ -70,5 +70,64 @@ class MetricsService {
 		return $results === false ? array() : $results;
 	}
 
+	public function goalSpendingForTimePeriod(User $user, $start, $end) {
+		$results = $this->db->custom(
+			'SELECT ' . 
+				'a.name as account_name, ' .
+				'g.id as goal_id, ' .
+				'g.name as goal_name, ' . 
+				'g.amount as goal_amount, ' .
+				'g.goal_type as goal_type, ' . 
+				'ag.account_id as account_id, ' .
+				'SUM(l.amount) as total ' .
+			'FROM goals g JOIN account_goals ag ON ag.goal_id = g.id ' . 
+			'JOIN lineitems l ON l.account_id = ag.account_id ' . 
+			'JOIN accounts a ON a.id = ag.account_id ' .
+			'WHERE g.user_id = :user_id AND created_time BETWEEN :start_time AND :end_time ' .
+			'GROUP BY g.id, ag.account_id ' . 
+			'ORDER BY g.id',
+			array(
+				':user_id' => $user->id,
+				':start_time' => date('c',$start),
+				':end_time' => date('c',$end)
+			)	
+		);
+		if ($results === false) {
+			return array();
+		}
+		/* Massage data for each individual goal to create the list of accounts */
+		$goalData = array();
+		$prev = null;
+		$obj = null;
+		foreach ($results as $row) {
+			if (is_null($prev)) {
+				$prev = $row;
+				$prev->accounts = array($prev->account_name => $prev->total);
+				continue;
+			}
+			if ($prev->goal_id != $row->goal_id) {
+				$goalData[] = $prev; //save it
+				$prev = $row;
+				$prev->accounts = array($prev->account_name => $prev->total);
+				$obj = $prev;
+				continue;
+			} else {
+				if (!array_key_exists($row->account_name, $prev->accounts)) {
+					$prev->accounts[$row->account_name] = $row->total;
+				}
+			}		
+		}
+		if (!in_array($obj, $goalData)) {
+			$goalData[] = $obj;
+		}
+		return $goalData;
+	}
+
+	public function goalSpendingForThisWeek(User $user) {
+		$s = strtotime('monday this week');
+		$e = strtotime('monday next week');
+		return $this->goalSpendingForTimePeriod($user, $s, $e);
+	}
+
 
 }
