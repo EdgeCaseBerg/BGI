@@ -5,6 +5,15 @@ class MetricsService {
 
 	private $db;
 
+	private static function weekRange() {
+		$s = strtotime('monday this week');
+		$e = strtotime('monday next week');
+		if (strtotime('today') < $s) { 
+			$s = strtotime('today');
+		}
+		return array($s,$e);
+	}
+
 	public static function instance() {
 		if (is_null(self::$instance)) {
 			self::$instance = new MetricsService();
@@ -17,8 +26,7 @@ class MetricsService {
 	}
 
 	public function spentThisWeek(User $user) {
-		$s = strtotime('monday this week');
-		$e = strtotime('monday next week');
+		list($s,$e) = self::weekRange();
 		return $this->spentBetweenTime($s,$e,$user->id);
 	}
 
@@ -53,8 +61,7 @@ class MetricsService {
 	}
 
 	public function amountSpentPerCategoryThisWeek(User $user) {
-		$s = strtotime('monday this week');
-		$e = strtotime('monday next week');
+		list($s,$e) = self::weekRange();
 		$results = $this->db->custom(
 			'SELECT SUM(amount) as amount, account_id, a.name FROM lineitems '.
 			'JOIN accounts a ON a.id = account_id '.
@@ -124,8 +131,7 @@ class MetricsService {
 	}
 
 	public function goalSpendingForThisWeek(User $user) {
-		$s = strtotime('monday this week');
-		$e = strtotime('monday next week');
+		list($s,$e) = self::weekRange();
 		return $this->goalSpendingForTimePeriod($user, $s, $e);
 	}
 
