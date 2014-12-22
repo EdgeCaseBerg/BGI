@@ -26,7 +26,7 @@ $(document).ready(function(){
     			.attr("class","slice")
 
     	arcs.append("svg:path")
-    		.attr("fill", function(d,i) { return color(+window.weekly200[i].account_id) })
+    		.attr("fill", function(d,i) { return color(window.weekly200[i].name) })
     		.attr("d", arc)
 
     	arcs.append("svg:text")
@@ -64,22 +64,31 @@ $(document).ready(function(){
             .domain([0, +obj.goal_amount])
             .range([0, c300Width])
 
-        var svg = d3.select("svg.horizontal[rel=\""+obj.goal_id+"\"]").selectAll("g")
-                .data(obj.accounts)
+        var svgContainer = d3.select("svg.horizontal[rel=\""+obj.goal_id+"\"]")
+        
+        svgContainer.selectAll("g")
+            .data(obj.accounts)
+                .enter()
+                    .append("svg:rect")
+                    .attr("width", function(d,i) { 
+                        return scale(+d) 
+                    })
+                    .attr("height", c300Height)
+                    .attr("fill", function(d,i) { 
+                        return color(obj.accountsKeys[i]) 
+                    })
+                    .attr("x",function(d,i) {
+                        return i == 0 ? 0 : (scale(+obj.accounts[i-1]))
+                    }) 
+                    .attr("y",0)
 
-        svg.enter()
-            .append("svg:rect")
-            .attr("width", function(d,i) { 
-                return scale(+d) 
-            })
-            .attr("height", c300Height)
-            .attr("fill", function(d,i) { 
-                return color(obj.accountsKeys[i]) 
-            })
-            .attr("x",function(d,i) {
-                return i == 0 ? 0 : (scale(+obj.accounts[i-1]))
-            }) 
-            .attr("y",0)
+        svgContainer.selectAll("g")
+            .data([obj.goal_name + ": " + (obj.accounts.reduce(function(a,b){return (+a) + (+b)})/100).toFixed(2) + "/" + (obj.goal_amount/100).toFixed(2) ])
+                .enter()
+                .append("svg:text")
+                    .text(function(d) { return d })
+                    .attr("x",0) 
+                    .attr("y",c300Height/2)
 
     }
 })
