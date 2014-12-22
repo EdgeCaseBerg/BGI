@@ -2,7 +2,7 @@ $(document).ready(function(){
 	var c200Width = 200 //surprise
 	var c200Height = 200
 	var c200Radius = 100
-	color = d3.scale.category20c()
+	color = d3.scale.category10()
 
 	/* Pie Chart */
 	var chart200 = d3.select("#chart-area-200")
@@ -39,21 +39,47 @@ $(document).ready(function(){
     		.text(function(d,i) { return window.weekly200[i].name })
 
 
-    /* Goal horizontal bar charts 
+    /* Goal horizontal bar charts  */
     c300Data = window.weekly300.goals
-    c300Width = 400
-    c300Height = 20
-    var chart300 = d3.select("#chart-area-300")
+    c300Width = 500
+    c300Height = 40
+    var chart300 = d3.selectAll("#chart-area-300")
         .append("div")
             .attr("class","horizontal")
+
+    var bars = chart300.selectAll("div")
             .data(c300Data)
             .enter()
                 .append("svg:svg")
-                .attr("width", c300Width)
-                .attr("height", c300Height)
+                    .attr("class", "horizontal")
+                    .attr("width", c300Width)
+                    .attr("height", c300Height)
+                    .attr("style", "clear: both; float: left;")
+                    .attr("rel", function(d) { return d.goal_id })
 
 
-                
-    console.log(chart300)
-    */
+    for (idx in c300Data) {
+        var obj = c300Data[idx]
+        scale = d3.scale.linear()
+            .domain([0, +obj.goal_amount])
+            .range([0, c300Width])
+
+        var svg = d3.select("svg.horizontal[rel=\""+obj.goal_id+"\"]").selectAll("g")
+                .data(obj.accounts)
+
+        svg.enter()
+            .append("svg:rect")
+            .attr("width", function(d,i) { 
+                return scale(+d) 
+            })
+            .attr("height", c300Height)
+            .attr("fill", function(d,i) { 
+                return color(obj.accountsKeys[i]) 
+            })
+            .attr("x",function(d,i) {
+                return i == 0 ? 0 : (scale(+obj.accounts[i-1]))
+            }) 
+            .attr("y",0)
+
+    }
 })

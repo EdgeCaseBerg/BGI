@@ -127,6 +127,10 @@ class MetricsService {
 		if (!in_array($obj, $goalData)) {
 			$goalData[] = $obj;
 		}
+		foreach ($goalData as $goalInfo) {
+			$goalInfo->accountsKeys = array_keys($goalInfo->accounts);
+			$goalInfo->accounts = array_values($goalInfo->accounts);
+		}
 		return $goalData;
 	}
 

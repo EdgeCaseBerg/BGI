@@ -40,6 +40,7 @@ register_js('/resources/weekly-charts.js');
 </div>
 <div class="grid-1 gutter-40">
 	<div id="chart-area-300" class="span-1">
+		<h3>Limit Goals</h3>
 		<!-- Show current goals and whatnot, bar graph and lines of goal points -->
 	</div>
 </div>

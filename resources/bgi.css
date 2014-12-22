@@ -15,3 +15,9 @@
 input[type=checkbox]:hover,label:hover{
 	cursor: pointer;
 }
+svg.horizontal{
+	background: lightgrey;
+	outline: solid thin black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
