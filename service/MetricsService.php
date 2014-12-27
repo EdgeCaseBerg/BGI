@@ -139,5 +139,11 @@ class MetricsService {
 		return $this->goalSpendingForTimePeriod($user, $s, $e);
 	}
 
+	public function getLastYearOfData(User $user) {
+		$s = strtotime('-1 year');
+		$e = strtotime('monday next week');
+		return $this->goalSpendingForTimePeriod($user, $s, $e);
+	}
+
 
 }

@@ -41,54 +41,67 @@ $(document).ready(function(){
 
     /* Goal horizontal bar charts  */
     c300Data = window.weekly300.goals
-    c300Width = 500
-    c300Height = 40
-    var chart300 = d3.selectAll("#chart-area-300")
-        .append("div")
-            .attr("class","horizontal")
+    if (c300Data[0] != null) {
+        c300Width = 500
+        c300Height = 40
+        var chart300 = d3.selectAll("#chart-area-300")
+            .append("div")
+                .attr("class","horizontal")
 
-    var bars = chart300.selectAll("div")
-            .data(c300Data)
-            .enter()
-                .append("svg:svg")
-                    .attr("class", "horizontal")
-                    .attr("width", c300Width)
-                    .attr("height", c300Height)
-                    .attr("style", "clear: both; float: left;")
-                    .attr("rel", function(d) { return d.goal_id })
-
-
-    for (idx in c300Data) {
-        var obj = c300Data[idx]
-        scale = d3.scale.linear()
-            .domain([0, +obj.goal_amount])
-            .range([0, c300Width])
-
-        var svgContainer = d3.select("svg.horizontal[rel=\""+obj.goal_id+"\"]")
-        
-        svgContainer.selectAll("g")
-            .data(obj.accounts)
+        var bars = chart300.selectAll("div")
+                .data(c300Data)
                 .enter()
-                    .append("svg:rect")
-                    .attr("width", function(d,i) { 
-                        return scale(+d) 
-                    })
-                    .attr("height", c300Height)
-                    .attr("fill", function(d,i) { 
-                        return color(obj.accountsKeys[i]) 
-                    })
-                    .attr("x",function(d,i) {
-                        return i == 0 ? 0 : (scale(+obj.accounts[i-1]))
-                    }) 
-                    .attr("y",0)
+                    .append("svg:svg")
+                        .attr("class", "horizontal")
+                        .attr("width", c300Width)
+                        .attr("height", c300Height)
+                        .attr("style", "clear: both; float: left;")
+                        .attr("rel", function(d) { return d.goal_id })
 
-        svgContainer.selectAll("g")
-            .data([obj.goal_name + ": " + (obj.accounts.reduce(function(a,b){return (+a) + (+b)})/100).toFixed(2) + "/" + (obj.goal_amount/100).toFixed(2) ])
-                .enter()
-                .append("svg:text")
-                    .text(function(d) { return d })
-                    .attr("x",0) 
-                    .attr("y",c300Height/2)
 
-    }
+        for (idx in c300Data) {
+            var obj = c300Data[idx]
+            scale = d3.scale.linear()
+                .domain([0, +obj.goal_amount])
+                .range([0, c300Width])
+
+            var svgContainer = d3.select("svg.horizontal[rel=\""+obj.goal_id+"\"]")
+            
+            svgContainer.selectAll("g")
+                .data(obj.accounts)
+                    .enter()
+                        .append("svg:rect")
+                        .attr("width", function(d,i) { 
+                            return scale(+d) 
+                        })
+                        .attr("height", c300Height)
+                        .attr("fill", function(d,i) { 
+                            return color(obj.accountsKeys[i]) 
+                        })
+                        .attr("x",function(d,i) {
+                            return i == 0 ? 0 : (scale(+obj.accounts[i-1]))
+                        }) 
+                        .attr("y",0)
+
+            svgContainer.selectAll("g")
+                .data([obj.goal_name + ": " + (obj.accounts.reduce(function(a,b){return (+a) + (+b)})/100).toFixed(2) + "/" + (obj.goal_amount/100).toFixed(2) ])
+                    .enter()
+                    .append("svg:text")
+                        .text(function(d) { return d })
+                        .attr("x",0) 
+                        .attr("y",c300Height/2)
+
+        }
+    } //end c300 data check
+
+    var loaded = false
+    $('#previous-weeks').click(function(){
+        if (!loaded) {
+            d3.json("/api/get-weekly-data-for-year", function(json) {
+                window.s = json
+                console.log(window.s)
+            })
+        }
+        //loaded = true
+    })
 })

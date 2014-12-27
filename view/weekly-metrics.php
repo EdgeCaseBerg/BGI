@@ -46,7 +46,7 @@ register_js('/resources/weekly-charts.js');
 </div>
 <hr>
 <div id="old-weeks">
-	<a href="#old" class="button-blue bigger">Show Previous Weeks</a>
+	<a href="#old" id="previous-weeks" class="button-blue bigger">Show Previous Weeks</a>
 	<!-- Populated by d3 with data older than current week -->
 </div>
 <script type="text/javascript">
