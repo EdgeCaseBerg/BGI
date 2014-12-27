@@ -128,8 +128,10 @@ class MetricsService {
 			$goalData[] = $obj;
 		}
 		foreach ($goalData as $goalInfo) {
-			$goalInfo->accountsKeys = array_keys($goalInfo->accounts);
-			$goalInfo->accounts = array_values($goalInfo->accounts);
+			if (is_object($goalInfo)) {
+				$goalInfo->accountsKeys = array_keys($goalInfo->accounts);
+				$goalInfo->accounts = array_values($goalInfo->accounts);
+			}
 		}
 		return $goalData;
 	}
