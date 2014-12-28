@@ -128,7 +128,7 @@ class MetricsService {
 			$goalData[] = $obj;
 		}
 		foreach ($goalData as $goalInfo) {
-			if (is_object($goalInfo)) {
+			if 	(is_object($goalInfo)) {
 				$goalInfo->accountsKeys = array_keys($goalInfo->accounts);
 				$goalInfo->accounts = array_values($goalInfo->accounts);
 			}
@@ -141,10 +141,24 @@ class MetricsService {
 		return $this->goalSpendingForTimePeriod($user, $s, $e);
 	}
 
-	public function getLastYearOfData(User $user) {
+	public function amountSpentPerCategoryThisYear(User $user) {
+		//Todo: refactor this and similar function into subfunctions of one 
+		//Todo: use pivoting and date diffing or a join to group up items by 
+		//		each week.
 		$s = strtotime('-1 year');
 		$e = strtotime('monday next week');
-		return $this->goalSpendingForTimePeriod($user, $s, $e);
+		$results = $this->db->custom(
+			'SELECT SUM(amount) as amount, account_id, a.name FROM lineitems '.
+			'JOIN accounts a ON a.id = account_id '.
+			'WHERE user_id = :user_id AND created_time BETWEEN :start_time AND :end_time ' .
+			'GROUP BY account_id',
+			array(
+				':user_id' => $user->id,
+				':start_time' => date('c',$s),
+				':end_time' => date('c',$e)
+			)
+		);
+		return $results === false ? array() : $results;
 	}
 
 

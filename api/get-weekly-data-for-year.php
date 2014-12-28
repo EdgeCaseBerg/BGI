@@ -19,7 +19,7 @@ $user->id = $_SESSION['userId'];
 
 $metricsService = MetricsService::instance();
 
-$results = $metricsService->getLastYearOfData($user);
+$results = $metricsService->amountSpentPerCategoryThisYear($user);
 
 $response->code = 200;
 if ($results === false) {
