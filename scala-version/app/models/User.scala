@@ -44,4 +44,4 @@ case class UserPassword(hash: String, complexity: UserPasswordComplexity.Complex
  * @param email optional email address, this is used for emailing weekly reports
  * @param loginAttempts number of times an unsuccesful login attempt has been made. 
  */
-case class User(id: Long, name: String, hash: UserPassword, email: Option[String] = None, loginAttempts: UserPasswordComplexity.Complexity = UserPasswordComplexity.Normal)
+case class User(id: Long, name: String, hash: UserPassword, email: Option[String] = None, loginAttempts: Int = 0)
