@@ -4,7 +4,7 @@ import scala.concurrent._
 
 /** Create. Read. Update. Remove trait for data access of models 
  * 
- * Each method takes an implicit [[ExecutionContext]] to run the future threads 
+ * Each method takes an implicit ExecutionContext to run the future threads 
  * in. This is to support async access to datastores for a flexible data layer.
  */
 trait CrudDAO[T] {
@@ -34,7 +34,7 @@ trait CrudDAO[T] {
 	 */
 	def update(model: T)(implicit ec: ExecutionContext) : Future[Boolean]
 
-	/** Remove a model from the underlying datastore by its id
+	/** Remove a model from the underlying datastore by ither s id
 	 * 
 	 * @param id The id of the model to remove
 	 * @param ec Implicit execution context containing in which to run threads in
