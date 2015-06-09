@@ -12,9 +12,9 @@ trait CrudDAO[T] {
 	 * 
 	 * @param model The model which will be created in the datastore
 	 * @param ec Implicit execution context in which to run threads in
-	 * @return A Future containing the result of whether or not the model was created in the store
+	 * @return A Future containing an option holding the created object or None
 	 */
-	def create(model: T)(implicit ec: ExecutionContext) : Future[Boolean]
+	def create(model: T)(implicit ec: ExecutionContext) : Future[Option[T]]
 
 	/** Find a model by its ID.  
 	 * 
