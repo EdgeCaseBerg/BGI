@@ -11,6 +11,7 @@ import scala.language.implicitConversions
  * BCrypt.hashpw("p", BCrypt.gensalt(UserPasswordComplexity.Normal))
  * }}}
  *
+ * Defines an implicit function to convert from Complexity to Int
  */
 object UserPasswordComplexity extends Enumeration {
 	type Complexity = Value
@@ -44,4 +45,4 @@ case class UserPassword(hash: String, complexity: UserPasswordComplexity.Complex
  * @param email optional email address, this is used for emailing weekly reports
  * @param loginAttempts number of times an unsuccesful login attempt has been made. 
  */
-case class User(id: Long, name: String, hash: UserPassword, email: Option[String] = None, loginAttempts: Int = 0)
+case class User(name: String, hash: UserPassword, email: Option[String] = None, loginAttempts: Int = 0, id: Long = -1)
