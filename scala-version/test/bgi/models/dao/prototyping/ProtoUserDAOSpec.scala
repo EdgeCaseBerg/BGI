@@ -43,7 +43,19 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 			}
 		}
 	}
+	
+	it should "remove users by id" in new DAL {
+		val users = List.range(0,10).map( i => new User("name",hash, id = i))
+		val futureUsers : Future[List[Option[User]]] = Future.sequence(users.map(userDAO.create(_)))
+		whenReady(futureUsers) { listOfOptionUsers =>
+			val futureRemoves : Future[List[Boolean]] = Future.sequence(listOfOptionUsers.map(x => userDAO.remove(x.get.id)))
+			whenReady(futureRemoves) { listOfBools => 
+				listOfBools.map(x => assert(x == true))
+			}
+		}		
+	}	
 
-	//TODO:  Continue writing tests here...
-		
+	//update test
+	//increment test
+	//reset test
 }
