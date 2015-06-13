@@ -53,9 +53,51 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 				listOfBools.map(x => assert(x == true))
 			}
 		}		
-	}	
+	}
 
-	//update test
-	//increment test
-	//reset test
+	it should "update a user" in new DAL {
+		val user = new User(name = "name", hash = hash, id = 0)
+		whenReady(userDAO.create(user)) { dbUser =>
+			val futureSuccessBool = userDAO.update(user.copy(name = "test"))
+			whenReady(futureSuccessBool) { successBool =>
+				assert(successBool == true)
+				whenReady(userDAO.findById(dbUser.get.id)) { found =>
+					assert(found.get.name == "test")
+				}
+			}
+		}
+	}
+
+	it should "increment a user's attempted logins" in new DAL {
+		val user = new User(name = "name", hash = hash, id = 0)
+		whenReady(userDAO.create(user)) { dbUser =>
+			val futureSuccessBool = userDAO.incrementLoginAttempt(user)
+			whenReady(futureSuccessBool) { successBool =>
+				assert(successBool == true)
+				whenReady(userDAO.findById(dbUser.get.id)) { found =>
+					assert(found.get.loginAttempts == 1)
+				}
+			}
+		}	
+	}
+
+	it should "be able to reset a user's attempted logins" in new DAL {
+		val user = new User(name = "name", hash = hash, id = 0)
+		whenReady(userDAO.create(user)) { dbUser =>
+			val futureSuccessBool = userDAO.incrementLoginAttempt(user)
+			whenReady(futureSuccessBool) { successBool =>
+				assert(successBool == true)
+				whenReady(userDAO.findById(dbUser.get.id)) { found =>
+					assert(found.get.loginAttempts == 1)
+					whenReady(userDAO.resetLoginAttempts(user)) { success =>
+						assert(success == true)
+						whenReady(userDAO.findById(dbUser.get.id)) { foundAgain =>
+							assert(foundAgain.get.loginAttempts == 0)
+						}
+					}
+				}
+			}
+		}	
+	}
+	
 }
