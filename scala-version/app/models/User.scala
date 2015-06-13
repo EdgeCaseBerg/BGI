@@ -24,7 +24,6 @@ object UserPasswordComplexity extends Enumeration {
 			case Hard => 15
 		}
 	}
-
 }
 
 /** Class representing a password hash of a user, saved with the complexity to compute it 
@@ -33,7 +32,8 @@ object UserPasswordComplexity extends Enumeration {
  * @param hash The hash of the password
  * @param complexity The work factor to use when checking the hash with BCrypt
  */
-case class UserPassword(hash: String, complexity: UserPasswordComplexity.Complexity)
+case class UserPassword(hash: String, complexity: UserPasswordComplexity.Complexity = UserPasswordComplexity.Normal)
+
 
 /** Class to represent a simple user of the system
  *
