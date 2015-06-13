@@ -7,6 +7,7 @@ import bgi.services._
 import bgi.globals.Context
 import bgi.globals.ProtoContext
 
+/** Controller for handling generic non-specific pages */
 abstract class DashboardController extends Controller with Context {
 	def index = Action {
 		Ok("Hello BGI")
