@@ -10,19 +10,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 
-	trait DAL {
+	trait UserDAOTestDAL {
 		val userDAO = new ProtoUserDAO()
 		val hash = UserPassword("password", UserPasswordComplexity.Normal)
 	}
 	
-	"The ProtoUserDAO" should "create a User" in new DAL {
+	"The ProtoUserDAO" should "create a User" in new UserDAOTestDAL {
 		val user = new User(name = "name", hash = hash, id = 0)
 		whenReady(userDAO.create(user)) { dbUser =>
 			assert(dbUser.get == user)
 		}
 	}
 
-	it should "find a created User by ID" in new DAL {
+	it should "find a created User by ID" in new UserDAOTestDAL {
 		val user = new User(name = "name", hash = hash)
 		whenReady(userDAO.create(user)) { dbUser =>
 			whenReady(userDAO.findById(dbUser.get.id)) { found =>
@@ -32,7 +32,7 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 		}
 	}
 
-	it should "assigned each created user a sequential id" in new DAL {
+	it should "assigned each created user a sequential id" in new UserDAOTestDAL {
 		val users = List.range(0,10).map( i => new User("name",hash, id = i))
 		val futureUsers : Future[List[Option[User]]] = Future.sequence(users.map(userDAO.create(_)))
 
@@ -44,7 +44,7 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 		}
 	}
 	
-	it should "remove users by id" in new DAL {
+	it should "remove users by id" in new UserDAOTestDAL {
 		val users = List.range(0,10).map( i => new User("name",hash, id = i))
 		val futureUsers : Future[List[Option[User]]] = Future.sequence(users.map(userDAO.create(_)))
 		whenReady(futureUsers) { listOfOptionUsers =>
@@ -55,7 +55,7 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 		}		
 	}
 
-	it should "update a user" in new DAL {
+	it should "update a user" in new UserDAOTestDAL {
 		val user = new User(name = "name", hash = hash, id = 0)
 		whenReady(userDAO.create(user)) { dbUser =>
 			val futureSuccessBool = userDAO.update(user.copy(name = "test"))
@@ -68,7 +68,7 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 		}
 	}
 
-	it should "increment a user's attempted logins" in new DAL {
+	it should "increment a user's attempted logins" in new UserDAOTestDAL {
 		val user = new User(name = "name", hash = hash, id = 0)
 		whenReady(userDAO.create(user)) { dbUser =>
 			val futureSuccessBool = userDAO.incrementLoginAttempt(user)
@@ -81,7 +81,7 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 		}	
 	}
 
-	it should "be able to reset a user's attempted logins" in new DAL {
+	it should "be able to reset a user's attempted logins" in new UserDAOTestDAL {
 		val user = new User(name = "name", hash = hash, id = 0)
 		whenReady(userDAO.create(user)) { dbUser =>
 			val futureSuccessBool = userDAO.incrementLoginAttempt(user)
@@ -99,5 +99,5 @@ class ProtoUserDAOSpec extends FlatSpec with ScalaFutures{
 			}
 		}	
 	}
-	
+
 }
