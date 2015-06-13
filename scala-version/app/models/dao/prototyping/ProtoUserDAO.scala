@@ -32,16 +32,20 @@ class ProtoUserDAO extends UserDAO {
 
 	def remove(id: Long)(implicit ec: ExecutionContext) : Future[Boolean] = future {
 		val toRemove = store.find(_.id == id)
-		toRemove.fold(false){ user => 
-			store -= user
-			!store.exists(_.id == id)
+		synchronized {
+			toRemove.fold(false){ user => 
+				store -= user
+				!store.exists(_.id == id)
+			}
 		}
 	}
 
 	def update(user: User)(implicit ec: ExecutionContext) : Future[Boolean] = future {
 		store.find(_.id == user.id).fold(false) { found => 
-			store -= found 
-			store += user 
+			synchronized {
+				store -= found 
+				store += user 
+			}
 			store.exists(_ == user)	
 		}
 	}
