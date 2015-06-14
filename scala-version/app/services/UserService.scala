@@ -73,13 +73,13 @@ class UserService(implicit val userDAO : UserDAO) {
 	 * @return A Future boolean on whether the passwords matched or not
 	 */
 	def authenticateUser(user: User, possiblePassword: String) : Future[Boolean] = {
-		BCrypt.hashpw(possiblePassword, BCrypt.gensalt(user.hash.complexity)) match {
-			case user.hash =>
-				resetLoginAttemptsForUser(user)
-			case _ => 
-				future {
-					false	
-				}
+		if(BCrypt.checkpw(possiblePassword, user.hash.hash)) {
+			resetLoginAttemptsForUser(user)
+		} else {
+			incrementLoginAttemptForUser(user)
+			future {
+				false	
+			}
 		}
 	}
 }
