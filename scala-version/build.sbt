@@ -17,3 +17,9 @@ libraryDependencies ++= Seq(
 
 lazy val root = (project in file("."))
 	.enablePlugins(PlayScala,SbtWeb)
+
+includeFilter in (Assets, LessKeys.less) := "*.less"
+
+excludeFilter in (Assets, LessKeys.less) := "_*.less"
+
+LessKeys.compress := true

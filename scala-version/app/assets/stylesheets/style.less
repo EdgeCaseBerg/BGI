@@ -1,0 +1,88 @@
+@headerColor: #003399;
+@backgroundColor: #FFFFCC;
+@success: #2fa700;
+@failure: #a7002f;
+@spacing: 10px;
+@headerFont: Monaco, Consolas, "Lucida Console", monospace;
+@regularFont: "Lucida Bright", Georgia, serif;
+
+/* http://www.colorhexa.com/003399 */
+
+.nospace {
+	margin:  auto 0 auto 0;
+	padding: auto 0 auto 0;
+	border: 0;
+}
+
+.standardmargin {
+	margin:  auto @spacing/2 auto @spacing/2;	
+}
+
+.success {
+	background-color: @success;
+}
+
+.failure {
+	background-color: @failure;
+}
+
+html {
+	.nospace;
+	background-color: @backgroundColor;
+	
+	font-family: @regularFont;
+	body {
+		.nospace;
+		header {
+			font-family: @headerFont;
+			background: @headerColor;
+			color: @backgroundColor;
+			h1 {
+				.standardmargin;
+				display: inline;
+			}
+			nav {
+				display: inline-block;
+				li {
+					display: inline-block;
+					.nospace;
+					a {
+						.standardmargin;
+						padding: auto @spacing/2 auto @spacing/2;
+						&:link, &:visited{
+							color: @backgroundColor;
+							text-decoration: underline;
+						}
+						&:hover, &:active {
+							color: @success;
+							text-decoration: none;
+						}
+					}
+				}
+			}
+		}
+		div {
+			margin:  auto @spacing/2 auto @spacing/2;
+			padding: auto @spacing/2 auto @spacing/2;
+			h2 {
+				font-style: italic;
+			}
+			section {
+				fieldset {
+					display: inline-block;
+					legend {
+						font-style: italic;
+					}
+					div {
+						text-align: right;
+					}
+					input[type=submit] {
+						background-color: @success;
+						color: @backgroundColor;
+						width: 100%;
+					}
+				}
+			}
+		}
+	}
+}

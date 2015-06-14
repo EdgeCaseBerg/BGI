@@ -1,0 +1,20 @@
+@(title : String = "BGI")(content: Html)(implicit flash : Flash)
+<html>
+	<head>
+		<title>@title</title>
+		<link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/style.min.css")">
+	</head>
+	<body>
+		<header>
+			<h1>BGI</h1>
+			<nav>
+				<ul>
+					<li><a href="@bgi.controllers.routes.Dashboard.index">Home</a></li>
+					<li><a href="/#">Privacy</a></li>
+				</ul>
+			</nav>
+		</header>
+		<div>
+			@content
+		</div>
+	@* We don't close the body here so that individual files can add scripts and etc *@

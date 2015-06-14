@@ -1,0 +1,48 @@
+@()(implicit flash: Flash)
+
+@* Maybe pass an implicit Option[user] to check if logged in or not *@
+@templates.standardLoggedOut("Index") {
+	<h2>Welcome to BGI</h2>
+	<hr>
+	<section>
+		<p>Welcome to BGI, the Budget GateWay Interface. This simple software is designed to help you keep track of your spending habits, and to provide helpful metrics to inform you about how you can curb your bad habits and develop better ones.</p>
+	</section>
+	<section>
+		<form>
+			<fieldset>
+				<legend>Log In</legend>
+				<div>
+					<label for="username">Username</label>
+					<input name="username" type="text" />
+				</div>
+				<div>
+					<label for="password">Password</label>
+					<input name="password" type="password" />
+				</div>
+				<input type="submit" value="Log In">
+			</fieldset>
+		</form>
+	</section>
+	<section>
+		<form>
+			<fieldset>
+				<legend>Sign Up</legend>
+				<div>
+					<label for="username">Username</label>
+					<input name="username" type="text" />
+				</div>
+				<div>
+					<label for="password">Password</label>
+					<input name="password" type="password" />
+				</div>
+				<div>
+					<label for="signupcode">Sign Up Code</label>
+					<input name="signupcode" type="password" /><br>
+					<small>Please ask the administrator for this code</small>
+				</div>
+				<input type="submit" value="Register">
+			</fieldset>
+		</form>
+	</section>
+
+}
