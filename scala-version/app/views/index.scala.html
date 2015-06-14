@@ -1,7 +1,7 @@
 @()(implicit flash: Flash)
 
 @* Maybe pass an implicit Option[user] to check if logged in or not *@
-@templates.standardLoggedOut("Index") {
+@templates.standard("BGI - Login", loggedIn = false ) {
 	<h2>Welcome to BGI</h2>
 	<hr>
 	<section>

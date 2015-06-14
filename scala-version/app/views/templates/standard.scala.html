@@ -1,4 +1,4 @@
-@(title : String = "BGI")(content: Html)(implicit flash : Flash)
+@(title : String = "BGI", loggedIn : Boolean = false)(content: Html)(implicit flash : Flash)
 <html>
 	<head>
 		<title>@title</title>
@@ -7,12 +7,11 @@
 	<body>
 		<header>
 			<h1>BGI</h1>
-			<nav>
-				<ul>
-					<li><a href="@bgi.controllers.routes.Dashboard.index">Home</a></li>
-					<li><a href="/#">Privacy</a></li>
-				</ul>
-			</nav>
+			@if(loggedIn) {
+				
+			} else {
+				@templates.partials.loggedOutNav()
+			}
 		</header>
 		<div>
 			@content
