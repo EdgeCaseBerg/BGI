@@ -1,3 +1,4 @@
 GET /assets/*file controllers.Assets.at(path="/public", file)
 
 GET / bgi.controllers.Dashboard.index
+POST /register bgi.controllers.Dashboard.register

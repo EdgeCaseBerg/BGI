@@ -1,3 +1,4 @@
+@import bgi.forms._
 @()(implicit flash: Flash)
 
 @* Maybe pass an implicit Option[user] to check if logged in or not *@
@@ -7,6 +8,13 @@
 	<section>
 		<p>Welcome to BGI, the Budget GateWay Interface. This simple software is designed to help you keep track of your spending habits, and to provide helpful metrics to inform you about how you can curb your bad habits and develop better ones.</p>
 	</section>
+	@if(flash.get("error").isDefined) {
+		<section name="errors">
+			<p>
+			@flash.get("error").getOrElse("")
+			</p>
+		</section>
+	}
 	<section>
 		<form>
 			<fieldset>
@@ -24,7 +32,7 @@
 		</form>
 	</section>
 	<section>
-		<form>
+		@helper.form(action = bgi.controllers.routes.Dashboard.register()) {
 			<fieldset>
 				<legend>Sign Up</legend>
 				<div>
@@ -42,7 +50,7 @@
 				</div>
 				<input type="submit" value="Register">
 			</fieldset>
-		</form>
+		}
 	</section>
 
 }
