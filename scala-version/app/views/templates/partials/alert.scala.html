@@ -1,0 +1,16 @@
+@()(implicit flash: Flash)
+
+@if(flash.get("error").isDefined) {
+	<section name="errors">
+		<p>
+		@flash.get("error").getOrElse("")
+		</p>
+	</section>
+}
+@if(flash.get("success").isDefined) {
+	<section name="success">
+		<p>
+		@flash.get("success").getOrElse("")
+		</p>
+	</section>
+}
