@@ -1,0 +1,16 @@
+@(pie: bgi.models.charts.Pie)
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"> 
+<svg viewBox = "0 0 200 200" version = "1.1" width="200px">
+	<defs>
+		<circle id="cir" cx="100" cy="100" r="@{pie.radius}" fill="orange" stroke="navy" stroke-width="2" />
+		<line id="li" x1="100" y1="100" x2="100" y2="180" stroke="black" stroke-width="10" />
+		<g id="arc" stroke="black" stroke-width="10" fill="blue">
+			@for(arc <- pie.getSvgArcs) {
+			<path d="M 100,100 @arc" fill="red" stroke="black" stroke-width="2" stroke-linejoin="round" />
+			}
+		</g>
+	</defs>
+	<use xlink:href="#cir"/>
+	<use xlink:href="#arc"/>
+</svg>

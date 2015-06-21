@@ -29,7 +29,6 @@ abstract class DashboardController extends Controller with Context {
 				)
 			},
 			boundForm => {
-				
 				val newUser = new User(name = boundForm.username, hash = UserPassword(BCrypt.hashpw(boundForm.password, BCrypt.gensalt(UserPasswordComplexity.Normal)), UserPasswordComplexity.Normal))
 				val createdUserFuture = userService.createUser(newUser)
 				for {
@@ -40,6 +39,14 @@ abstract class DashboardController extends Controller with Context {
 				}
 			}
 		)
+	}
+
+	def test = Action { 
+		val pie = new bgi.models.charts.Pie(80)
+		pie.addPortion(33.5)
+		pie.addPortion(375)
+		pie.addPortion(69.12)
+		Ok(views.html.svg.pie(pie))
 	}
 }
 
