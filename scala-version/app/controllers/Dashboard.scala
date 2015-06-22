@@ -43,9 +43,10 @@ abstract class DashboardController extends Controller with Context {
 
 	def test = Action { 
 		val pie = new bgi.models.charts.Pie(80)
-		pie.addPortion(33.5)
-		pie.addPortion(375)
-		pie.addPortion(69.12)
+		pie.addPortion(bgi.models.charts.Portion(33.5, "Loans" ))
+		pie.addPortion(bgi.models.charts.Portion(375, "Fun" ))
+		pie.addPortion(bgi.models.charts.Portion(69.12, "Bills" ))
+		pie.addPortion(bgi.models.charts.Portion(23.4, "Groceries" ))
 		Ok(views.html.svg.pie(pie))
 	}
 }
