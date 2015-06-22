@@ -7,11 +7,7 @@
 	<body>
 		<header>
 			<h1>BGI</h1>
-			@if(loggedIn) {
-				
-			} else {
-				@templates.partials.loggedOutNav()
-			}
+			@templates.partials.nav()
 		</header>
 		<div>
 			@content
