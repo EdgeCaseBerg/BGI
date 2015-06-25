@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class AuthenticatedRequest[A](val user: User, request: Request[A]) extends WrappedRequest[A](request)
 
-object Authenticated extends ActionBuilder[AuthenticatedRequest] with Context{
+object Authenticated extends ActionBuilder[AuthenticatedRequest] with ProtoContext{
 
   def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[Result]) = {
     request.session.get("userId").map { stringUserId =>

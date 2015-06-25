@@ -6,8 +6,7 @@ import play.api.mvc._
 import bgi.forms._
 import bgi.models._
 import bgi.services._
-import bgi.globals.Context
-import bgi.globals.ProtoContext
+import bgi.globals.{Context, ProtoContext, Authenticated}
 
 import org.mindrot.jbcrypt.BCrypt
 
@@ -30,18 +29,21 @@ abstract class DashboardController extends Controller with Context {
 			},
 			boundForm => {
 				val newUser = new User(name = boundForm.username, hash = UserPassword(BCrypt.hashpw(boundForm.password, BCrypt.gensalt(UserPasswordComplexity.Normal)), UserPasswordComplexity.Normal))
-				val createdUserFuture = userService.createUser(newUser)
-				for {
-					createdUser <- createdUserFuture
-				} yield createdUser
-				createdUserFuture.map { user =>
-					Redirect("/").flashing("success" -> "Successfully created user, please sign in!")
+				userService.createUser(newUser).map { optionUser =>
+					optionUser match {
+						case None =>	
+							Redirect("/").flashing("error" -> "Error! Please ensure your username and password are at least 4 characters long and you've entered the right admin code")
+						case Some(user) => 
+							Redirect("/")
+								.withSession("userId" -> user.id.toString)
+								.flashing("success" -> "Successfully created user, please sign in!")
+					}
 				}
 			}
 		)
 	}
 
-	def test = Action { 
+	def test = Authenticated { implicit request =>
 		val pie = new bgi.models.charts.Pie(80)
 		pie.addPortion(bgi.models.charts.Portion(33.5, "Loans" ))
 		pie.addPortion(bgi.models.charts.Portion(375, "Fun" ))
