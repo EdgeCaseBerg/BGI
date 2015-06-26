@@ -1,6 +1,8 @@
 package bgi.globals
 
 import bgi.models.dao._
+import bgi.models.dao.anorm._
+import bgi.models.dao.prototyping._
 import bgi.services._
 
 /** Global level dependency injection object
@@ -14,7 +16,6 @@ abstract trait Context {
 }
 
 trait AnormContext extends Context {
-	import bgi.models.dao.anorm._
 	override implicit lazy val userDAO : UserDAO = new AnormUserDAO()
 	override implicit lazy val userService : UserService = new UserService
 }
@@ -25,7 +26,6 @@ trait AnormContext extends Context {
  * ideas.
  */
 trait ProtoContext extends Context{
-	import bgi.models.dao.prototyping._
 	override implicit lazy val userDAO : UserDAO = new ProtoUserDAO()
 	override implicit lazy val userService : UserService = new UserService
 }
