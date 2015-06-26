@@ -1,4 +1,4 @@
-package bgi.models.dao.prototyping
+package bgi.models.dao.anorm
 
 import bgi.models.dao.UserDAO
 import bgi.models.{User, UserPassword, UserPasswordComplexity}, UserPasswordComplexity._
