@@ -30,8 +30,3 @@ trait ProtoContext extends Context{
 	override implicit lazy val userService : UserService = new UserService
 }
 
-trait AnormContext extends Context {
-	import bgi.models.dao.anorm._
-	override implicit lazy val userDAO : UserDAO = new AnormUserDAO()
-	override implicit lazy val userService : UserService = new UserService
-}
