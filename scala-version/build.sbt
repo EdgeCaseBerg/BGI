@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   	"org.scalatest" %% "scalatest" % "2.2.1" % "test",
  	"org.scalatestplus" %% "play" % "1.2.0" % "test",
 	"org.mindrot"  % "jbcrypt"   % "0.3m",
-	"mysql" % "mysql-connector-java" % "5.1.18"
+	"mysql" % "mysql-connector-java" % "5.1.18",
+	anorm
   )
 
 lazy val root = (project in file("."))
