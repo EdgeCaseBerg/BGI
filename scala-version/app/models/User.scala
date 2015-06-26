@@ -24,7 +24,17 @@ object UserPasswordComplexity extends Enumeration {
 			case Hard => 15
 		}
 	}
+
+	implicit class IntToComplexity(val i : Int) {
+		def asComplexity : UserPasswordComplexity.Complexity = i match {
+			case 10 => UserPasswordComplexity.Normal
+			case 12 => UserPasswordComplexity.Difficult
+			case _ =>  UserPasswordComplexity.Hard
+		}
+	}
 }
+
+
 
 /** Class representing a password hash of a user, saved with the complexity to compute it 
  * 
