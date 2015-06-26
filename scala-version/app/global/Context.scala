@@ -23,3 +23,8 @@ trait ProtoContext extends Context{
 	override implicit lazy val userDAO : UserDAO = new ProtoUserDAO()
 	override implicit lazy val userService : UserService = new UserService
 }
+
+trait AnormContext extends Context {
+	override implicit lazy val userDAO : UserDAO = new AnormUserDAO()
+	override implicit lazy val userService : UserService = new UserService
+}

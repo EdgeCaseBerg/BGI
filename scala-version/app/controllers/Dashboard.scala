@@ -6,7 +6,7 @@ import play.api.mvc._
 import bgi.forms._
 import bgi.models._
 import bgi.services._
-import bgi.globals.{Context, ProtoContext, Authenticated}
+import bgi.globals.{Context, AnormContext, Authenticated}
 
 import org.mindrot.jbcrypt.BCrypt
 
@@ -53,6 +53,6 @@ abstract class DashboardController extends Controller with Context {
 	}
 }
 
-object Dashboard extends DashboardController with ProtoContext{ 
+object Dashboard extends DashboardController with AnormContext{ 
 
 }
