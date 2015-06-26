@@ -13,6 +13,12 @@ abstract trait Context {
 	implicit lazy val userService : UserService = ???
 }
 
+trait AnormContext extends Context {
+	import bgi.models.dao.anorm._
+	override implicit lazy val userDAO : UserDAO = new AnormUserDAO()
+	override implicit lazy val userService : UserService = new UserService
+}
+
 /** A Context for using services wired with prototyping (non-db) DAO's 
  * 
  * Should not be used in production! This is for testing and trying out 

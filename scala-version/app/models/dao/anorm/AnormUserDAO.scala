@@ -55,11 +55,12 @@ class AnormUserDAO extends UserDAO{
 
 	def findById(id: Long)(implicit ec: ExecutionContext): Future[Option[bgi.models.User]] = future {
 		DB.withConnection { implicit connection =>
-			SQL("""
+			val optionUser : Option[User] = SQL("""
       		SELECT name, hash, complexity, email, loginAttempts, id FROM users 
       		WHERE id = {id}
       		"""
       ).on("id" -> id).as(fullUserParser *).headOption
+      optionUser
 		}
 	}
 
