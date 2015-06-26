@@ -12,12 +12,12 @@ import anorm.SqlParser._
 import scala.concurrent.{ExecutionContext, Future, future}
 import scala.language.postfixOps
 
-/** Object representing DAO layer for Users using Anorm
+/** Class representing DAO layer for Users using Anorm
  * 
  * Implementation of UserDAO, uses the anorm library to speak to 
  * RDBMS style databases
  */
-object AnormUserDAO extends UserDAO{
+class AnormUserDAO extends UserDAO{
 	/** Simple Anorm Mapper for a User row */
 	val fullUserParser = {
 		get[String]("name") ~
@@ -59,7 +59,7 @@ object AnormUserDAO extends UserDAO{
       		SELECT name, hash, complexity, email, loginAttempts, id FROM users 
       		WHERE id = {id}
       		"""
-      ).on("id" -> id).as(AnormUserDAO.fullUserParser *).headOption
+      ).on("id" -> id).as(fullUserParser *).headOption
 		}
 	}
 
@@ -102,7 +102,7 @@ object AnormUserDAO extends UserDAO{
 
 	def incrementLoginAttempt(user: User)(implicit ec: ExecutionContext) : Future[Boolean] = 
 		update(user.copy(loginAttempts = user.loginAttempts + 1))
-		
+
 	def resetLoginAttempts(user: User)(implicit ec: ExecutionContext) : Future[Boolean] = 
 		update(user.copy(loginAttempts = 0))
 
