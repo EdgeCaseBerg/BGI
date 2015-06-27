@@ -1,4 +1,4 @@
-CREATE DATABASE bgi;
+CREATE DATABASE bgi CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
 GRANT ALL ON bgi.* TO 'test'@'localhost';
 FLUSH PRIVILEGES;
@@ -11,7 +11,7 @@ CREATE TABLE users (
 	complexity INT(2) NOT NULL DEFAULT 10, 
 	email VARCHAR(128),
 	loginAttempts INT(2) NOT NULL DEFAULT 0
-) ENGINE InnoDB;
+) ENGINE InnoDB COLLATE='utf8_unicode_ci';
 
 CREATE TABLE lineitems (
 	id INT(16) UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -21,7 +21,7 @@ CREATE TABLE lineitems (
 	createdTime INT(16) UNSIGNED NOT NULL DEFAULT 1435445499, -- epoch time SELECT UNIX_TIMESTAMP(UTC_TIMESTAMP());
  	INDEX (`userId`),
 	CONSTRAINT FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE InnoDB;
+) ENGINE InnoDB COLLATE='utf8_unicode_ci';
 
 CREATE TABLE categories (
 	id INT(16) UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -31,12 +31,12 @@ CREATE TABLE categories (
 	lastUpdated INT(16) UNSIGNED NOT NULL DEFAULT 1435445499,
 	INDEX (`userId`),
 	CONSTRAINT FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE InnoDB;
+) ENGINE InnoDB COLLATE='utf8_unicode_ci';
 
 CREATE TABLE lineitem_categories (
-	lineitemId INT(16) UNSIGNED NOT NULL,
+	lineItemId INT(16) UNSIGNED NOT NULL,
 	categoryId INT(16) UNSIGNED NOT NULL,
-	CONSTRAINT FOREIGN KEY (`lineitemId`) REFERENCES `lineitems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FOREIGN KEY (`lineItemId`) REFERENCES `lineitems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	PRIMARY KEY(lineitemId, categoryId)
-) ENGINE InnoDB;
+	PRIMARY KEY(lineItemId, categoryId)
+) ENGINE InnoDB COLLATE='utf8_unicode_ci';
