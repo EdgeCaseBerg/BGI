@@ -13,37 +13,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Provides layer over basic DAO and ability to perform business logic
  * surrounding the user object.
  */
-class UserService(implicit val userDAO : UserDAO) {
-
-	/** Wrapper around userDAO method
-	 * 
-	 * @see [[bgi.models.dao.UserDAO]]
-	 */
-	def findUserById(id: Long) : Future[Option[User]] = userDAO.findById(id)
-
+class UserService(implicit val userDAO : UserDAO) extends BaseService[User] {
 	/** Wrapper around userDAO method
 	 *
 	 * @see [[bgi.models.dao.UserDAO]]
 	 */
 	def findUserByUsername(username: String) : Future[Option[User]] = userDAO.findByUsername(username)
-
-	/** Wrapper around userDAO method
-	 * 
-	 * @see [[bgi.models.dao.UserDAO]]
-	 */
-	def createUser(user : User) : Future[Option[User]] = userDAO.create(user)
-
-	/** Wrapper around userDAO method
-	 * 
-	 * @see [[bgi.models.dao.UserDAO]]
-	 */
-	def updateUser(user: User) : Future[Boolean] = userDAO.update(user)
-
-	/** Wrapper around userDAO method
-	 * 
-	 * @see [[bgi.models.dao.UserDAO]]
-	 */
-	def removeById(id: Long) : Future[Boolean] = userDAO.remove(id)
 
 	/** Wrapper around userDAO method
 	 * 
@@ -67,7 +42,7 @@ class UserService(implicit val userDAO : UserDAO) {
 	 */
 	def rehashWithComplexity(user : User, newPassword: String, newComplexity: UserPasswordComplexity.Complexity) : Future[Boolean] = {
 		val newHash = BCrypt.hashpw(newPassword, BCrypt.gensalt(newComplexity))
-		updateUser(user.copy(hash = UserPassword(newHash, newComplexity)))
+		update(user.copy(hash = UserPassword(newHash, newComplexity)))
 	}
 
 	/** Method to determine is a given password matches the stored hashed value

@@ -35,7 +35,7 @@ class UserServiceSpec extends FlatSpec with ScalaFutures{
 	it should "rehash a password to a higher complexity" in new TestContext {
 		whenReady(userService.rehashWithComplexity(user, "test", UserPasswordComplexity.Difficult)) { success =>
 			assert(success)
-			val updatedUser = Await.result(userService.findUserById(user.id), awaitTime).get
+			val updatedUser = Await.result(userService.findById(user.id), awaitTime).get
 			assert(updatedUser.hash.hash != user.hash.hash)
 			assert(updatedUser.hash.complexity == UserPasswordComplexity.Difficult)
 		}

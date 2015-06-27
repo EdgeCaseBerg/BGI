@@ -26,7 +26,7 @@ object Authenticated extends ActionBuilder[AuthenticatedRequest] with AnormConte
 			Try(stringUserId.toLong) match {
 				case Failure(e) => failRedir
 				case Success(userId) => 
-					val possibleUser : Future[Option[User]] = userService.findUserById(userId)
+					val possibleUser : Future[Option[User]] = userService.findById(userId)
 					possibleUser.flatMap { optionUser =>
 						optionUser match { 
 							case Some(user) => block(new AuthenticatedRequest(user, request))

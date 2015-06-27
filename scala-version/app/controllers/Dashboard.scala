@@ -29,7 +29,7 @@ abstract class DashboardController extends Controller with Context {
 			},
 			boundForm => {
 				val newUser = new User(name = boundForm.username, hash = UserPassword(BCrypt.hashpw(boundForm.password, BCrypt.gensalt(UserPasswordComplexity.Normal)), UserPasswordComplexity.Normal))
-				userService.createUser(newUser).map { optionUser =>
+				userService.create(newUser).map { optionUser =>
 					optionUser match {
 						case None =>	
 							Redirect("/").flashing("error" -> "Error! Please ensure your username and password are at least 4 characters long and you've entered the right admin code")
