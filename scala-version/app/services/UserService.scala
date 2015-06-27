@@ -73,13 +73,15 @@ class UserService(implicit val userDAO : UserDAO) {
 	/** Method to determine is a given password matches the stored hashed value
 	 * 
 	 * @note This method will reset the login attempts made be a user if the passwords match
+	 * @note 10 incorrect attempts to login in a row will lock an account
 	 * 
 	 * @param user The user to authenticate against the possiblePassword
 	 * @param possiblePassword The password to check as a match for the stored hash
 	 * @return A Future boolean on whether the passwords matched or not
 	 */
 	def authenticateUser(user: User, possiblePassword: String) : Future[Boolean] = {
-		if(BCrypt.checkpw(possiblePassword, user.hash.hash)) {
+		/* Only allow a user to authenticate UserPasswordComplexity.MaxAttempts times in a row */
+		if(BCrypt.checkpw(possiblePassword, user.hash.hash) && user.loginAttempts < UserPasswordComplexity.MaxAttempts ) {
 			resetLoginAttemptsForUser(user)
 		} else {
 			incrementLoginAttemptForUser(user)

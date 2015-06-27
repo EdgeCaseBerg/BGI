@@ -17,6 +17,9 @@ object UserPasswordComplexity extends Enumeration {
 	type Complexity = Value
 	val Normal, Difficult, Hard = Value
 
+	/** Maximum number of repeated attempts to login before an account is locked */
+	val MaxAttempts = 10
+
 	implicit def complexityToInteger(c: Complexity) : Int = { 
 		c match {
 			case Normal => 10

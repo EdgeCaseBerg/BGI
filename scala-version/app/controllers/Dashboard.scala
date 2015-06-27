@@ -55,7 +55,7 @@ abstract class DashboardController extends Controller with Context {
 					optionUser match {
 						case None => 
 							Future.successful(Redirect("/").flashing("error" -> "Sorry, that doesn't seem right. Try Again"))
-						case Some(user) =>
+						case Some(user) if user.loginAttempts < UserPasswordComplexity.MaxAttempts =>
 							val authFuture : Future[Boolean] = userService.authenticateUser(user, boundForm.password)
 							authFuture.map { isUser => 
 								if(isUser) {
@@ -68,6 +68,8 @@ abstract class DashboardController extends Controller with Context {
 											.withNewSession			
 								}
 							}
+						case Some(user) =>
+							Future.successful(Redirect("/").flashing("error" -> "Your account has been locked due to too many attempts to login"))
 					}		
 				}
 			}
