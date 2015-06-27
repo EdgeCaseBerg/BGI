@@ -1,3 +1,5 @@
+package bgi.models
+
 import org.scalatest._
 
 import org.mindrot.jbcrypt.BCrypt
