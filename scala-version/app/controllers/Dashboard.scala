@@ -43,6 +43,38 @@ abstract class DashboardController extends Controller with Context {
 		)
 	}
 
+	def login = Action.async { implicit request =>
+		LoginForm.form.bindFromRequest.fold(
+			formWithErrors => {
+				Future.successful(
+					Redirect("/").flashing("error" -> "Sorry, that doesn't seem right. Try Again")
+				)
+			},
+			boundForm => {
+				userService.findUserByUsername(boundForm.username).flatMap { optionUser =>
+					optionUser match {
+						case None => 
+							Future.successful(Redirect("/").flashing("error" -> "Sorry, that doesn't seem right. Try Again"))
+						case Some(user) =>
+							val authFuture : Future[Boolean] = userService.authenticateUser(user, boundForm.password)
+							authFuture.map { isUser => 
+								if(isUser) {
+										Redirect("/")
+											.withSession("userId" -> user.id.toString)
+											.flashing("success" -> "You have been logged in")
+								} else {									
+										Redirect("/")
+											.flashing("error" -> "Sorry, that doesn't seem right. Try Again")
+											.withNewSession			
+								}
+							}
+					}		
+				}
+			}
+		)
+		
+	}
+
 	def test = Authenticated { implicit request =>
 		val pie = new bgi.models.charts.Pie(80)
 		pie.addPortion(bgi.models.charts.Portion(33.5, "Loans" ))

@@ -53,7 +53,7 @@ class AnormUserDAO extends UserDAO{
     }
 	}
 
-	def findById(id: Long)(implicit ec: ExecutionContext): Future[Option[bgi.models.User]] = future {
+	def findById(id: Long)(implicit ec: ExecutionContext): Future[Option[User]] = future {
 		DB.withConnection { implicit connection =>
 			val optionUser : Option[User] = SQL("""
       		SELECT name, hash, complexity, email, loginAttempts, id FROM users 
@@ -61,6 +61,17 @@ class AnormUserDAO extends UserDAO{
       		"""
       ).on("id" -> id).as(fullUserParser *).headOption
       optionUser
+		}
+	}
+
+	def findByUsername(username: String)(implicit ec: ExecutionContext): Future[Option[User]] = future {
+		DB.withConnection { implicit connection =>
+			val optionUser : Option[User] = SQL("""
+				SELECT name, hash, complexity, email, loginAttempts, id FROM users 
+      	WHERE name = {name}
+				"""
+			).on("name" -> username).as(fullUserParser *).headOption
+			optionUser
 		}
 	}
 
@@ -92,7 +103,8 @@ class AnormUserDAO extends UserDAO{
         	"hash" -> user.hash.hash,
         	"complexity" -> user.hash.complexity.toInt,
         	"email" -> user.email,
-        	"loginAttempts" -> user.loginAttempts
+        	"loginAttempts" -> user.loginAttempts,
+        	"id" -> user.id
 				).executeUpdate()
 			numberEffected match {
 				case 0 => false

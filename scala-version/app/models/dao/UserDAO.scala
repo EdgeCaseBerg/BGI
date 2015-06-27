@@ -27,4 +27,11 @@ trait UserDAO extends CrudDAO[User] {
 	 * @return A Future containing a boolean of whether the user was reset or not
 	 */
 	def resetLoginAttempts(user: User)(implicit ec: ExecutionContext) : Future[Boolean]
+
+	/** Find a user by their username
+	 *
+	 * @param username The username to find the User by
+	 * @return A Future containing an option which will have the user if that username exists in the database
+	 */
+	def findByUsername(username: String)(implicit ec: ExecutionContext) : Future[Option[User]]
 }

@@ -22,6 +22,12 @@ class UserService(implicit val userDAO : UserDAO) {
 	def findUserById(id: Long) : Future[Option[User]] = userDAO.findById(id)
 
 	/** Wrapper around userDAO method
+	 *
+	 * @see [[bgi.models.dao.UserDAO]]
+	 */
+	def findUserByUsername(username: String) : Future[Option[User]] = userDAO.findByUsername(username)
+
+	/** Wrapper around userDAO method
 	 * 
 	 * @see [[bgi.models.dao.UserDAO]]
 	 */

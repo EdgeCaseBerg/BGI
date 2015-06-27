@@ -30,6 +30,10 @@ class ProtoUserDAO extends UserDAO {
 		store.find(_.id == id)	
 	}
 
+	def findByUsername(username: String)(implicit ec: ExecutionContext) : Future[Option[User]] = future {
+		store.find(_.name == username)	
+	}
+
 	def remove(id: Long)(implicit ec: ExecutionContext) : Future[Boolean] = future {
 		val toRemove = store.find(_.id == id)
 		synchronized {
