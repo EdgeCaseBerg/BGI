@@ -12,4 +12,4 @@ package bgi.models
  * @param balanceInCents The total balance of line items within this category
  * @param lastUpdated The time which the balance was last updated for this category
  */
-case class Category(userId : Long, name: String, balanceInCents: Long, lastUpdated: Long)
+case class Category(id: Long, userId : Long, name: String, balanceInCents: Long, lastUpdated: Long)
