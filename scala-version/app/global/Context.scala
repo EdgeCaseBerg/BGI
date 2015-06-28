@@ -14,10 +14,12 @@ abstract trait Context {
 	implicit lazy val userDAO : UserDAO = ???
 	implicit lazy val lineItemDAO : LineItemDAO = ???
 	implicit lazy val userService : UserService = ???
+	implicit lazy val lineItemService : LineItemService = ???
 }
 
 trait AnormContext extends Context {
 	override implicit lazy val userDAO : AnormUserDAO = new AnormUserDAO()
 	override implicit lazy val lineItemDAO : AnormLineItemDAO = new AnormLineItemDAO()
 	override implicit lazy val userService : UserService = new UserService
+	override implicit lazy val lineItemService : LineItemService = new LineItemService
 }
