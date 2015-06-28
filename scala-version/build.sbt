@@ -12,6 +12,7 @@ libraryDependencies ++= Seq(
  	"org.scalatestplus" %% "play" % "1.2.0" % "test",
 	"org.mindrot"  % "jbcrypt"   % "0.3m",
 	"mysql" % "mysql-connector-java" % "5.1.18",
+	"org.scalaj" % "scalaj-time_2.10.2" % "0.7",
 	anorm
   )
 

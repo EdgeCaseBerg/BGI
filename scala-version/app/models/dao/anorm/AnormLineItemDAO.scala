@@ -96,14 +96,14 @@ class AnormLineItemDAO extends LineItemDAO{
 		}
 	}
 
-	def findAllByTags(tags: List[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
+	def findAllByCategories(categories: List[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
 		DB.withConnection { implicit connection => 
 			SQL("""
 					SELECT id, userId, name, amountInCents, createdTime FROM lineitems 
 					JOIN lineitem_categories 
-					ON lineitemId = id AND categoryId in ({tags})
+					ON lineitemId = id AND categoryId in ({categories})
 	      	"""
-	     ).on("tags" -> tags.mkString(",")).as(fullLineItemParser *)
+	     ).on("categories" -> categories.mkString(",")).as(fullLineItemParser *)
 		}
 	}
 
@@ -121,17 +121,17 @@ class AnormLineItemDAO extends LineItemDAO{
 		}
 	}
 
-	def findAllInPeriodMatchingTags(tags: List[Long],startEpoch: Long,endEpoch: Option[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
+	def findAllInPeriodMatchingCategories(categories: List[Long],startEpoch: Long,endEpoch: Option[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
 		val endTime = endEpoch.getOrElse("UNIX_TIMESTAMP(UTC_TIMESTAMP())").toString
 		DB.withConnection { implicit connection =>
 			SQL("""
 				SELECT id, userId, name, amountInCents, createdTime FROM lineitems 
 				JOIN lineitem_categories 
-				ON lineitemId = id AND categoryId in ({tags})
+				ON lineitemId = id AND categoryId in ({categories})
 				WHERE createdTime BETWEEN {startEpoch} AND {endTime}
 				"""
 			).on(
-				"tags" -> tags.mkString(","),
+				"categories" -> categories.mkString(","),
 				"startEpoch" -> startEpoch,
 				"endTime" -> endTime
 			).as(fullLineItemParser *)
