@@ -1,6 +1,7 @@
 package bgi.models.pagedata
 
 import bgi.models._
+import bgi.models.charts._
 
 /** Data for the Dashboard page, used to construct charts and ledger 
  * 
@@ -9,4 +10,4 @@ import bgi.models._
  * @param recentItems A list of recent line items
  * @param preferredCategories a subset of all categories that the user wants to see a chart of
  */
-case class DashboardPageData(recentItems: List[LineItem], preferredCategories: List[Category])
+case class DashboardPageData(recentItems: List[LineItem], preferredCategories: List[Category], charts: List[Pie])

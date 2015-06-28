@@ -1,6 +1,7 @@
 package bgi.models.charts
 
 import scala.math._
+import bgi.models._
 
 trait Chartable {
 	def name : String = ???
@@ -12,7 +13,7 @@ trait Chartable {
 
 case class Portion(val amount : Double, override val name: String) extends Chartable
 
-case class Pie(val radius : Int) {
+case class Pie(val radius : Int = 80) {
 	val portions = scala.collection.mutable.ListBuffer[Portion]()
 
 	def addPortion(portion: Portion) {
@@ -25,6 +26,10 @@ case class Pie(val radius : Int) {
 			case _ if v > 180 => 1
 			case _ => 0
 		}
+	}
+
+	def getColors : List[(String, String)] = {
+		portions.toList.map(p => (p.name, p.nameToFill))
 	}
 
 	def getSvgArcs : List[(String,String)] = {

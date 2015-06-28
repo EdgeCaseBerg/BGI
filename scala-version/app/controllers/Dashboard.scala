@@ -6,6 +6,7 @@ import play.api.mvc._
 import bgi.forms._
 import bgi.models._
 import bgi.models.pagedata._
+import bgi.models.charts._
 import bgi.services._
 import bgi.globals.{Context, AnormContext, Authenticated}
 
@@ -28,11 +29,13 @@ abstract class DashboardController extends Controller with Context {
 	def dashboard = Authenticated { implicit request =>
 		val futureLineItems = lineItemService.findInThisMonth
 		val futurePrefferedCategories = Future.successful(List[Category]())
+		val futureCharts = Future.successful(List[Pie]())
 
 		val futureResult = for {
 			lineItems <- futureLineItems
 			prefferedCategories <- futurePrefferedCategories
-		} yield DashboardPageData(lineItems, prefferedCategories)
+			charts <- futureCharts
+		} yield DashboardPageData(lineItems, prefferedCategories, charts)
 
 		Ok(views.html.dashboard(Await.result(futureResult, 5.seconds)))
 	}

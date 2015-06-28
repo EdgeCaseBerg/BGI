@@ -22,23 +22,25 @@ class AnormLineItemDAO extends LineItemDAO{
 	val fullLineItemParser = {
 		get[Long]("id") ~
 		get[Long]("userId") ~
+		get[Long]("categoryId") ~
 		get[String]("name") ~ 
 		get[Long]("amountInCents") ~ 
 		get[Long]("createdTime") map {
-			case id ~ userId ~ name ~ amountInCents ~ createdTime => 
-				LineItem(id, userId, name, amountInCents, createdTime)
+			case id ~ userId ~ categoryId ~ name ~ amountInCents ~ createdTime => 
+				LineItem(id, userId, categoryId, name, amountInCents, createdTime)
 		}
 	}
 
 	def create(lineItem: LineItem)(implicit ec: ExecutionContext) : Future[Option[LineItem]] = {
 		val newId : Option[Long] = DB.withConnection { implicit connection =>
       		SQL("""
-      			INSERT INTO lineitems (name, userId, amountInCents, createdTime) 
-      			VALUES ({name}, {userId}, {amountInCents}, {createdTime})
+      			INSERT INTO lineitems (name, userId, categoryId, amountInCents, createdTime) 
+      			VALUES ({name}, {userId}, {categoryId}, {amountInCents}, {createdTime})
       			"""
       		).on(
         		"name" -> lineItem.name,
         		"userId" -> lineItem.userId,
+        		"categoryId" -> lineItem.categoryId,
         		"amountInCents" -> lineItem.amountInCents,
         		"createdTime" -> lineItem.createdTime
       		).executeInsert()
@@ -54,7 +56,7 @@ class AnormLineItemDAO extends LineItemDAO{
 	def findById(id: Long)(implicit ec: ExecutionContext): Future[Option[LineItem]] = future {
 		DB.withConnection { implicit connection =>
 			val optionLineItem : Option[LineItem] = SQL("""
-	      		SELECT id, userId, name, amountInCents, createdTime FROM lineitems 
+	      		SELECT id, userId, name, categoryId, amountInCents, createdTime FROM lineitems 
 	      		WHERE id = {id}
 	      		"""
 	      		).on("id" -> id).as(fullLineItemParser *).headOption
@@ -82,10 +84,12 @@ class AnormLineItemDAO extends LineItemDAO{
 					name = {name}, 
 					userId = {userId}, 
 					amountInCents = {amountInCents},
+					categoryId = {categoryId},
 					WHERE id = {id}
 				""").on(
 					"name" -> lineItem.name,
 		        	"userId" -> lineItem.userId,
+		        	"categoryId" -> lineItem.categoryId,
 		        	"amountInCents" -> lineItem.amountInCents,
 		        	"id" -> lineItem.id
 				).executeUpdate()
@@ -99,9 +103,8 @@ class AnormLineItemDAO extends LineItemDAO{
 	def findAllByCategories(categories: List[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
 		DB.withConnection { implicit connection => 
 			SQL("""
-					SELECT id, userId, name, amountInCents, createdTime FROM lineitems 
-					JOIN lineitem_categories 
-					ON lineitemId = id AND categoryId in ({categories})
+					SELECT id, userId, name, categoryId, amountInCents, createdTime FROM lineitems 
+					WHERE categoryId in ({categories})
 	      	"""
 	     ).on("categories" -> categories.mkString(",")).as(fullLineItemParser *)
 		}
@@ -111,7 +114,7 @@ class AnormLineItemDAO extends LineItemDAO{
 		val endTime = endEpoch.getOrElse("UNIX_TIMESTAMP(UTC_TIMESTAMP())").toString
 		DB.withConnection { implicit connection =>
 			SQL("""
-				SELECT id, userId, name, amountInCents, createdTime FROM lineitems 
+				SELECT id, userId, name, categoryId, amountInCents, createdTime FROM lineitems 
 				WHERE createdTime BETWEEN {startEpoch} AND {endTime}
 				"""
 			).on(
@@ -125,10 +128,8 @@ class AnormLineItemDAO extends LineItemDAO{
 		val endTime = endEpoch.getOrElse("UNIX_TIMESTAMP(UTC_TIMESTAMP())").toString
 		DB.withConnection { implicit connection =>
 			SQL("""
-				SELECT id, userId, name, amountInCents, createdTime FROM lineitems 
-				JOIN lineitem_categories 
-				ON lineitemId = id AND categoryId in ({categories})
-				WHERE createdTime BETWEEN {startEpoch} AND {endTime}
+				SELECT id, userId, name, categoryId, amountInCents, createdTime FROM lineitems 
+				WHERE createdTime BETWEEN {startEpoch} AND {endTime} AND categoryId in ({categories})
 				"""
 			).on(
 				"categories" -> categories.mkString(","),
