@@ -5,13 +5,15 @@ import play.api.mvc._
 
 import bgi.forms._
 import bgi.models._
+import bgi.models.pagedata._
 import bgi.services._
 import bgi.globals.{Context, AnormContext, Authenticated}
 
 import org.mindrot.jbcrypt.BCrypt
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.concurrent.{Future, Await}
 
 /** Controller for handling generic non-specific pages */
 abstract class DashboardController extends Controller with Context {
@@ -24,7 +26,15 @@ abstract class DashboardController extends Controller with Context {
 	}
 
 	def dashboard = Authenticated { implicit request =>
-		Ok(views.html.dashboard())
+		val futureLineItems = lineItemService.findInThisMonth
+		val futurePrefferedCategories = Future.successful(List[Category]())
+
+		val futureResult = for {
+			lineItems <- futureLineItems
+			prefferedCategories <- futurePrefferedCategories
+		} yield DashboardPageData(lineItems, prefferedCategories)
+
+		Ok(views.html.dashboard(Await.result(futureResult, 5.seconds)))
 	}
 
 	def test = Authenticated { implicit request =>

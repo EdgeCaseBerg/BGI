@@ -21,7 +21,7 @@ class AuthenticatedRequest[A](val user: User, request: Request[A]) extends Wrapp
 object Authenticated extends ActionBuilder[AuthenticatedRequest] with AnormContext{
 	val failRedir = Future.successful(Results.Redirect(bgi.controllers.routes.Dashboard.index).flashing("error" -> "Please Login and have cookies enabled"))
 
-	def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[Result]) = {
+	def invokeBlock[A](request: Request[A], block: (AuthenticatedRequest[A]) => Future[Result]) : Future[Result] = {
 		request.session.get("userId").map { stringUserId =>
 			Try(stringUserId.toLong) match {
 				case Failure(e) => failRedir
