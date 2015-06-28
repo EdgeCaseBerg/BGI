@@ -10,10 +10,10 @@
 	</section>
 	@templates.partials.alert()
 	<section>
-		@helper.form(action = bgi.controllers.routes.Dashboard.login()) {
+		@helper.form(action = bgi.controllers.routes.Auth.login()) {
 			<fieldset>
 				<legend>Log In</legend>
-				<div>
+				<div>	
 					<label for="username">Username</label>
 					<input name="username" type="text" />
 				</div>
@@ -26,7 +26,7 @@
 		}
 	</section>
 	<section>
-		@helper.form(action = bgi.controllers.routes.Dashboard.register()) {
+		@helper.form(action = bgi.controllers.routes.Auth.register()) {
 			<fieldset>
 				<legend>Sign Up</legend>
 				<div>
