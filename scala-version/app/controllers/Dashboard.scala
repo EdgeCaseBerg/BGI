@@ -16,7 +16,15 @@ import scala.concurrent.Future
 /** Controller for handling generic non-specific pages */
 abstract class DashboardController extends Controller with Context {
 	def index = Action { implicit request =>
-		Ok(views.html.index())
+		if (request.session.get("userId").isDefined) {
+			Redirect(bgi.controllers.routes.Dashboard.dashboard)
+		} else {
+			Ok(views.html.index())
+		}
+	}
+
+	def dashboard = Authenticated { implicit request =>
+		Ok(views.html.dashboard())
 	}
 
 	def test = Authenticated { implicit request =>

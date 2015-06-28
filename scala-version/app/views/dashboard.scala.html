@@ -1,0 +1,10 @@
+@import bgi.forms._
+@()(implicit flash: Flash)
+
+@* Maybe pass an implicit Option[user] to check if logged in or not *@
+@templates.standard("BGI - Login") {
+	<h2>Recent Activity</h2>
+	<hr>
+	@templates.partials.alert()
+
+}

@@ -1,4 +1,4 @@
-@(title : String = "BGI", loggedIn : Boolean = false)(content: Html)(implicit flash : Flash)
+@(title : String = "BGI", loggedIn : Boolean = true)(content: Html)(implicit flash : Flash)
 <html>
 	<head>
 		<title>@title</title>
@@ -8,7 +8,7 @@
 		<header>
 			<h1>BGI</h1>
 			@if(loggedIn) {
-				
+				@templates.partials.loggedInNav()
 			} else {
 				@templates.partials.loggedOutNav()
 			}

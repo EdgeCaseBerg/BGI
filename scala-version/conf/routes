@@ -1,6 +1,7 @@
 GET /assets/*file controllers.Assets.at(path="/public", file)
 
-GET / bgi.controllers.Dashboard.index
+GET /auth bgi.controllers.Dashboard.index
+GET / bgi.controllers.Dashboard.dashboard
 POST /register bgi.controllers.Auth.register
 POST /login bgi.controllers.Auth.login
 
