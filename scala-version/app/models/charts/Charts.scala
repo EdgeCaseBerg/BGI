@@ -6,6 +6,12 @@ import bgi.models._
 trait Chartable {
 	def name : String = ???
 	def nameToFill : String = {
+		Charts.nameToFill(name)
+	}
+}
+
+object Charts {
+	def nameToFill(name: String) : String = {
 		val nameVal = name.map(_.toInt).reduceLeft((l,r) => l + r)
 		"#" + "%06x".format((nameVal*0xf24) % 0xffffff).replace("0","f")
 	}

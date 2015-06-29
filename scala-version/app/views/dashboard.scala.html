@@ -1,5 +1,6 @@
 @import bgi.forms._
 @import bgi.models.pagedata._
+@import bgi.models.charts._
 @(pageData: DashboardPageData)(implicit flash: Flash)
 
 @* Maybe pass an implicit Option[user] to check if logged in or not *@
@@ -9,6 +10,16 @@
 	@templates.partials.alert()
 	<section>
 		<!-- Show chart of current spendings -->
+		<div name="legend">
+			<ul>
+				@for(category <- pageData.categories) {
+					<li style="color: @Charts.nameToFill(category.name)">@category.name</li>
+				}
+			</ul>
+			@for(pie <- pageData.charts) {
+				@views.html.svg.pie(pie)
+			}
+		</div>
 	</section>
 	<section>
 		<!-- Ledger Header -->
