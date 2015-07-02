@@ -1,0 +1,10 @@
+@import bgi.models._
+@(lineItem: LineItem, category: Option[Category])
+<div>
+	<span>@lineItem.stringDate</span>
+	<span>@lineItem.name</span>
+	<span>@lineItem.amountInDollars</span>
+	@if(category.isDefined) {
+		<span>@category.get.name</span>
+	}
+</div>

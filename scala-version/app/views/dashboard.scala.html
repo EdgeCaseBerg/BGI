@@ -3,7 +3,6 @@
 @import bgi.models.charts._
 @(pageData: DashboardPageData)(implicit flash: Flash)
 
-@* Maybe pass an implicit Option[user] to check if logged in or not *@
 @templates.standard("BGI - Login") {
 	<h2>Recent Activity</h2>
 	<hr>
@@ -41,6 +40,12 @@
 	</section>
 	<section>
 		<!-- Ledger list -->
-		
+		<ul>
+			@for(lineItem <- pageData.recentItems) {
+				<li>
+					@templates.partials.lineItem(lineItem, pageData.categories.find(_.id==lineItem.categoryId))
+				</li>
+			}
+		</ul>
 	</section>
 }
