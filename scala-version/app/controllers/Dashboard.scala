@@ -40,14 +40,6 @@ abstract class DashboardController extends Controller with Context {
 		Ok(views.html.dashboard(Await.result(futureResult, 10.seconds)))
 	}
 
-	def categories = Authenticated { implicit request =>
-		val futureCategories = Future.successful(List[Category]())
-		val futureResult = for {
-			categories <- futureCategories
-		} yield CategoryPageData(categories)
-		Ok(views.html.categories(Await.result(futureResult, 10.seconds)))
-	}
-
 	def test = Authenticated { implicit request =>
 		val pie = new bgi.models.charts.Pie(80)
 		pie.addPortion(bgi.models.charts.Portion(33.5, "Loans" ))

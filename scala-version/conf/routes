@@ -5,6 +5,6 @@ POST /register bgi.controllers.Auth.register
 POST /login bgi.controllers.Auth.login
 
 GET / bgi.controllers.Dashboard.dashboard
-GET /categories bgi.controllers.Dashboard.categories
+GET /categories bgi.controllers.Category.categories
 
 GET /test bgi.controllers.Dashboard.test
