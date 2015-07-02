@@ -1,0 +1,35 @@
+@import bgi.forms._
+@import bgi.models.pagedata._
+@(pageData: CategoryPageData)(implicit flash: Flash)
+
+@templates.standard("BGI - Login") {
+	<h2>Manage Categories</h2>
+	<hr>
+	@templates.partials.alert()
+	<section>
+		<p>
+			Categories help you seperate different expenses from each other. 
+			A few suggestions: bills, groceries, eating out, fun, misc. Do 
+			what makes sense to you! If you want to see how much you spend 
+			on wine, make a category for that or alcohol! Want to know how 
+			much you spend on movies? Category! It's all up to you.
+		</p>
+	</section>
+	<section>
+		<form>
+			<input placeholder="Category Name" name="name" value="" type="text" size="64" maxlength="64"/>
+			<input type="submit" value="Create" />
+		</form>
+	</section>
+	<section>
+		<h3>Current Categories</h3>
+		@if(pageData.categories.isEmpty) {
+			<strong>No Categories, make some!</strong>
+		}
+		<ul>
+			@for(category <- pageData.categories) {
+				<li>@category.name</li>
+			}
+		</ul>
+	</section>
+}
