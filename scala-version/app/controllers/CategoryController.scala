@@ -20,7 +20,11 @@ abstract class CategoryController extends Controller with Context {
 			categories <- futureCategories
 		} yield CategoryPageData(categories)
 		Ok(views.html.categories(Await.result(futureResult, 10.seconds)))
-	}	
+	}
+
+	def create = Authenticated { implicit request =>
+		BadRequest("Not yet implemented")
+	}
 }
 
 object Category extends CategoryController with AnormContext{ 
