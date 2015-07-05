@@ -34,13 +34,12 @@ class AnormCategoryDAO extends CategoryDAO{
 		val newId : Option[Long] = DB.withConnection { implicit connection =>
       		SQL("""
       			INSERT INTO categories (name, userId, balanceInCents, lastUpdated) 
-      			VALUES ({name}, {userId}, {balanceInCents}, {lastUpdated})
+      			VALUES ({name}, {userId}, {balanceInCents}, UNIX_TIMESTAMP(UTC_TIMESTAMP()))
       			"""
       		).on(
         		"name" -> category.name,
         		"userId" -> category.userId,
-        		"balanceInCents" -> category.balanceInCents,
-        		"lastUpdated" -> category.lastUpdated
+        		"balanceInCents" -> category.balanceInCents
       		).executeInsert()
     	}
     	newId.fold( 
@@ -81,13 +80,12 @@ class AnormCategoryDAO extends CategoryDAO{
 				UPDATE categories SET 
 					name = {name}, 
 					balanceInCents = {balanceInCents},
-					lastUpdated = {lastUpdated},
+					lastUpdated = UNIX_TIMESTAMP(UTC_TIMESTAMP()),
 					WHERE id = {id}
 				""").on(
 					"name" -> category.name,
-		        	"lastUpdated" -> category.lastUpdated,
-		        	"balanceInCents" -> category.balanceInCents,
-		        	"id" -> category.id
+					"balanceInCents" -> category.balanceInCents,
+					"id" -> category.id
 				).executeUpdate()
 			numberEffected match {
 				case 0 => false
