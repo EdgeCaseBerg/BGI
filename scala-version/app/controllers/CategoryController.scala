@@ -22,8 +22,20 @@ abstract class CategoryController extends Controller with Context {
 		Ok(views.html.categories(Await.result(futureResult, 10.seconds)))
 	}
 
-	def create = Authenticated { implicit request =>
-		BadRequest("Not yet implemented")
+	def create = Authenticated.async { implicit request =>
+		CreateCategoryForm.form.bindFromRequest.fold(
+			formWithErrors => {
+				Future.successful(Redirect(bgi.controllers.routes.Category.categories).flashing("error" -> "Error! Category name must be between 3-64 characters!"))
+			},
+			boundForm => {
+				categoryService.create(new Category(-1, request.user.id, boundForm.name, 0, 0)).map { optionCategory =>
+					optionCategory match {
+						case None => Redirect(bgi.controllers.routes.Category.categories).flashing("error" -> "Could not create Category. Please Contact Us")
+						case _ => Redirect(bgi.controllers.routes.Category.categories).flashing("success" -> "Successfully Created Category!")
+					}
+				}
+			}
+		)
 	}
 }
 
