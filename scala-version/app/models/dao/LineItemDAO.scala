@@ -32,12 +32,13 @@ trait LineItemDAO extends CrudDAO[LineItem] {
 	 *
 	 * Useful for constructing a list of most recent items
 	 *
+	 * @param user The User the line items belong to
 	 * @param startEpoch The bottom of the date range in UTC Epoch
 	 * @param endEpoch The end of the date range in UTC Epoch, or None for now
 	 * @param ec Implicit ExecutionContext to run function threads in
 	 * @return A Future containing a list of LineItems within the date range provided
 	 */
-	def findAllInPeriod(startEpoch: Long, endEpoch: Option[Long] = None)(implicit ec: ExecutionContext) : Future[LineItems]
+	def findAllInPeriodForUser(user: User, startEpoch: Long, endEpoch: Option[Long] = None)(implicit ec: ExecutionContext) : Future[LineItems]
 
 	/** Returns all LineItems within a period of time matching the given categories
 	 * 

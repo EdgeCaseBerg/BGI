@@ -14,6 +14,7 @@ trait CategoryDAO extends CrudDAO[Category] {
 
 	/** Retrieves all Categories
 	 *
+	 * @param user The User that owns the categories
 	 * @param ec Implicit ExecutionContext to run future threads in
 	 * @return A Future containing a list of Categories matching the tag
 	 */
@@ -21,6 +22,7 @@ trait CategoryDAO extends CrudDAO[Category] {
 
 	/** Retrieves all Categories that are preffered by the user
 	 * 
+	 * @param user The User to retrieve categories for
 	 * @param ec Implicit ExecutionContext to run function threads in
 	 * @return A Future containing a list of Categories matching the categories provided
 	 */

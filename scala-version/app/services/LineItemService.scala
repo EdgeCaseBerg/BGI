@@ -39,26 +39,31 @@ class LineItemService(implicit val lineItemDAO : LineItemDAO) extends BaseServic
 			.millisOfSecond().withMinimumValue()
 	}
 
-	/** Get line items that have occured in the current month */
-	def findInThisMonth : Future[LineItems] = {
+	/** Get line items that have occured in the current month for a User
+	 * 
+	 * @param user The User to whom the line items belong
+	 * @return A Future containing the LineItems of this month belonging to the User
+	 */
+	def findInThisMonth(user: User) : Future[LineItems] = {
 		val startTime = clearDayMinuteSecond(DateTime.now).millis/1000
-		lineItemDAO.findAllInPeriod(startTime)
+		lineItemDAO.findAllInPeriodForUser(user, startTime)
 	}
 
-	/** Get line items that have occured in the given year
+	/** Get line items that have occured in the given year for a user
 	 * 
+	 * @param user The user who owns the line items.
 	 * @param year An option containing the year that line items must have occured in, or None for the current year
 	 */
-	def findAllInYear(year: Option[Int] = None) : Future[LineItems] = {
+	def findAllInYear(user: User, year: Option[Int] = None) : Future[LineItems] = {
 		val theYear = year.getOrElse(clearDayMinuteSecond(DateTime.now).year.getAsText.toInt)
 		val startTime = clearDayMinuteSecond(DateTime.now)
 			.monthOfYear().withMinimumValue().withYear(theYear)
 		val endTime = (startTime + 1.years).millis/1000
-		lineItemDAO.findAllInPeriod(startTime.millis/1000, Some(endTime))
+		lineItemDAO.findAllInPeriodForUser(user, startTime.millis/1000, Some(endTime))
 	}
 
 	/** Returns all line items */
-	def findAll : Future[LineItems] = lineItemDAO.findAllInPeriod(0)
+	def findAllForUser(user: User) : Future[LineItems] = lineItemDAO.findAllInPeriodForUser(user, 0)
 
 	/** Returns line items in the given year that match the specified categories
 	 *

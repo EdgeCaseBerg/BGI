@@ -110,16 +110,17 @@ class AnormLineItemDAO extends LineItemDAO{
 		}
 	}
 
-	def findAllInPeriod(startEpoch: Long,endEpoch: Option[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
+	def findAllInPeriodForUser(user: User, startEpoch: Long,endEpoch: Option[Long])(implicit ec: ExecutionContext): Future[List[LineItem]] = future {
 		val endTime = endEpoch.getOrElse("UNIX_TIMESTAMP(UTC_TIMESTAMP())").toString
 		DB.withConnection { implicit connection =>
 			SQL("""
 				SELECT id, userId, name, categoryId, amountInCents, createdTime FROM lineitems 
-				WHERE createdTime BETWEEN {startEpoch} AND {endTime}
+				WHERE createdTime BETWEEN {startEpoch} AND {endTime} AND userId = {userId}
 				"""
 			).on(
 				"startEpoch" -> startEpoch,
-				"endTime" -> endTime
+				"endTime" -> endTime,
+				"userId" -> user.id
 			).as(fullLineItemParser *)
 		}
 	}
