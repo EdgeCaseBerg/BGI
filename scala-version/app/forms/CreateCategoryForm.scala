@@ -8,7 +8,7 @@ import play.api.data.Forms._
  * @param name The submitted category name, a string length 3-64
  * @param userId The id of the User to create the Category for
  */
-case class CreateCategoryForm(name: String, userId: Long) 
+case class CreateCategoryForm(name: String) 
 
 /** Companion object of the category creation form 
  *
@@ -17,8 +17,7 @@ case class CreateCategoryForm(name: String, userId: Long)
 object CreateCategoryForm {
 	val form = Form(
 		mapping(
-			"name" -> nonEmptyText(minLength = 3, maxLength = 64),
-			"userId" -> longNumber
+			"name" -> nonEmptyText(minLength = 3, maxLength = 64)
 		)(CreateCategoryForm.apply)(CreateCategoryForm.unapply)
 	)
 }
