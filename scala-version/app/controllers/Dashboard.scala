@@ -28,7 +28,7 @@ abstract class DashboardController extends Controller with Context {
 
 	def dashboard = Authenticated { implicit request =>
 		val futureLineItems = lineItemService.findInThisMonth
-		val futureCategories = Future.successful(List[Category]())
+		val futureCategories = categoryService.getAll
 		val futureCharts = Future.successful(List[Pie]())
 
 		val futureResult = for {
