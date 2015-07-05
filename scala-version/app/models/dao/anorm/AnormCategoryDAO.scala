@@ -94,23 +94,25 @@ class AnormCategoryDAO extends CategoryDAO{
 		}
 	}
 
-	def getAll()(implicit ec: ExecutionContext) : Future[List[Category]] = future {
+	def getAllForUser(user: User)(implicit ec: ExecutionContext) : Future[List[Category]] = future {
 		DB.withConnection { implicit connection => 
 			val categories = SQL("""
 	      	SELECT id, userId, name, balanceInCents, lastUpdated FROM categories
+	      	WHERE userId = {userId}
 	      	"""
-	     ).as(fullCategoryParser *)
+	     ).on("userId" -> user.id).as(fullCategoryParser *)
 			categories
 		}
 	}
 
-	def getPreffered()(implicit ec: ExecutionContext) : Future[List[Category]] = future {
+	def getPrefferedByUser(user: User)(implicit ec: ExecutionContext) : Future[List[Category]] = future {
 		DB.withConnection { implicit connection => 
 			//TODO: Change this to correct implementation when ready to implement category groups/preffereds
 			val categories = SQL("""
 	      	SELECT id, userId, name, balanceInCents, lastUpdated FROM categories
+	      	WHERE userId = {userId}
 	      	"""
-	     ).as(fullCategoryParser *)
+	     ).on("userId" -> user.id).as(fullCategoryParser *)
 			categories
 		}	
 	}

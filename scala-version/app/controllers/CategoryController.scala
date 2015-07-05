@@ -15,7 +15,7 @@ import scala.concurrent.duration._
 
 abstract class CategoryController extends Controller with Context {
 	def categories = Authenticated { implicit request =>
-		val futureCategories = categoryService.getAll
+		val futureCategories = categoryService.getAllForUser(request.user)
 		val futureResult = for {
 			categories <- futureCategories
 		} yield CategoryPageData(categories)

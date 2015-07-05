@@ -17,13 +17,13 @@ trait CategoryDAO extends CrudDAO[Category] {
 	 * @param ec Implicit ExecutionContext to run future threads in
 	 * @return A Future containing a list of Categories matching the tag
 	 */
-	def getAll()(implicit ec: ExecutionContext) : Future[Categories]
+	def getAllForUser(user: User)(implicit ec: ExecutionContext) : Future[Categories]
 
 	/** Retrieves all Categories that are preffered by the user
 	 * 
 	 * @param ec Implicit ExecutionContext to run function threads in
 	 * @return A Future containing a list of Categories matching the categories provided
 	 */
-	def getPreffered()(implicit ec: ExecutionContext) : Future[Categories]
+	def getPrefferedByUser(user: User)(implicit ec: ExecutionContext) : Future[Categories]
 	
 }

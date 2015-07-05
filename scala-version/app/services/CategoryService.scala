@@ -19,11 +19,11 @@ class CategoryService(implicit val categoryDAO : CategoryDAO) extends BaseServic
 	 *
 	 * @return A Future of a list of Categories in the system
 	 */
-	def getAll : Future[Categories] = categoryDAO.getAll()
+	def getAllForUser(user: User) : Future[Categories] = categoryDAO.getAllForUser(user)
 
 	/** Retrieve all the preffered categories from the database 
 	 *
 	 * @return A Future of a list of Categories that are preffered in the system
 	 */
-	def getPreffered : Future[Categories] = categoryDAO.getPreffered()	
+	def getPrefferedByUser(user: User) : Future[Categories] = categoryDAO.getPrefferedByUser(user)
 }
