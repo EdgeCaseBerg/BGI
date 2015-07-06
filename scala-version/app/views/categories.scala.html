@@ -16,10 +16,10 @@
 		</p>
 	</section>
 	<section>
-		<form method="POST" action="@bgi.controllers.routes.Category.create">
+		@helper.form(action = bgi.controllers.routes.Category.create) {
 			<input placeholder="Category Name" name="name" value="" type="text" size="64" maxlength="64"/>
 			<input type="submit" value="Create" />
-		</form>
+		}
 	</section>
 	<section>
 		<h3>Current Categories</h3>
