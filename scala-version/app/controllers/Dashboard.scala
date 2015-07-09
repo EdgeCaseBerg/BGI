@@ -26,7 +26,7 @@ abstract class DashboardController extends Controller with Context {
 		}
 	}
 
-	def dashboard = Authenticated { implicit request =>
+	def dashboard = Authenticated.async { implicit request =>
 		val futureLineItems = lineItemService.findInThisMonth(request.user)
 		val futureCategories = categoryService.getAllForUser(request.user)
 		val futureCharts = Future.successful(List[Pie]())
@@ -35,9 +35,11 @@ abstract class DashboardController extends Controller with Context {
 			lineItems <- futureLineItems
 			categories <- futureCategories
 			charts <- futureCharts
-		} yield DashboardPageData(lineItems, categories, charts)
+		} yield DashboardPageData(lineItems, categories, charts ++ List(Charts.fromCategories(categories)))
 
-		Ok(views.html.dashboard(Await.result(futureResult, 10.seconds)))
+		futureResult.map { thing => 
+			Ok(views.html.dashboard(thing))
+		}
 	}
 
 	def test = Authenticated { implicit request =>

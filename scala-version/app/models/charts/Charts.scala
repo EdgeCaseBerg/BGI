@@ -15,6 +15,12 @@ object Charts {
 		val nameVal = name.map(_.toInt).reduceLeft((l,r) => l + r)
 		"#" + "%06x".format((nameVal*0xf24) % 0xffffff).replace("0","f")
 	}
+
+	def fromCategories(categories: List[Category]) : Pie = {
+		val pie = new Pie()
+		categories.map(cat => pie.addPortion(new Portion(cat.balanceInCents, cat.name)))
+		pie
+	}
 }
 
 case class Portion(val amount : Double, override val name: String) extends Chartable
