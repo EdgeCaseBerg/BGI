@@ -4,7 +4,7 @@ import play.api.data._
 import play.api.data.Forms._
 
 import com.typesafe.config.ConfigFactory
-
+import play.api.data.format.Formats._
 /** Container for the ledger form 
  * 
  * @param amount An amount being submitted, regular currency double to be converted to cents
@@ -25,9 +25,9 @@ case class LedgerForm(amount: Double, name: String, categoryId: Int)
 object LedgerForm {
 	val form = Form(
 		mapping(
-			"amount" -> nonEmptyText(minLength = 3, maxLength = 128),
-			"name" -> nonEmptyText(minLength = 4, maxLength = 256)
-			"categoryId" -> intNumber
+			"amount" -> of[Double],
+			"name" -> nonEmptyText(minLength = 4, maxLength = 256),
+			"categoryId" -> number
 		)(LedgerForm.apply)(LedgerForm.unapply)
 	)
 }
